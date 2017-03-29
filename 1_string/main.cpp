@@ -22,6 +22,35 @@
 #include <iostream>
 #include <cstring>
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  segment_ip 
+ *  Description:  将一个IP地址分成4个部分
+ *  		  分别存储在NIP当中
+ * =====================================================================================
+ */
+void segment_ip(std::string IP)
+{
+	const static int LENGTH = 4;
+	std::string dot(".");
+	std::string NIP[LENGTH];
+	size_t dotp = 0;
+	size_t lp   = 0;
+	for ( int i=0;i<LENGTH;i++ )
+	{ 	
+		dotp = IP.find(dot,dotp+1);
+		if ( dotp != std::string::npos )
+		{
+			NIP[i] = IP.substr(lp,dotp-lp);
+			lp = dotp + 1;
+		}
+		else
+			NIP[i] = IP.substr(lp);
+		std::cout<<NIP[i]<<std::endl;
+	}
+}
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -82,22 +111,7 @@ main ( int argc, char *argv[] )
 	/* 
 	 *	分割IP地址
 	 */
-	std::string dot(".");
-	std::string NIP[4];
-	size_t dotp = 0;
-	size_t lp   = 0;
-	for ( int i=0;i<4;i++ )
-	{ 	
-		dotp = IP.find(dot,dotp+1);
-		if ( dotp != std::string::npos )
-		{
-			NIP[i] = IP.substr(lp,dotp-lp);
-			lp = dotp + 1;
-		}
-		else
-			NIP[i] = IP.substr(lp);
-		std::cout<<NIP[i]<<std::endl;
-	}
+	segment_ip(IP);
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
