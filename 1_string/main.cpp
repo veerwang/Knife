@@ -113,5 +113,21 @@ main ( int argc, char *argv[] )
 	 */
 	segment_ip(IP);
 
+	/* 
+	 *	反向查找	
+	 */
+	std::size_t po = IP.rfind(".");
+	printf("rfind po = %ld",po);
+
+	/* 
+	 *	部分查找,找到最先查找到字符首位置
+	 *	192.166.1.205
+	 */
+	po = IP.find_first_of("26");
+	printf("find first of po = %ld",po);	
+
+
+
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
