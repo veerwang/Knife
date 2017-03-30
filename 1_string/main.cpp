@@ -124,9 +124,15 @@ main ( int argc, char *argv[] )
 	 *	192.166.1.205
 	 */
 	po = IP.find_first_of("26");
-	printf("find first of po = %ld",po);	
+	printf("find first of po = %ld\n",po);	
 
-
+	/* 
+	 *	string 到 char buffer 的拷贝	
+	 */
+	char buffer[22];
+	po = IP.copy(buffer,22,0);
+	buffer[po] = '\0';
+	printf("buf IP = %s\n",buffer);	
 
 
 	return EXIT_SUCCESS;
