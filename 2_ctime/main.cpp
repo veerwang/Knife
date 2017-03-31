@@ -19,8 +19,8 @@
 
 #include <cstdlib>
 #include <cstdio>
-#include <iostream>
 #include <ctime>
+#include <iostream>
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -36,18 +36,24 @@ main ( int argc, char *argv[] )
 	 * 时间流逝
 	 */
 	clock_t t = clock();
-	for ( int i=0;i<800000;i++ )
+	for ( int i=0;i<80000;i++ )
 		printf("clock ..\n");
 	t = clock() - t;
 	std::cout<<"it take me clock: %d "<<t<<std::endl;
 	float time = static_cast<float>(t) / CLOCKS_PER_SEC;
 	std::cout<<"it take me seconds: %d "<<time<<std::endl;
 
-
-
-
-
-
+	/*
+	 * 格式化时间 
+	 * 注意这个命名空间的限定
+	 */
+	time_t rawtime;
+	struct tm *newtime;
+	char timebuf[80];
+	std::time (&rawtime);
+	newtime = localtime(&rawtime);
+	strftime(timebuf,80,"%I %M %p\n",newtime);
+	printf ( "time = %s\n",timebuf );
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
