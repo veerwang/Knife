@@ -55,5 +55,10 @@ main ( int argc, char *argv[] )
 	strftime(timebuf,80,"%I %M %p\n",newtime);
 	printf ( "time = %s\n",timebuf );
 
+	/* 
+	 * 将struct time 时间转化为ascii字符  
+	 */
+	printf ( "asctime = %s\n",asctime(newtime) );
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
