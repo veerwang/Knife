@@ -125,6 +125,7 @@ main ( int argc, char *argv[] )
 				if ( num == 0  )
 				{
 					std::cout<<"ServerInfo: client close"<<std::endl;
+					perror("ServerInfo: client bad:");
 					key = KEY_ESC; 
 				}
 				else

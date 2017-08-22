@@ -75,21 +75,21 @@ main ( int argc, char *argv[] )
 			case KEY_BOTTOM1:
 			{
 				memset(snd_buf,0,1024);  
-				strcpy(snd_buf,"message from client: key 1\n");  
+				strcpy(snd_buf,"message from client: key 1");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  
 			}
 			break;
 			case KEY_BOTTOM2:
 			{
 				memset(snd_buf,0,1024);  
-				strcpy(snd_buf,"message from client: key 2\n");  
+				strcpy(snd_buf,"message from client: key 2");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  
 			}
 			break;
 			case KEY_BOTTOM3:
 			{
 				memset(snd_buf,0,1024);  
-				strcpy(snd_buf,"message from client: key 3\n");  
+				strcpy(snd_buf,"message from client: key 3");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  
 			}
 			break;
