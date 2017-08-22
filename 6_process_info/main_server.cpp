@@ -93,17 +93,51 @@ main ( int argc, char *argv[] )
 		unlink(UNIX_DOMAIN);  
 		return 1;  
 	}
+
 	//read and printf sent client info  
-	printf("/n=====info=====/n");  
-	for(i=0;i<4;i++)  
-	{  
-		memset(recv_buf,0,1024);  
-		int num=read(com_fd,recv_buf,sizeof(recv_buf));  
-		printf("Message from client (%d)) :%s/n",num,recv_buf);    
-	}  
-	close(com_fd);  
-	close(listen_fd);  
-	unlink(UNIX_DOMAIN);  
+
+	char key = 0;
+	struct timeval m_tv;
+	m_tv.tv_sec  = 0;
+	m_tv.tv_usec = 1;
+	fd_set	m_RDfd;
+	WangV::InitKey();
+
+	while( key != KEY_ESC  )
+	{
+		key = WangV::GetPCKey();
+
+		FD_ZERO(&m_RDfd);
+		FD_SET(com_fd,&m_RDfd);
+
+		if ( select(com_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
+			usleep(1000);
+		else
+		{
+			if ( !FD_ISSET(com_fd,&m_RDfd) )
+			{
+				usleep(1000);
+			}
+			else
+			{
+				memset(recv_buf,0,1024);
+				int num=read(com_fd,recv_buf,sizeof(recv_buf));  
+				if ( num == 0  )
+				{
+					std::cout<<"ServerInfo: client close"<<std::endl;
+					key = KEY_ESC; 
+				}
+				else
+					std::cout<<"ServerInfo:"<<recv_buf<<std::endl;
+			}
+		}
+	}
+
+	close(com_fd);
+	close(listen_fd);
+	unlink(UNIX_DOMAIN);
+
+	WangV::RestoreKey();
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */

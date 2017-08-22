@@ -25,6 +25,8 @@
 #include <sys/types.h>  
 #include <sys/socket.h>  
 #include <sys/un.h>  
+
+#include "globalkey.h"
 #define UNIX_DOMAIN "/tmp/UNIX.domain"  
 
 /* 
@@ -60,12 +62,47 @@ main ( int argc, char *argv[] )
 		close(connect_fd);  
 		return 1;  
 	}  
-	memset(snd_buf,0,1024);  
-	strcpy(snd_buf,"message from client\n");  
-	//send info server  
-	for(i=0;i<4;i++)  
-		write(connect_fd,snd_buf,sizeof(snd_buf));  
+
+	int key = 0;
+	WangV::InitKey();
+
+	while( key != KEY_ESC  )
+	{
+		key = WangV::GetPCKey();
+
+		switch ( key ) 
+		{
+			case KEY_BOTTOM1:
+			{
+				memset(snd_buf,0,1024);  
+				strcpy(snd_buf,"message from client: key 1\n");  
+				write(connect_fd,snd_buf,sizeof(snd_buf));  
+			}
+			break;
+			case KEY_BOTTOM2:
+			{
+				memset(snd_buf,0,1024);  
+				strcpy(snd_buf,"message from client: key 2\n");  
+				write(connect_fd,snd_buf,sizeof(snd_buf));  
+			}
+			break;
+			case KEY_BOTTOM3:
+			{
+				memset(snd_buf,0,1024);  
+				strcpy(snd_buf,"message from client: key 3\n");  
+				write(connect_fd,snd_buf,sizeof(snd_buf));  
+			}
+			break;
+
+			default:	
+				break;
+		}				/* -----  end switch  ----- */
+
+		usleep(1000);
+	}
+
 	close(connect_fd);  
+	WangV::RestoreKey();
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
