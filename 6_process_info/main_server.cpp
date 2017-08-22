@@ -38,6 +38,43 @@
  *  Description:  
  * =====================================================================================
  */
+
+int process_communication(int com_fd)
+{
+	if ( !com_fd ) return 0;
+	static char recv_buf[1024];   
+	struct timeval m_tv;
+	m_tv.tv_sec  = 0;
+	m_tv.tv_usec = 1;
+	fd_set	m_RDfd;
+
+	FD_ZERO(&m_RDfd);
+	FD_SET(com_fd,&m_RDfd);
+
+	if ( select(com_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
+		usleep(1000);
+	else
+	{
+		if ( !FD_ISSET(com_fd,&m_RDfd) )
+			usleep(1000);
+		else
+		{
+			memset(recv_buf,0,1024);
+			int num=read(com_fd,recv_buf,sizeof(recv_buf));  
+			if ( num == 0 )
+			{
+				std::cout<<"ServerInfo: client close"<<std::endl;
+				perror("ServerInfo: client bad:");
+				close(com_fd);
+				return 1; 
+			}
+			else
+				std::cout<<"ServerInfo:"<<recv_buf<<std::endl;
+		}
+	}
+	return 0;
+}
+
 	int
 main ( int argc, char *argv[] )
 {
@@ -48,9 +85,6 @@ main ( int argc, char *argv[] )
     	socklen_t clt_addr_len;  
 	int com_fd;  
 	int ret;  
-	int i;  
-	static char recv_buf[1024];   
-	int len;  
 
 	int listen_fd = socket(PF_UNIX, SOCK_STREAM, 0); 
 
@@ -97,44 +131,14 @@ main ( int argc, char *argv[] )
 	//read and printf sent client info  
 
 	char key = 0;
-	struct timeval m_tv;
-	m_tv.tv_sec  = 0;
-	m_tv.tv_usec = 1;
-	fd_set	m_RDfd;
 	WangV::InitKey();
 
-	while( key != KEY_ESC  )
+	while( key != KEY_ESC )
 	{
-		key = WangV::GetPCKey();
-
-		FD_ZERO(&m_RDfd);
-		FD_SET(com_fd,&m_RDfd);
-
-		if ( select(com_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
-			usleep(1000);
-		else
-		{
-			if ( !FD_ISSET(com_fd,&m_RDfd) )
-			{
-				usleep(1000);
-			}
-			else
-			{
-				memset(recv_buf,0,1024);
-				int num=read(com_fd,recv_buf,sizeof(recv_buf));  
-				if ( num == 0  )
-				{
-					std::cout<<"ServerInfo: client close"<<std::endl;
-					perror("ServerInfo: client bad:");
-					key = KEY_ESC; 
-				}
-				else
-					std::cout<<"ServerInfo:"<<recv_buf<<std::endl;
-			}
-		}
+		if ( process_communication(com_fd) ) key = KEY_ESC;
+		else key = WangV::GetPCKey();
 	}
 
-	close(com_fd);
 	close(listen_fd);
 	unlink(UNIX_DOMAIN);
 
