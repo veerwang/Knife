@@ -29,6 +29,8 @@
 #include <string.h>    
 #include <sys/un.h>
 
+#include "globalkey.h"
+
 #define UNIX_DOMAIN "/tmp/UNIX.domain"
 /* 
  * ===  FUNCTION  ======================================================================

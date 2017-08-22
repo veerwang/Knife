@@ -1,6 +1,12 @@
-all:
-	g++ -o server main_server.cpp
+all:	main_server.o globalkey.o
+	g++ -o server main_server.o globalkey.o
 	g++ -o client main_client.cpp
+
+main_server.o:	main_server.cpp
+	g++ -c main_server.cpp
+
+globalkey.o:	globalkey.c
+	g++ -c globalkey.c
 
 install:
 	mv server ./bin/
