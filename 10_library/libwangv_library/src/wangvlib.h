@@ -21,6 +21,12 @@
  */
 namespace WangV {
 const char* get_version();
+
+void LOG_INIT(const char *device);
+const char* LOG_SET_COLOR(int level, int is_end);
+void LOG_DESTORY();
+void LOG_LEVEL();
+void LOG_WRITER(int level, const char *file, const char * func, int line, const char *fmt, ...);
 }
 
 #endif /* MAIN_H */

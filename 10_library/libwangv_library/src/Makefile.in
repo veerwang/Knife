@@ -133,7 +133,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libwangv_la_LIBADD =
-am_libwangv_la_OBJECTS = wangvlib.lo
+am_libwangv_la_OBJECTS = wangvlib.lo displaylog.lo
 libwangv_la_OBJECTS = $(am_libwangv_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -345,7 +345,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libwangv.la
 include_HEADERS = wangvlib.h
-libwangv_la_SOURCES = wangvlib.cpp wangvlib.h
+libwangv_la_SOURCES = wangvlib.cpp displaylog.cpp wangvlib.h
 libwangv_la_LDFLAGS = -shared -fPIC
 all: all-am
 
@@ -425,6 +425,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/displaylog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wangvlib.Plo@am__quote@
 
 .cpp.o:

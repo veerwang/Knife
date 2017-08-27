@@ -18,11 +18,11 @@
  */
 
 #include "wangvlib.h"
-#include <cstdlib>
-#include <cstdio>
 
 namespace WangV {
-static const char PROJ_VERSION[] = {"V1.00"};
+static const char PROJ_VERSION[] = {"V1.01"};
+
+/* module function  */
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  get_version 
@@ -33,4 +33,6 @@ const char* get_version()
 {
 	return PROJ_VERSION;
 }
+
+
 }

@@ -32,5 +32,5 @@
 aclocal
 autoheader
 autoconf
-libtoolize --automake --copy --debug --force
+#libtoolize --automake --copy --debug --force
 automake --foreign --copy --add-missing
