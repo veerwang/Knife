@@ -20,8 +20,11 @@
  * =====================================================================================
  */
 namespace WangV {
+
+/*　模块信息功能  */
 const char* get_version();
 
+/* log日志功能 */
 void log_module_init(const char *device);
 void log_module_destroy();
 void log_module_level(int);
