@@ -60,7 +60,7 @@ static int  _20131025_log_level = 1;
 
 static void LOG_ADD(int level, const char *file, const char * func, int line, const char *msg);
 
-void LOG_INIT(const char *device)
+void log_module_init(const char *device)
 {
 	_20131025_log_device = !device ? stdout : fopen((const char *)device, "a+");
 }
@@ -82,12 +82,12 @@ const char* LOG_SET_COLOR(int level, int is_end)
 	return "";
 }
 
-void LOG_DESTORY()
+void log_module_destroy()
 {
 	if (_20131025_log_device != stdout) fclose(_20131025_log_device);
 }
 
-void LOG_LEVEL(int level)
+void log_module_level(int level)
 {
 	_20131025_log_level = level;
 }
@@ -114,7 +114,7 @@ static void LOG_ADD(int level, const char *file, const char * func, int line, co
     fprintf(_20131025_log_device, "%s%s[%d][%s(%s):%d] %c, %s%s\n",LOG_SET_COLOR(level, 0) , buf, (int)getpid(), file, func, line, c[cl], msg ,LOG_SET_COLOR(level, 1));
 }
 
-static void LOG_WRITER(int level, const char *file, const char * func, int line, const char *fmt, ...)
+void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...)
 { 
     va_list ap;
     char msg[LOG_MAX_MSG_LEN];
