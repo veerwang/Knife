@@ -97,6 +97,7 @@ main ( int argc, char *argv[] )
 	srv_addr.sun_family = AF_UNIX;
 	strncpy(srv_addr.sun_path,UNIX_DOMAIN,sizeof(srv_addr.sun_path)-1);  
 	//bind sockfd & addr  
+
 	unlink(UNIX_DOMAIN);  
 	ret = bind(listen_fd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));  
 	if ( ret == -1 )  

@@ -33,9 +33,6 @@
 main ( int argc, char *argv[] )
 {
 	std::cout<<WangV::get_version()<<std::endl;
-	WangV::log_module_init(NULL);
-	WangV::log_module_level(1<<4);
-	WangV::log_module_write((1<<4),__FILE__,__FUNCTION__,__LINE__,"debug %s","kevin");
-	WangV::log_module_destroy();
+	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
