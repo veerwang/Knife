@@ -55,18 +55,18 @@ static const char* FG_GREEN    	=	"\033[0;32m"  	;   /* 4 -> underline ; 32 -> g
 
 #define LOG_MAX_MSG_LEN 4098
 
-static FILE *_20131025_log_device = NULL;
-static int  _20131025_log_level = 1;
+static FILE *log_device_fp = NULL;
+static int  log_level = 1;
 
 static void LOG_ADD(int level, const char *file, const char * func, int line, const char *msg);
 
 void log_module_init(const char *device)
 {
-	_20131025_log_device = !device ? stdout : fopen((const char *)device, "a+");
+	log_device_fp = !device ? stdout : fopen((const char *)device, "a+");
 }
 const char* LOG_SET_COLOR(int level, int is_end)
 {
-	if (_20131025_log_device == stdout) {
+	if (log_device_fp == stdout) {
 		if (is_end) {
 			return RESET_COLOR;
 		} else {
@@ -84,12 +84,12 @@ const char* LOG_SET_COLOR(int level, int is_end)
 
 void log_module_destroy()
 {
-	if (_20131025_log_device != stdout) fclose(_20131025_log_device);
+	if (log_device_fp != stdout) fclose(_20131025_log_device);
 }
 
 void log_module_level(int level)
 {
-	_20131025_log_level = level;
+	log_level = level;
 }
 
 static void LOG_ADD(int level, const char *file, const char * func, int line, const char *msg)
@@ -100,7 +100,7 @@ static void LOG_ADD(int level, const char *file, const char * func, int line, co
     char buf[64];
     int cl = 0;
 
-    if ((level & ~_20131025_log_level) != 0 ) return;
+    if ((level & ~log_level) != 0 ) return;
 	//cl = floor(log(level)/log(2)) + 1;
 	switch (level) {
 		case LOG_INFO : cl = 0; break;
