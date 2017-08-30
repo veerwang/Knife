@@ -40,7 +40,7 @@ const char* get_version()
 void __attribute__ ((constructor)) init_module()
 {
 	WangV::log_module_init(NULL);
-	WangV::log_module_level(4);
+	WangV::log_module_level(WangV::LOG_DEBUG);
 	WangV::log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"init module %s","kevin");
 }
 

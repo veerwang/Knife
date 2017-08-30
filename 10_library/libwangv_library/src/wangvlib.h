@@ -22,11 +22,11 @@
 namespace WangV {
 const char* get_version();
 
-#define LOG_ALL		1
-#define LOG_ERROR	2
-#define LOG_WARN	3 
-#define LOG_DEBUG	4
-#define LOG_INFO	5
+const int LOG_ALL   = 1;
+const int LOG_ERROR = 2;
+const int LOG_WARN  = 3;
+const int LOG_DEBUG = 4;
+const int LOG_INFO  = 5;
 
 void log_module_init(const char *device);
 void log_module_destroy();
