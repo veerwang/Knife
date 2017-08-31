@@ -20,8 +20,11 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
+#include <unistd.h>
 
 #include <wangvlib.h> 
+
+#include <keymap.h>
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -34,5 +37,17 @@ main ( int argc, char *argv[] )
 {
 	std::cout<<WangV::get_version()<<std::endl;
 	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
+	WangV::InitKey();
+	char key = 0;
+	while ( key != KEY_ESC )
+	{
+		usleep(1000);
+
+		key = WangV::GetPCKey();
+	}
+
+
+
+	WangV::RestoreKey();
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
