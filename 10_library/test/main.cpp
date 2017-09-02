@@ -22,8 +22,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include <threadtemplate.h> 
 #include <wangvlib.h> 
-
 #include <keymap.h>
 
 /* 
@@ -46,7 +46,15 @@ main ( int argc, char *argv[] )
 		key = WangV::GetPCKey();
 	}
 
-
+	ThreadHost<>*  pbasethread; 
+	pbasethread = new ThreadHost<>();
+	pbasethread->Set_Interval_Second(2);
+	pbasethread->Start();
+	if ( pbasethread != NULL )	
+	{
+		pbasethread->Stop();
+		delete pbasethread;
+	}
 
 	WangV::RestoreKey();
 	return EXIT_SUCCESS;
