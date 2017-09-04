@@ -41,6 +41,13 @@ void InitKey();
 void RestoreKey();
 char GetPCKey();
 
+/* encrypt加密解密功能 */
+int rename_file(const char* src,const char* des);
+int copy_file(const char* src,const char* des);
+int unlink_file(const char* file);
+void encrypt_file(const char* src,const char* des);
+void decrypt_file(const char* src,const char* des);
+
 }
 
 #endif /* !defined(INCLUDED_WANGVLIB_H) */

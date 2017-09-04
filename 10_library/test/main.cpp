@@ -22,10 +22,19 @@
 #include <iostream>
 #include <unistd.h>
 
+#include <threadtemplate.h> 
 #include <wangvlib.h> 
-
 #include <keymap.h>
 
+template<typename T>
+class MyPolicy
+{
+	public:
+		void Run()
+		{
+			WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"pthread %s","kevin");
+		}
+};
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -39,6 +48,12 @@ main ( int argc, char *argv[] )
 	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 	WangV::InitKey();
 	char key = 0;
+
+	ThreadHost<MyPolicy>*  pbasethread; 
+	pbasethread = new ThreadHost<MyPolicy>();
+	pbasethread->Set_Interval_Second(1);
+	pbasethread->Start();
+
 	while ( key != KEY_ESC )
 	{
 		usleep(1000);
@@ -46,7 +61,11 @@ main ( int argc, char *argv[] )
 		key = WangV::GetPCKey();
 	}
 
-
+	if ( pbasethread != NULL )	
+	{
+		pbasethread->Stop();
+		delete pbasethread;
+	}
 
 	WangV::RestoreKey();
 	return EXIT_SUCCESS;
