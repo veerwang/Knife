@@ -42,12 +42,12 @@ void __attribute__ ((constructor)) init_module()
 {
 	WangV::log_module_init(NULL);
 	WangV::log_module_level(WangV::LOG_DEBUG);
-	WangV::log_module_write(WangV::LOG_DEBUG),__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
+	WangV::log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
 }
 
 void __attribute__ ((destructor)) release_module()
 {
-	WangV::log_module_write((WangV::LOG_DEBUG)),__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
+	WangV::log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
 	WangV::log_module_destroy();
 }
 

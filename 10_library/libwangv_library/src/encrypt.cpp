@@ -445,8 +445,8 @@ int is_encrypt_file(const char* filepath)
 	}
 
 	char* head = (char*) malloc(encrypt_head_length*sizeof(char)+1);
-	fread(head,encrypt_head_length,1,inputfile);
-	if ( strncmp(head,ENCRYPT_FILE_HEAD,encrypt_head_length) == 0 )
+	size_t result = fread(head,encrypt_head_length,1,inputfile);
+	if ( strncmp(head,ENCRYPT_FILE_HEAD,encrypt_head_length) == 0 || result == 0 )
 	{
 		free(head);
 		head = NULL;
