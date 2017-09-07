@@ -54,6 +54,9 @@ main ( int argc, char *argv[] )
 	pbasethread->Set_Interval_Second(1);
 	pbasethread->Start();
 
+	WangV::encrypt_file("test.dat","1.enc");
+	WangV::decrypt_file("1.enc","1.dec");
+
 	while ( key != KEY_ESC )
 	{
 		usleep(1000);

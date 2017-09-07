@@ -20,6 +20,7 @@
  */
 
 #include <standard.h>
+#include <wangvlib.h> 
 
 template<typename T>
 class DefaultPolicy
