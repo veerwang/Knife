@@ -23,9 +23,34 @@
 #include <unistd.h>
 
 #include <threadtemplate.h> 
+#include <singletontemplate.h> 
+
 #include <wangvlib.h> 
 #include <keymap.h>
 
+class deviceinput : public WangV::Singleton<deviceinput>
+{
+	public:
+		~deviceinput()
+		{
+			WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","destroy");
+		}
+
+		void version()
+		{
+			WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","v1.0.0");
+		}
+
+	private:
+		ENABLE_SINGLETON(deviceinput)
+};
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  MyPolicy 
+ *  Description:  自定义线程的执行函数 
+ * =====================================================================================
+ */
 template<typename T>
 class MyPolicy
 {
@@ -56,6 +81,9 @@ main ( int argc, char *argv[] )
 
 	WangV::encrypt_file("test.dat","1.enc");
 	WangV::decrypt_file("1.enc","1.dec");
+
+	deviceinput *di = deviceinput::Instance();
+	di->version();
 
 	while ( key != KEY_ESC )
 	{
