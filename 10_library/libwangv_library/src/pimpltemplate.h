@@ -7,6 +7,7 @@
  *       Filename:  pimpltemplate.h
  *
  *    Description:  来源loki开源库的实现 
+ *                  该类的实现是为了隐藏类成员的实现
  *
  *        Version:  1.0
  *        Created:  09/16/2017 04:49:12 PM
