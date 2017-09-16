@@ -24,9 +24,12 @@
 
 #include <threadtemplate.h> 
 #include <singletontemplate.h> 
+#include <pimpltemplate.h>
 
 #include <wangvlib.h> 
 #include <keymap.h>
+
+#include "base.h" 
 
 class deviceinput : public WangV::Singleton<deviceinput>
 {
@@ -84,6 +87,8 @@ main ( int argc, char *argv[] )
 
 	deviceinput *di = deviceinput::Instance();
 	di->version();
+
+	Base base;
 
 	while ( key != KEY_ESC )
 	{
