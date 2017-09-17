@@ -16,7 +16,6 @@
  *
  * =====================================================================================
  */
-
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
@@ -25,8 +24,9 @@
 #include <threadtemplate.h> 
 #include <singletontemplate.h> 
 #include <pimpltemplate.h>
+#include <functionstemplate.h>
 
-#include <wangvlib.h> 
+#include <wangvlib.h>
 #include <keymap.h>
 
 #include "base.h" 
@@ -88,19 +88,19 @@ main ( int argc, char *argv[] )
 	deviceinput *di = deviceinput::Instance();
 	di->version();
 
-	Base base;
+	Base* base = new Base;
+	WangV::deletep(base);
 
 	while ( key != KEY_ESC )
 	{
 		usleep(1000);
-
 		key = WangV::GetPCKey();
 	}
 
 	if ( pbasethread != NULL )	
 	{
 		pbasethread->Stop();
-		delete pbasethread;
+		WangV::deletep(pbasethread);
 	}
 
 	WangV::RestoreKey();
