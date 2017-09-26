@@ -24,7 +24,14 @@
 
 namespace WangV
 {
-
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  NumberToString 
+ *  Description:  将任意的数字转换成为字符串 
+ *        input:  数字
+ *       output:  std::string类型的字符串
+ * =====================================================================================
+ */
 template <typename T>
 std::string NumberToString ( T Number )
 {
@@ -33,6 +40,14 @@ std::string NumberToString ( T Number )
 	return ss.str();
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  StringToNumber 
+ *  Description:  将字符串转换成为相应的数字
+ *        input:  std::string类型的字符串
+ *       output:  对于的数字 
+ * =====================================================================================
+ */
 template <typename T>
 std::string StringToNumber ( const std::string &Text )
 {
@@ -41,6 +56,13 @@ std::string StringToNumber ( const std::string &Text )
 	return ss >> result ? result : 0; 
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  deletep 
+ *  Description:  结构相应的类型指针 
+ *        input:  需要进行解构的类型指针 
+ * =====================================================================================
+ */
 template <typename T>
 inline void deletep(T *p)
 {

@@ -72,6 +72,7 @@ class MyPolicy
 	int
 main ( int argc, char *argv[] )
 {
+	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;
 	std::cout<<WangV::get_version()<<std::endl;
 	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 	WangV::InitKey();
