@@ -88,4 +88,8 @@ public:
 	virtual ~Handle(){ std::cout<<"Handle destroy"<<std::endl; }
 };
 
+/* ----------------------------------------------------------  */
+
+
+
 #endif /* !defined(INCLUDED_HEAD_H) */
