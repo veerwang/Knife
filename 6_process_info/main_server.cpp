@@ -37,7 +37,7 @@ template< typename T >
 class DoProcess 
 {
 public:
-	int coreprocess(int num,char *buf) 
+	int coreprocess(char *buf) 
 	{
 		std::cout<<"ServerInfo:"<<buf<<std::endl;
 		return 0;
@@ -49,7 +49,7 @@ main ( int argc, char *argv[] )
 {
 	std::cout<<"server starting ..... V1.0.0"<<std::endl;
 
-	ProcessCommunication<DoProcess> pc;
+	ProcessCommunicationServer<DoProcess> pc;
 	if ( pc.init() )
 		std::cout<<"server init OK"<<std::endl;
 

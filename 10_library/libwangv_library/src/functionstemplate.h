@@ -73,5 +73,7 @@ inline void deletep(T *p)
 	}
 }
 
+
+
 }
 #endif /* !defined(INCLUDED_FUNCTIONS_HPP) */

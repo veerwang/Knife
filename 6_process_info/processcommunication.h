@@ -28,37 +28,53 @@
 #include <string.h>    
 #include <sys/un.h>
 
+/* 
+ *	定义一个常量
+ */
+template <typename T>
+struct ConstValue
+{
+	static const char* UNIX_DOMAIN;
+};
+template <typename T>
+const char* ConstValue<T>::UNIX_DOMAIN = "/tmp/UNIX.domain";
+
+/* ----- 服务端 ------ */
+
+/* 
+ * 	默认处理函数	
+ */
 template< typename T >
-class DefaultProcess 
+class DefaultServerProcess 
 {
 public:
-	int coreprocess(int num,char* buf) { return 0; }
+	int coreprocess(char* buf) { return 0; }
 };
 
-template< template<typename T> class Process = DefaultProcess >
-class ProcessCommunication : public Process<class T>
+template< template<typename T> class Process = DefaultServerProcess >
+class ProcessCommunicationServer : public Process<class T>
 {
 public:
-	ProcessCommunication() { init_flag = false; accept_flag = false; }
-	~ProcessCommunication() {;}
+	ProcessCommunicationServer() { init_flag = false; accept_flag = false; }
+	virtual ~ProcessCommunicationServer() {;}
 
 public:
 	bool init()
 	{
 		srv_addr.sun_family = AF_UNIX;
-		strncpy(srv_addr.sun_path,UNIX_DOMAIN,sizeof(srv_addr.sun_path)-1);  
+		strncpy(srv_addr.sun_path,ConstValue<T>::UNIX_DOMAIN,sizeof(srv_addr.sun_path)-1);  
 		listen_fd = socket(PF_UNIX, SOCK_STREAM, 0); 
 		if ( listen_fd  < 0 )
 		{
 			std::cout<<"server sock create fail"<<std::endl;
 		}
-		unlink(UNIX_DOMAIN);
+		unlink(ConstValue<T>::UNIX_DOMAIN);
 		int ret = bind(listen_fd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));
 		if ( ret == -1 )
 		{
 			perror("cannot bind server socket");
 			close(listen_fd);
-			unlink(UNIX_DOMAIN);
+			unlink(ConstValue<T>::UNIX_DOMAIN);
 			return false;
 		}
 
@@ -68,9 +84,12 @@ public:
 		{  
 			perror("cannot listen the client connect request");  
 			close(listen_fd);  
-			unlink(UNIX_DOMAIN);  
+			unlink(ConstValue<T>::UNIX_DOMAIN);  
 			return false;  
 		}
+
+		m_tv.tv_sec  = 0;
+		m_tv.tv_usec = 1;
 
 		init_flag = true;
 		return true;
@@ -80,7 +99,7 @@ public:
 	{
 		if ( init_flag == false ) return;
 		close(listen_fd);
-		unlink(UNIX_DOMAIN);
+		unlink(ConstValue<T>::UNIX_DOMAIN);
 	}
 
 	void doprocess()
@@ -89,19 +108,16 @@ public:
 		{
 			if ( !com_fd ) return ;
 			static char recv_buf[1024];
-			struct timeval m_tv;
-			m_tv.tv_sec  = 0;
-			m_tv.tv_usec = 1;
-			fd_set	m_RDfd;
+			fd_set	mRDfd;
 
-			FD_ZERO(&m_RDfd);
-			FD_SET(com_fd,&m_RDfd);
+			FD_ZERO(&mRDfd);
+			FD_SET(com_fd,&mRDfd);
 
-			if ( select(com_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
+			if ( select(com_fd+1,&mRDfd,NULL,NULL,&m_tv) <= 0 )
 				usleep(1000);
 			else
 			{
-				if ( !FD_ISSET(com_fd,&m_RDfd) )
+				if ( !FD_ISSET(com_fd,&mRDfd) )
 					usleep(1000);
 				else
 				{
@@ -110,30 +126,31 @@ public:
 					if ( num == 0 )
 					{
 						std::cout<<"ServerInfo: client close"<<std::endl;
+						close(com_fd);
+					}
+					else if ( num == -1 )
+					{
 						perror("ServerInfo: client bad:");
 						close(com_fd);
 					}
 					else
 					{
-						this->coreprocess(num,recv_buf);
+						this->coreprocess(recv_buf);
 					}
 				}
 			}
 		}
 		else
 		{
-			struct timeval m_tv;
-			m_tv.tv_sec  = 0;
-			m_tv.tv_usec = 1;
-			fd_set	m_RDfd;
-			FD_ZERO(&m_RDfd);
-			FD_SET(listen_fd,&m_RDfd);
+			fd_set	mRDfd;
+			FD_ZERO(&mRDfd);
+			FD_SET(listen_fd,&mRDfd);
 
-			if ( select(listen_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
+			if ( select(listen_fd+1,&mRDfd,NULL,NULL,&m_tv) <= 0 )
 				usleep(1000);
 			else
 			{
-				if ( !FD_ISSET(listen_fd,&m_RDfd) )
+				if ( !FD_ISSET(listen_fd,&mRDfd) )
 					usleep(1000);
 				else
 				{
@@ -143,7 +160,7 @@ public:
 					{  
 						perror("cannot accept client connect request");  
 						close(listen_fd);  
-						unlink(UNIX_DOMAIN);  
+						unlink(ConstValue<T>::UNIX_DOMAIN);  
 						accept_flag = false;
 						init_flag = false;
 					}
@@ -154,18 +171,15 @@ public:
 	}
 
 private:
-	int listen_fd;
-	int com_fd;  
-	struct sockaddr_un srv_addr;  
-	struct sockaddr_un clt_addr;  
-    	socklen_t clt_addr_len;  
-	static const char* UNIX_DOMAIN;
-	bool init_flag;
-	bool accept_flag;
+	int 		listen_fd;
+	int 		com_fd;  
+	struct 		sockaddr_un srv_addr;  
+	struct 		sockaddr_un clt_addr;  
+    	socklen_t 	clt_addr_len;  
+	bool 		init_flag;
+	bool 		accept_flag;
+	struct timeval 	m_tv;
 };
-
-template< template<typename T> class Process >
-const char* ProcessCommunication<Process>::UNIX_DOMAIN = "/tmp/UNIX.domain";
 
 /* ----- 客户端 ------ */
 
@@ -175,7 +189,6 @@ class DefaultClientProcess
 public:
 	int connect_fd;  
 	int coreprocess(int num,char* buf) { write(connect_fd,buf,num); return 0; }
-			
 };
 
 template< template<typename T> class Process = DefaultClientProcess >
@@ -183,7 +196,7 @@ class ProcessCommunicationClient : public Process<class T>
 {
 public:
 	ProcessCommunicationClient(){ init_flag = false; connect_flag = false; }
-	~ProcessCommunicationClient(){;}
+	virtual ~ProcessCommunicationClient(){;}
 public:
 	bool init()
 	{
@@ -194,7 +207,7 @@ public:
 			return false;  
 		}     
 		srv_addr.sun_family=AF_UNIX;  
-		strcpy(srv_addr.sun_path,UNIX_DOMAIN);  
+		strcpy(srv_addr.sun_path,ConstValue<T>::UNIX_DOMAIN);  
 		init_flag = true;
 		return true;
 	}
@@ -225,14 +238,10 @@ public:
 		connect_flag = false;
 	}
 private:
-	int ret;  
-	struct sockaddr_un srv_addr;  
-	static const char* UNIX_DOMAIN;
-	bool init_flag;
-	bool connect_flag;
+	int 	ret;  
+	struct 	sockaddr_un srv_addr;  
+	bool 	init_flag;
+	bool 	connect_flag;
 };
-
-template< template<typename T> class Process >
-const char* ProcessCommunicationClient<Process>::UNIX_DOMAIN = "/tmp/UNIX.domain";
 
 #endif /* !defined(INCLUDED_PROCESSCOMMUNICATION_H) */
