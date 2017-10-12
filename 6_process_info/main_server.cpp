@@ -37,41 +37,9 @@ template< typename T >
 class DoProcess 
 {
 public:
-	int times;
-	int process(int com_fd) 
+	int coreprocess(int num,char *buf) 
 	{
-		times ++;
-		if ( !com_fd ) return 0;
-		static char recv_buf[1024];
-		struct timeval m_tv;
-		m_tv.tv_sec  = 0;
-		m_tv.tv_usec = 1;
-		fd_set	m_RDfd;
-
-		FD_ZERO(&m_RDfd);
-		FD_SET(com_fd,&m_RDfd);
-
-		if ( select(com_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
-			usleep(1000);
-		else
-		{
-			if ( !FD_ISSET(com_fd,&m_RDfd) )
-				usleep(1000);
-			else
-			{
-				memset(recv_buf,0,1024);
-				int num=read(com_fd,recv_buf,sizeof(recv_buf));  
-				if ( num == 0 )
-				{
-					std::cout<<"ServerInfo: client close"<<std::endl;
-					perror("ServerInfo: client bad:");
-					close(com_fd);
-					return 1; 
-				}
-				else
-					std::cout<<"ServerInfo:"<<recv_buf<<std::endl;
-			}
-		}
+		std::cout<<"ServerInfo:"<<buf<<std::endl;
 		return 0;
 	}
 };
