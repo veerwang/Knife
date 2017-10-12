@@ -39,7 +39,7 @@ template< template<typename T> class Process = DefaultProcess >
 class ProcessCommunication : public Process<class T>
 {
 public:
-	ProcessCommunication() { init_flag = false;}
+	ProcessCommunication() { init_flag = false; accept_flag = false; }
 	~ProcessCommunication() {;}
 
 public:
@@ -83,23 +83,41 @@ public:
 		unlink(UNIX_DOMAIN);
 	}
 
-	bool oneaccept()
-	{
-		clt_addr_len = sizeof(clt_addr);
-		com_fd=accept(listen_fd,(struct sockaddr*)&clt_addr,&clt_addr_len);
-		if( com_fd < 0 )
-		{  
-			perror("cannot accept client connect request");  
-			close(listen_fd);  
-			unlink(UNIX_DOMAIN);  
-			return false;
-		}
-		return true;
-	}
-
 	void doprocess()
 	{
-		this->process(com_fd);
+		if ( accept_flag )
+			this->process(com_fd);
+		else
+		{
+			struct timeval m_tv;
+			m_tv.tv_sec  = 0;
+			m_tv.tv_usec = 1;
+			fd_set	m_RDfd;
+			FD_ZERO(&m_RDfd);
+			FD_SET(listen_fd,&m_RDfd);
+
+			if ( select(listen_fd+1,&m_RDfd,NULL,NULL,&m_tv) <= 0 )
+				usleep(1000);
+			else
+			{
+				if ( !FD_ISSET(listen_fd,&m_RDfd) )
+					usleep(1000);
+				else
+				{
+					clt_addr_len = sizeof(clt_addr);
+					com_fd=accept(listen_fd,(struct sockaddr*)&clt_addr,&clt_addr_len);
+					if( com_fd < 0 )
+					{  
+						perror("cannot accept client connect request");  
+						close(listen_fd);  
+						unlink(UNIX_DOMAIN);  
+						accept_flag = false;
+						init_flag = false;
+					}
+					accept_flag = true;
+				}
+			}
+		}
 	}
 
 private:
@@ -110,6 +128,7 @@ private:
     	socklen_t clt_addr_len;  
 	static const char* UNIX_DOMAIN;
 	bool init_flag;
+	bool accept_flag;
 };
 
 template< template<typename T> class Process >

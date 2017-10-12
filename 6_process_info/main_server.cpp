@@ -85,9 +85,6 @@ main ( int argc, char *argv[] )
 	if ( pc.init() )
 		std::cout<<"server init OK"<<std::endl;
 
-	if ( pc.oneaccept() )
-		std::cout<<"server accept OK"<<std::endl;
-
 	char key = 0;
 	WangV::InitKey();
 
