@@ -99,7 +99,7 @@ public:
 
 	void doprocess()
 	{
-		this->process(listen_fd);
+		this->process(com_fd);
 	}
 
 private:

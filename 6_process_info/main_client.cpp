@@ -74,6 +74,7 @@ main ( int argc, char *argv[] )
 		{
 			case KEY_BOTTOM1:
 			{
+				std::cout<<"KEY BOTTOM 1 push"<<std::endl;
 				memset(snd_buf,0,1024);  
 				strcpy(snd_buf,"message from client: key 1");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  
@@ -81,6 +82,7 @@ main ( int argc, char *argv[] )
 			break;
 			case KEY_BOTTOM2:
 			{
+				std::cout<<"KEY BOTTOM 2 push"<<std::endl;
 				memset(snd_buf,0,1024);  
 				strcpy(snd_buf,"message from client: key 2");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  
@@ -88,6 +90,7 @@ main ( int argc, char *argv[] )
 			break;
 			case KEY_BOTTOM3:
 			{
+				std::cout<<"KEY BOTTOM 3 push"<<std::endl;
 				memset(snd_buf,0,1024);  
 				strcpy(snd_buf,"message from client: key 3");  
 				write(connect_fd,snd_buf,sizeof(snd_buf));  

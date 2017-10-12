@@ -37,10 +37,12 @@ template< typename T >
 class DoProcess 
 {
 public:
+	int times;
 	int process(int com_fd) 
 	{
+		times ++;
 		if ( !com_fd ) return 0;
-		static char recv_buf[1024];   
+		static char recv_buf[1024];
 		struct timeval m_tv;
 		m_tv.tv_sec  = 0;
 		m_tv.tv_usec = 1;
@@ -80,8 +82,11 @@ main ( int argc, char *argv[] )
 	std::cout<<"server starting ..... V1.0.0"<<std::endl;
 
 	ProcessCommunication<DoProcess> pc;
-	pc.init();
-	pc.oneaccept();
+	if ( pc.init() )
+		std::cout<<"server init OK"<<std::endl;
+
+	if ( pc.oneaccept() )
+		std::cout<<"server accept OK"<<std::endl;
 
 	char key = 0;
 	WangV::InitKey();
