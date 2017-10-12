@@ -167,4 +167,72 @@ private:
 template< template<typename T> class Process >
 const char* ProcessCommunication<Process>::UNIX_DOMAIN = "/tmp/UNIX.domain";
 
+/* ----- 客户端 ------ */
+
+template< typename T >
+class DefaultClientProcess 
+{
+public:
+	int connect_fd;  
+	int coreprocess(int num,char* buf) { write(connect_fd,buf,num); return 0; }
+			
+};
+
+template< template<typename T> class Process = DefaultClientProcess >
+class ProcessCommunicationClient : public Process<class T>
+{
+public:
+	ProcessCommunicationClient(){ init_flag = false; connect_flag = false; }
+	~ProcessCommunicationClient(){;}
+public:
+	bool init()
+	{
+		this->connect_fd=socket(PF_UNIX,SOCK_STREAM,0);  
+		if(this->connect_fd<0)  
+		{  
+			perror("cannot create communication socket");  
+			return false;  
+		}     
+		srv_addr.sun_family=AF_UNIX;  
+		strcpy(srv_addr.sun_path,UNIX_DOMAIN);  
+		init_flag = true;
+		return true;
+	}
+
+	void connect_server()
+	{
+		int ret = connect(this->connect_fd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));  
+		if( ret == -1 )  
+		{
+			perror("cannot connect to the server");  
+			close(this->connect_fd);  
+			return;
+		}
+		connect_flag = true;  
+	}
+
+	void doprocess(char* buf)
+	{
+		if ( init_flag == false || connect_flag == false ) return;
+		this->coreprocess(strlen(buf),buf);
+	}
+
+	void release()
+	{
+		if ( init_flag == false ) return;
+		close(this->connect_fd);  
+		init_flag    = false;
+		connect_flag = false;
+	}
+private:
+	int ret;  
+	struct sockaddr_un srv_addr;  
+	static const char* UNIX_DOMAIN;
+	bool init_flag;
+	bool connect_flag;
+};
+
+template< template<typename T> class Process >
+const char* ProcessCommunicationClient<Process>::UNIX_DOMAIN = "/tmp/UNIX.domain";
+
 #endif /* !defined(INCLUDED_PROCESSCOMMUNICATION_H) */

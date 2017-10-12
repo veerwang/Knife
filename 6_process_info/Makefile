@@ -5,7 +5,7 @@ all:	main_server.o globalkey.o main_client.o
 main_server.o:	main_server.cpp processcommunication.h
 	g++ -c main_server.cpp
 
-main_client.o:	main_client.cpp
+main_client.o:	main_client.cpp processcommunication.h
 	g++ -c main_client.cpp
 
 globalkey.o:	globalkey.c
