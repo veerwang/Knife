@@ -16,6 +16,7 @@
  *
  * =====================================================================================
  */
+
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
@@ -25,6 +26,7 @@
 #include <singletontemplate.h> 
 #include <pimpltemplate.h>
 #include <functionstemplate.h>
+#include <processcommunication.h>
 
 #include <wangvlib.h>
 #include <keymap.h>
@@ -63,6 +65,18 @@ class MyPolicy
 			WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"pthread %s","kevin");
 		}
 };
+
+template< typename T >
+class DoProcess 
+{
+public:
+	int coreprocess(char *buf) 
+	{
+		std::cout<<"ServerInfo:"<<buf<<std::endl;
+		return 0;
+	}
+};
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -78,8 +92,8 @@ main ( int argc, char *argv[] )
 	WangV::InitKey();
 	char key = 0;
 
-	ThreadHost<MyPolicy>*  pbasethread; 
-	pbasethread = new ThreadHost<MyPolicy>();
+	WangV::ThreadHost<MyPolicy>*  pbasethread; 
+	pbasethread = new WangV::ThreadHost<MyPolicy>();
 	pbasethread->Set_Interval_Second(1);
 	pbasethread->Start();
 
@@ -92,10 +106,15 @@ main ( int argc, char *argv[] )
 	Base* base = new Base;
 	WangV::deletep(base);
 
+	WangV::ProcessCommunicationServer<DoProcess> pc;
+	if ( pc.init() )
+		std::cout<<"server init OK"<<std::endl;
+
 	while ( key != KEY_ESC )
 	{
 		usleep(1000);
 		key = WangV::GetPCKey();
+		pc.doprocess();
 	}
 
 	if ( pbasethread != NULL )	
@@ -105,5 +124,6 @@ main ( int argc, char *argv[] )
 	}
 
 	WangV::RestoreKey();
+	pc.release();
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */

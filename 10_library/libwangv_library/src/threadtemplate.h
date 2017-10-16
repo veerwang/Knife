@@ -22,6 +22,8 @@
 #include <standard.h>
 #include <wangvlib.h> 
 
+namespace WangV
+{
 template<typename T>
 class DefaultPolicy
 {
@@ -118,5 +120,6 @@ class ThreadHost : public baseclass<class T>
 		friend struct PImple;
 		std::unique_ptr<struct PImple> m_Imple;
 };
+}
 
 #endif /* !defined(INCLUDED_THREADBASE_HPP) */
