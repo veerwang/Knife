@@ -27,7 +27,14 @@ class Device
 {
 public:
 	Device(){ std::cout<<"Device create"<<std::endl; }
-	~Device(){ std::cout<<"Device destroy"<<std::endl; }
+	virtual ~Device(){ std::cout<<"Device destroy"<<std::endl; }
+};
+
+class Pig
+{
+public:
+	Pig(){ std::cout<<"Pig create"<<std::endl; }
+	virtual ~Pig(){ std::cout<<"Pig destroy"<<std::endl; }
 };
 
 /* 
@@ -50,6 +57,8 @@ main ( int argc, char *argv[] )
 	gun.Trigger();
 	
 	Handle<Device> hd;
+
+	SubHandle<Pig> sh;
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */

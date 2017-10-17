@@ -90,6 +90,13 @@ public:
 
 /* ----------------------------------------------------------  */
 
-
+/* CRTP */
+template < typename T >
+class SubHandle : public T
+{
+public:
+	SubHandle() { std::cout<<"SubHandle create"<<std::endl; }
+	virtual ~SubHandle() { std::cout<<"SubHandle create"<<std::endl; }
+};
 
 #endif /* !defined(INCLUDED_HEAD_H) */
