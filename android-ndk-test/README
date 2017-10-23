@@ -1,4 +1,13 @@
 本目录用于保存android开发中的ndk相关的实验代码
 
-
 ---------------------------------------------------------------
+编译过程
+0.目录结构
+	test
+	     jni
+	          Android.mk
+		  Applications.mk
+		  main.cpp
+1.cd test
+2.export NDK_PROJECT_PATH=`pwd`
+3./home/kevin/android-ndk-r14b/build/ndk-build  进行编译，这个是ndk的路径
