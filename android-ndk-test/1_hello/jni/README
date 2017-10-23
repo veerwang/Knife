@@ -1,0 +1,5 @@
+设置当前的生成路径
+export NDK_PROJECT_PATH=`pwd`
+
+ndk的路径
+/home/kevin/android-ndk-r14b/build/ndk-build
