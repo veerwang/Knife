@@ -101,6 +101,7 @@ public:
 
 /* ----------------------------------------------------------  */
 
+template <typename T>
 class DefaultBase						// 注意类定义与实现是可以在h文件中的
 {
 public:
@@ -108,8 +109,8 @@ public:
 	~DefaultBase(){;}
 };
 
-template < template <typename T> class BaseClass >  		// 注意T是可以省略的
-class HostClass : public BaseClass<DefaultBase>
+template < template <typename> class BaseClass = DefaultBase >	// 注意T是可以省略的
+class HostClass : public BaseClass<class T>			// 注意这里只能用class 而不能用typename
 {
 public:
 	HostClass(){;}
