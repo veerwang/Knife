@@ -99,4 +99,21 @@ public:
 	virtual ~SubHandle() { std::cout<<"SubHandle create"<<std::endl; }
 };
 
+/* ----------------------------------------------------------  */
+
+class DefaultBase						// 注意类定义与实现是可以在h文件中的
+{
+public:
+	DefaultBase(){;}
+	~DefaultBase(){;}
+};
+
+template < template <typename T> class BaseClass >  		// 注意T是可以省略的
+class HostClass : public BaseClass<DefaultBase>
+{
+public:
+	HostClass(){;}
+	~HostClass(){;}
+};
+
 #endif /* !defined(INCLUDED_HEAD_H) */

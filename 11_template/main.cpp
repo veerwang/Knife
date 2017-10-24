@@ -60,5 +60,7 @@ main ( int argc, char *argv[] )
 
 	SubHandle<Pig> sh;
 
+	HostClass<Base> hc;
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
