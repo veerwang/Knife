@@ -24,7 +24,30 @@ template <int T>
 struct enum2value
 {
 	enum { value = T };
+};
 
+// =====================================================================================
+
+template <int T>
+class Dispatch
+{
+private:
+	void DoDispatch(enum2value<true> v)
+	{
+		std::cout<<"true Dispatch"<<std::endl;
+	}
+	void DoDispatch(enum2value<false> v)
+	{
+		std::cout<<"false Dispatch"<<std::endl;
+	}
+public:
+	Dispatch() {;}
+	~Dispatch() {;}
+	void DoDispatch()
+	{
+		enum2value<T> v;
+		DoDispatch(v);
+	}
 };
 
 #endif /* !defined(INCLUDED_HEAD_H) */

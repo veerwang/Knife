@@ -17,7 +17,6 @@
  * =====================================================================================
  */
 
-
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
@@ -35,5 +34,9 @@ main ( int argc, char *argv[] )
 {
 	enum2value<true> ev;
 	std::cout<<ev.value<<std::endl;
+
+	Dispatch<false> a;
+	a.DoDispatch();
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
