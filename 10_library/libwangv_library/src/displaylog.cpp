@@ -32,7 +32,7 @@ static const char* FG_YELLOW 		=       "\033[0;33m"  	;   /* 0 -> normal ; 33 ->
 static const char* FG_YELLOW_BOLD	=	"\033[1;33m"	;
 static const char* FG_BLUE     		=	"\033[0;34m"  	;   /* 9 -> strike ; 34 -> blue */
 static const char* FG_BLUE_BOLD    	=	"\033[1;34m"	;
-static const char* FG_CYAN     		=	"\033[0;36m"    ;/* 0 -> normal ; 36 -> cyan */
+static const char* FG_CYAN     		=	"\033[0;36m"    ;   /* 0 -> normal ; 36 -> cyan */
 static const char* FG_CYAN_BOLD		=	"\033[0;36m"	;
 static const char* FG_DEFAULT  		=	"\033[39m"	;
 static const char* BG_RED      		=	"\033[41m"	;
@@ -41,11 +41,11 @@ static const char* BG_BLUE     		=	"\033[44m"	;
 static const char* BG_DEFAULT  		= 	"\033[49m"	;
 static const char* RESET_COLOR    	=	"\033[0m" 	;/* to flush the previous property */
 
-static const int LOG_ALL 		= 5;
-static const int LOG_ERROR		= 4;
-static const int LOG_WARN		= 3; 
-static const int LOG_DEBUG		= 2;
-static const int LOG_INFO		= 1;
+static const int LOG_ALL 		= 	1		;
+static const int LOG_ERROR		= 	2		;
+static const int LOG_WARN		= 	3		;
+static const int LOG_DEBUG		= 	4		;
+static const int LOG_INFO		= 	5		;
 
 #define INFO(f...)  do { LOG_WRITER(LOG_INFO, __FILE__, __FUNCTION__, __LINE__, f); } while (0)
 #define WARN(f...)  do { LOG_WRITER(LOG_WARN, __FILE__, __FUNCTION__, __LINE__, f); } while (0)
