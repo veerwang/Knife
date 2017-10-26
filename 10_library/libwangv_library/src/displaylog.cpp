@@ -41,11 +41,11 @@ static const char* BG_BLUE     		=	"\033[44m"	;
 static const char* BG_DEFAULT  		= 	"\033[49m"	;
 static const char* RESET_COLOR    	=	"\033[0m" 	;/* to flush the previous property */
 
-static const int LOG_ALL 		= 1;
-static const int LOG_ERROR		= 2;
+static const int LOG_ALL 		= 5;
+static const int LOG_ERROR		= 4;
 static const int LOG_WARN		= 3; 
-static const int LOG_DEBUG		= 4;
-static const int LOG_INFO		= 5;
+static const int LOG_DEBUG		= 2;
+static const int LOG_INFO		= 1;
 
 #define INFO(f...)  do { LOG_WRITER(LOG_INFO, __FILE__, __FUNCTION__, __LINE__, f); } while (0)
 #define WARN(f...)  do { LOG_WRITER(LOG_WARN, __FILE__, __FUNCTION__, __LINE__, f); } while (0)
@@ -74,8 +74,8 @@ const char* LOG_SET_COLOR(int level, int is_end)
 				case LOG_INFO : return FG_DEFAULT; break;
 				case LOG_WARN : return FG_YELLOW; break;
 				case LOG_ERROR : return FG_RED; break;
-				case LOG_DEBUG : return FG_CYAN; break;
-				default : return FG_BLUE_BOLD; break;
+				case LOG_DEBUG : return FG_BLUE; break;
+				default : return FG_WHITE; break;
 			}
 		}
 	}
@@ -103,11 +103,11 @@ static void LOG_ADD(int level, const char *file, const char * func, int line, co
 	if ( level < log_level ) return;	
 	//cl = floor(log(level)/log(2)) + 1;
 	switch (level) {
-		case LOG_INFO : cl = 0; break;
-		case LOG_WARN : cl = 1; break;
+		case LOG_INFO : cl = 4; break;
+		case LOG_WARN : cl = 3; break;
 		case LOG_ERROR : cl = 2; break;
-		case LOG_DEBUG : cl = 3; break;
-		default : cl = 4; break;
+		case LOG_DEBUG : cl = 1; break;
+		default : cl = 0; break;
 	}	
 
 	strftime( buf, sizeof(buf), datetime_format, localtime(&meow) );

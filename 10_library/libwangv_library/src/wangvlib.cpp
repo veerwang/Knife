@@ -24,7 +24,7 @@
 
 namespace WangV {
 
-static const char PROJ_VERSION[] = {"V1.01"};
+static const char PROJ_VERSION[] = {"V1.02"};
 
 /* module function  */
 /* 
