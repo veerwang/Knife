@@ -21,22 +21,22 @@
  */
 
 template <int T>
-struct enum2value
+struct int2value
 {
 	enum { value = T };
 };
 
 // =====================================================================================
-
+// 关键是用Ｔ的数值进行不用函数的特化
 template <int T>
 class Dispatch
 {
 private:
-	void DoDispatch(enum2value<true> v)
+	void DoDispatch(int2value<true>)		// 注意此处的用法，是个特化的类型
 	{
 		std::cout<<"true Dispatch"<<std::endl;
 	}
-	void DoDispatch(enum2value<false> v)
+	void DoDispatch(int2value<false>)
 	{
 		std::cout<<"false Dispatch"<<std::endl;
 	}
@@ -45,8 +45,7 @@ public:
 	~Dispatch() {;}
 	void DoDispatch()
 	{
-		enum2value<T> v;
-		DoDispatch(v);
+		DoDispatch(int2value<T>());		// 注意此处的用法,类型后面加上圆括号
 	}
 };
 

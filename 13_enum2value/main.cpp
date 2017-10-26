@@ -32,7 +32,7 @@
 	int
 main ( int argc, char *argv[] )
 {
-	enum2value<true> ev;
+	int2value<true> ev;
 	std::cout<<ev.value<<std::endl;
 
 	Dispatch<false> a;
