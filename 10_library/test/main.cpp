@@ -17,10 +17,7 @@
  * =====================================================================================
  */
 
-#include <cstdlib>
-#include <cstdio>
-#include <iostream>
-#include <unistd.h>
+#include <standard.h>
 
 #include <threadtemplate.h> 
 #include <singletontemplate.h> 
@@ -72,7 +69,7 @@ class DoProcess
 public:
 	int coreprocess(char *buf) 
 	{
-		std::cout<<"ServerInfo:"<<buf<<std::endl;
+		WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Info %s",buf);
 		return 0;
 	}
 };
@@ -86,7 +83,7 @@ public:
 	int
 main ( int argc, char *argv[] )
 {
-	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;
+	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;		// 注意这个函数
 	std::cout<<WangV::get_version()<<std::endl;
 	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 	WangV::InitKey();
@@ -108,7 +105,7 @@ main ( int argc, char *argv[] )
 
 	WangV::ProcessCommunicationServer<DoProcess> pc;
 	if ( pc.init() )
-		std::cout<<"server init OK"<<std::endl;
+		WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
 
 	while ( key != KEY_ESC )
 	{
