@@ -1,2 +1,5 @@
 该目录用于实验shellcode的实验过程，之不过是在32位的机器上进行的。主要目的是建立shellcode的攻击过程。
 
+手工编译asm文件
+nasm -f elf tpoc.s
+ld -o play tpoc.o
