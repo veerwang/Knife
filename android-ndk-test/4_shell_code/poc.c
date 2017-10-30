@@ -5,8 +5,10 @@
 /*
  * 用于32的x86系统 
  * 
- * /
-
+ * 
+ * 
+ *
+ */
 int main (int argc,char** argv)
 {
 	/* 注意这里的shellcode是指机器码 */
@@ -22,7 +24,11 @@ int main (int argc,char** argv)
 		             "\xb0\x0b" 
 		             "\xcd\x80" 
 				};
-	void (*fp)(void);
+/* 	void (*fp)(void);
 	fp = (void *)shellcode;
-	fp();
+	fp(); */
+
+	(*(void (*)())shellcode)();  // 两种表达方式都可以
+
+	return 0;
 }
