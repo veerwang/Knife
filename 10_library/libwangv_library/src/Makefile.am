@@ -5,3 +5,4 @@ libwangv_la_SOURCES = wangvlib.cpp displaylog.cpp globlekey.cpp encrypt.cpp \
 		      functionstemplate.h \
                       standard.h
 libwangv_la_LDFLAGS = -shared -fPI
+libwangv_la_CPPFLAGS = -std=c++11
