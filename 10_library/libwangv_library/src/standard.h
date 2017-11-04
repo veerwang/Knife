@@ -75,5 +75,6 @@
 #include 	<pwd.h> 
 #include 	<functional>
 #include 	<sys/un.h> 
+#include 	<stdarg.h>
 
 #endif

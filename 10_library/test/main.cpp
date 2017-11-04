@@ -95,13 +95,15 @@ main ( int argc, char *argv[] )
 	pbasethread->Set_Interval_Second(1);
 	pbasethread->Start();
 
-	LogcatDisplay<int> logcat;
-
 	WangV::encrypt_file("test.dat","1.enc");
 	WangV::decrypt_file("1.enc","1.dec");
 
 	deviceinput *di = deviceinput::Instance();
 	di->version();
+
+	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+	logcat->log_module_init(NULL);
+	logcat->log_module_destroy();
 
 	Base* base = new Base;
 	WangV::deletep(base);

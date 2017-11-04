@@ -52,15 +52,14 @@ static const int LOG_INFO		= 	5		;
 */
 
 template <typename T>
-class LogcatDisplay 
+class LogcatDisplay : public WangV::Singleton<LogcatDisplay<T> >
 {
 public:
-	LogcatDisplay() 
+	LogcatDisplay() : log_device_fp(NULL), log_level(5) , m_msg(NULL);
 	{ 
-		log_device_fp = NULL; 
-		log_level = 5; 
+		m_msg = new char[LOG_MAX_MSG_LEN];
 	}
-	~LogcatDisplay() {;}
+	~LogcatDisplay() { deletearray(m_msg);}
 
 	void log_module_init(const char *device)
 	{
@@ -98,8 +97,6 @@ public:
 		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , buf, (int)getpid(), file, func, line, c[cl], msg ,log_set_color(level, 1));
 	}
 
-	void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...);
-
 	const char* log_set_color(int level, int is_end)
 	{
 		if (log_device_fp == stdout) {
@@ -118,32 +115,28 @@ public:
 		return "";
 	}
 
+	void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...)
+	{
+		va_list ap;
+		va_start(ap, fmt);
+		vsnprintf(m_msg, sizeof(m_msg), fmt, ap);  
+		log_add(level, file, func, line, m_msg);    
+		va_end(ap);
+		return;
+	}
+
+private:
+	ENABLE_SINGLETON(LogcatDisplay)
+
 private:
 	FILE *log_device_fp  ;
 	int   log_level      ;
 	static const int LOG_MAX_MSG_LEN;
+	char* m_msg;
 };
 
 template <typename T>
-const int LogcatDisplay<T>::LOG_MAX_MSG_LEN = 4096; 
-
-template <typename T>
-void LogcatDisplay<T>::log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...)
-{ 
-	return;
-}
-
-template <typename T>
-void LogcatDisplay<int>::log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...)
-{ 
-	va_list ap;
-	char msg[LOG_MAX_MSG_LEN];
-
-	va_start(ap, fmt);
-	vsnprintf(msg, sizeof(msg), fmt, ap);  
-	log_add(level, file, func, line, msg);    
-	va_end(ap);
-}
+const int LogcatDisplay<T>::LOG_MAX_MSG_LEN = 4096;
 
 }
 

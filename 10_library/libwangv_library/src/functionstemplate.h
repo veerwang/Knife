@@ -73,6 +73,15 @@ inline void deletep(T *p)
 	}
 }
 
+template <typename T>
+inline void deletearray(T *p)
+{
+	if ( p != nullptr )
+	{
+		delete[] p;
+		p = nullptr;
+	}
+}
 
 
 }
