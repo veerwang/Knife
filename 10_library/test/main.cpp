@@ -24,6 +24,7 @@
 #include <pimpltemplate.h>
 #include <functionstemplate.h>
 #include <processcommunication.h>
+#include <logcatdisplay.h>
 
 #include <wangvlib.h>
 #include <keymap.h>
@@ -93,6 +94,8 @@ main ( int argc, char *argv[] )
 	pbasethread = new WangV::ThreadHost<MyPolicy>();
 	pbasethread->Set_Interval_Second(1);
 	pbasethread->Start();
+
+	LogcatDisplay<int> logcat;
 
 	WangV::encrypt_file("test.dat","1.enc");
 	WangV::decrypt_file("1.enc","1.dec");
