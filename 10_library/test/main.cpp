@@ -104,7 +104,7 @@ main ( int argc, char *argv[] )
 	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
 	logcat->log_module_init(NULL);
 	logcat->log_module_level(WangV::LOG_ERROR);
-	logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"fuck %s","wangvlib");
+	logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"hehahahahaha %s","wangvlib");
 
 	Base* base = new Base;
 	WangV::deletep(base);
