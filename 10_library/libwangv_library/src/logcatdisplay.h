@@ -21,6 +21,9 @@
  */
 
 #include <standard.h>
+#include <singletontemplate.h> 
+#include <functionstemplate.h>
+
 #include "wangvlib.h"
 
 namespace WangV
