@@ -20,6 +20,8 @@
 #include "base.h"
 #include <wangvlib.h> 
 
+#include <logcatdisplay.h>
+
 namespace WangV
 {
 template<>
@@ -36,5 +38,6 @@ Base::Base ()
 
 Base::~Base ()
 {
-	WangV::log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"id = %d destroy",m_Imple->id);
+	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+	logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"id = %d destroy",m_Imple->id);
 }

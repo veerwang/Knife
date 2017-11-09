@@ -34,7 +34,7 @@ const int LOG_INFO  = 5;
 void log_module_init(const char *device);
 void log_module_destroy();
 void log_module_level(int);
-void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...);
+//void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...);
 
 /* key按键检测功能 */
 void InitKey();

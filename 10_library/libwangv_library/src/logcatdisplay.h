@@ -64,7 +64,7 @@ public:
 
 		if ( level < log_level || level < 0 ) return;
 
-		strftime( buf, sizeof(buf), datetime_format, localtime(&meow) );
+		strftime( buf, 64, datetime_format, localtime(&meow) );
 		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , buf, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
 	}
 
@@ -91,7 +91,7 @@ public:
 	{
 		va_list ap;
 		va_start(ap, fmt);
-		vsnprintf(m_msg, sizeof(m_msg), fmt, ap);  
+		vsnprintf(m_msg, LOG_MAX_MSG_LEN, fmt, ap);  
 		log_add(level, file, func, line, m_msg);    
 		va_end(ap);
 		return;
