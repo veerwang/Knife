@@ -133,7 +133,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libwangv_la_LIBADD =
-am_libwangv_la_OBJECTS = wangvlib.lo displaylog.lo
+am_libwangv_la_OBJECTS = libwangv_la-wangvlib.lo \
+	libwangv_la-globlekey.lo libwangv_la-encrypt.lo
 libwangv_la_OBJECTS = $(am_libwangv_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -345,9 +346,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libwangv.la
-include_HEADERS = wangvlib.h
-libwangv_la_SOURCES = wangvlib.cpp displaylog.cpp wangvlib.h
-libwangv_la_LDFLAGS = -shared -fPIC
+include_HEADERS = wangvlib.h keymap.h threadtemplate.h standard.h singletontemplate.h logcatdisplay.h pimpltemplate.h functionstemplate.h processcommunication.h
+libwangv_la_SOURCES = wangvlib.cpp globlekey.cpp encrypt.cpp \
+                      wangvlib.h cstandard.h keymap.h logcatdisplay.h pimpltemplate.h threadtemplate.h singletontemplate.h processcommunication.h \
+		      functionstemplate.h \
+                      standard.h
+
+libwangv_la_LDFLAGS = -shared -fPI
+libwangv_la_CPPFLAGS = -std=c++11
 all: all-am
 
 .SUFFIXES:
@@ -426,8 +432,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/displaylog.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wangvlib.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwangv_la-encrypt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwangv_la-globlekey.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwangv_la-wangvlib.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -449,6 +456,27 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+
+libwangv_la-wangvlib.lo: wangvlib.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libwangv_la-wangvlib.lo -MD -MP -MF $(DEPDIR)/libwangv_la-wangvlib.Tpo -c -o libwangv_la-wangvlib.lo `test -f 'wangvlib.cpp' || echo '$(srcdir)/'`wangvlib.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libwangv_la-wangvlib.Tpo $(DEPDIR)/libwangv_la-wangvlib.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='wangvlib.cpp' object='libwangv_la-wangvlib.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libwangv_la-wangvlib.lo `test -f 'wangvlib.cpp' || echo '$(srcdir)/'`wangvlib.cpp
+
+libwangv_la-globlekey.lo: globlekey.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libwangv_la-globlekey.lo -MD -MP -MF $(DEPDIR)/libwangv_la-globlekey.Tpo -c -o libwangv_la-globlekey.lo `test -f 'globlekey.cpp' || echo '$(srcdir)/'`globlekey.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libwangv_la-globlekey.Tpo $(DEPDIR)/libwangv_la-globlekey.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='globlekey.cpp' object='libwangv_la-globlekey.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libwangv_la-globlekey.lo `test -f 'globlekey.cpp' || echo '$(srcdir)/'`globlekey.cpp
+
+libwangv_la-encrypt.lo: encrypt.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libwangv_la-encrypt.lo -MD -MP -MF $(DEPDIR)/libwangv_la-encrypt.Tpo -c -o libwangv_la-encrypt.lo `test -f 'encrypt.cpp' || echo '$(srcdir)/'`encrypt.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libwangv_la-encrypt.Tpo $(DEPDIR)/libwangv_la-encrypt.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='encrypt.cpp' object='libwangv_la-encrypt.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwangv_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libwangv_la-encrypt.lo `test -f 'encrypt.cpp' || echo '$(srcdir)/'`encrypt.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

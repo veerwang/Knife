@@ -65,14 +65,14 @@ public:
 		if ( listen_fd  < 0 )
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"server sock create fail");
+			logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"server sock create fail");
 		}
 		unlink(ConstValue<T>::UNIX_DOMAIN);
 		int ret = bind(listen_fd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));
 		if ( ret == -1 )
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot bind server socket: %s",strerror(errno));
+			logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot bind server socket: %s",strerror(errno));
 			close(listen_fd);
 			unlink(ConstValue<T>::UNIX_DOMAIN);
 			return false;
@@ -83,7 +83,7 @@ public:
 		if ( ret==-1 )
 		{  
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot listen the client connect request: %s",strerror(errno));
+			logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot listen the client connect request: %s",strerror(errno));
 			close(listen_fd);  
 			unlink(ConstValue<T>::UNIX_DOMAIN);  
 			return false;  
@@ -94,7 +94,7 @@ public:
 
 		init_flag = true;
 		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-		logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
+		logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
 		return true;
 	}
 
@@ -103,7 +103,7 @@ public:
 		if ( init_flag == false ) return;
 		close(listen_fd);
 		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-		logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Server Close");
+		logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Server Close");
 		unlink(ConstValue<T>::UNIX_DOMAIN);
 	}
 
@@ -131,13 +131,13 @@ public:
 					if ( num == 0 )
 					{
 						WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-						logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"ServerInfo: client close");
+						logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"ServerInfo: client close");
 						close(com_fd);
 					}
 					else if ( num == -1 )
 					{
 						WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-						logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"ServerInfo: client bad: %s",strerror(errno));
+						logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"ServerInfo: client bad: %s",strerror(errno));
 						close(com_fd);
 					}
 					else
@@ -166,7 +166,7 @@ public:
 					if( com_fd < 0 )
 					{
 						WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-						logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot accept client connect request: %s",strerror(errno));
+						logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot accept client connect request: %s",strerror(errno));
 						close(listen_fd);  
 						unlink(ConstValue<T>::UNIX_DOMAIN);  
 						accept_flag = false;
@@ -212,7 +212,7 @@ public:
 		if(this->connect_fd<0)  
 		{  
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot create communication socket: %s",strerror(errno));
+			logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot create communication socket: %s",strerror(errno));
 			return false;  
 		}     
 		srv_addr.sun_family=AF_UNIX;  
@@ -227,7 +227,7 @@ public:
 		if( ret == -1 )  
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write(WangV::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot connect to the server: %s",strerror(errno));
+			logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_ERROR,__FILE__,__FUNCTION__,__LINE__,"cannot connect to the server: %s",strerror(errno));
 			close(this->connect_fd);  
 			return;
 		}
@@ -245,7 +245,7 @@ public:
 		if ( init_flag == false ) return;
 		close(this->connect_fd);  
 		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-		logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Client Close");
+		logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"Client Close");
 		init_flag    = false;
 		connect_flag = false;
 	}

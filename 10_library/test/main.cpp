@@ -37,13 +37,13 @@ class deviceinput : public WangV::Singleton<deviceinput>
 		~deviceinput()
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","destroy");
+			logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","destroy");
 		}
 
 		void version()
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","v1.0.0");
+			logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"deviceinput %s","v1.0.0");
 		}
 
 	private:
@@ -63,7 +63,7 @@ class MyPolicy
 		void Run()
 		{
 			WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-			logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"pthread %s","kevin");
+			logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"pthread %s","kevin");
 		}
 };
 
@@ -74,7 +74,7 @@ public:
 	int coreprocess(char *buf) 
 	{
 		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-		logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Info %s",buf);
+		logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Info %s",buf);
 		return 0;
 	}
 };
@@ -92,8 +92,8 @@ main ( int argc, char *argv[] )
 	std::cout<<WangV::get_version()<<std::endl;
 	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
 	logcat->log_module_init(NULL);
-	logcat->log_module_level(WangV::LOG_ERROR);
-	logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
+	logcat->log_module_level(WangV::LogcatDisplay<int>::LOG_ERROR);
+	logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 	WangV::InitKey();
 	char key = 0;
 
@@ -113,7 +113,7 @@ main ( int argc, char *argv[] )
 
 	WangV::ProcessCommunicationServer<DoProcess> pc;
 	if ( pc.init() )
-		logcat->log_module_write((WangV::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
+		logcat->log_module_write((WangV::LogcatDisplay<int>::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
 
 	while ( key != KEY_ESC )
 	{

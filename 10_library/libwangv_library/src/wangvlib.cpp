@@ -43,14 +43,14 @@ void __attribute__ ((constructor)) init_module()
 {
 	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
 	logcat->log_module_init(NULL);
-	logcat->log_module_level(WangV::LOG_ERROR);
-	logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
+	logcat->log_module_level(WangV::LogcatDisplay<int>::LOG_ERROR);
+	logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
 }
 
 void __attribute__ ((destructor)) release_module()
 {
 	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-	logcat->log_module_write(WangV::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
+	logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
 	logcat->log_module_destroy();  
 }
 

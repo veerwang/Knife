@@ -1,6 +1,6 @@
 lib_LTLIBRARIES     = libwangv.la
 include_HEADERS     = wangvlib.h keymap.h threadtemplate.h standard.h singletontemplate.h logcatdisplay.h pimpltemplate.h functionstemplate.h processcommunication.h
-libwangv_la_SOURCES = wangvlib.cpp displaylog.cpp globlekey.cpp encrypt.cpp \
+libwangv_la_SOURCES = wangvlib.cpp globlekey.cpp encrypt.cpp \
                       wangvlib.h cstandard.h keymap.h logcatdisplay.h pimpltemplate.h threadtemplate.h singletontemplate.h processcommunication.h \
 		      functionstemplate.h \
                       standard.h
