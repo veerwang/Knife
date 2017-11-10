@@ -41,16 +41,16 @@ const char* get_version()
 
 void __attribute__ ((constructor)) init_module()
 {
-	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+	Logcat *logcat = Logcat::Instance();
 	logcat->log_module_init(NULL);
-	logcat->log_module_level(WangV::LogcatDisplay<int>::LOG_ERROR);
-	logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
+	logcat->log_module_level(Logcat::LOG_ERROR);
+	logcat->log_module_write(Logcat::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
 }
 
 void __attribute__ ((destructor)) release_module()
 {
-	WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
-	logcat->log_module_write(WangV::LogcatDisplay<int>::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
+	Logcat *logcat = Logcat::Instance();
+	logcat->log_module_write(Logcat::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"destruct module %s","wangvlib");
 	logcat->log_module_destroy();  
 }
 

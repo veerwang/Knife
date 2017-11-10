@@ -201,6 +201,8 @@ const char* LogcatDisplay<T>::BG_DEFAULT  	= 	"\033[49m"	;
 
 template <typename T>
 const char* LogcatDisplay<T>::RESET_COLOR    	=	"\033[0m" 	;/* to flush the previous property */
+
+typedef WangV::LogcatDisplay<int> Logcat;
 }
 
 #endif /* !defined(INCLUDED_LOGCATDISPLAY_H) */

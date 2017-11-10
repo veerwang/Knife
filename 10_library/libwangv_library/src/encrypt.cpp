@@ -431,7 +431,7 @@ int is_encrypt_file(const char* filepath)
 	int encrypt_head_length = strlen(ENCRYPT_FILE_HEAD);
 	FILE* inputfile = fopen(filepath, "rb");
 	if (!inputfile) {
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open input file to read data.");
 		return -1;
 	}
@@ -471,7 +471,7 @@ int add_head_process(const char* src,const char* des)
 	int encrypt_head_length = strlen(ENCRYPT_FILE_HEAD);
 	src_h = fopen(src,"rb");
 	if ( !src_h  ) {
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open input file to read data.");
 		return -1;
 	}
@@ -480,7 +480,7 @@ int add_head_process(const char* src,const char* des)
 	des_h = fopen(des,"wb");
 	if ( !des_h ) {
 		fclose(src_h);
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open output file to write data.");
 		return -1;
 	}
@@ -508,7 +508,7 @@ int sub_head_process(const char* src,const char* des)
 	int encrypt_head_length = strlen(ENCRYPT_FILE_HEAD);
 	src_h = fopen(src,"rb");
 	if ( !src_h  ) {
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open input file to read data.");
 		return -1;
 	}
@@ -517,7 +517,7 @@ int sub_head_process(const char* src,const char* des)
 	des_h = fopen(des,"wb");
 	if ( !des_h ) {
 		fclose(src_h);
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open output file to write data.");
 		return -1;
 	}
@@ -590,7 +590,7 @@ int encrypt_process(const char* src,const char* des,char m)
 	// Open input file
 	input_file = fopen(src, "rb");
 	if (!input_file) {
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open input file to read data.");
 		return -1;
 	}
@@ -600,7 +600,7 @@ int encrypt_process(const char* src,const char* des,char m)
 	output_file = fopen(des, "wb");
 	if (!output_file) {
 		fclose(input_file);
-		WangV::LogcatDisplay<int> *logcat = WangV::LogcatDisplay<int>::Instance();
+		Logcat *logcat = Logcat::Instance();
 		logcat->log_module_write(4,__FILE__,__FUNCTION__,__LINE__,"%s: %s",module_tag,"Could not open output file to write data.");
 		return -1;
 	}
