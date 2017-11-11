@@ -29,8 +29,17 @@
 namespace WangV
 {
 
-template <typename T>
-class LogcatDisplay : public Singleton<LogcatDisplay<T> >
+class DefaultDisplayPolicy 
+{
+public:
+	void displaycore()
+	{
+		;
+	}
+};
+
+template <typename Display = DefaultDisplayPolicy >
+class LogcatDisplay : public Singleton<LogcatDisplay<Display> >, public Display
 {
 public:
 	LogcatDisplay() : log_device_fp(NULL), log_level(5) , m_msg(NULL)
@@ -53,19 +62,6 @@ public:
 	void log_module_level(int level)
 	{
 		log_level = level;
-	}
-
-	void log_add(int level, const char *file, const char * func, int line, const char *msg)
-	{
-		const char *c = "IWEDX";
-		const char *datetime_format = "%Y-%m-%d %H:%M:%S";
-		time_t meow = time( NULL );
-		char buf[64];
-
-		if ( level < log_level || level < 0 ) return;
-
-		strftime( buf, 64, datetime_format, localtime(&meow) );
-		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , buf, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
 	}
 
 	const char* log_set_color(int level, int is_end)
@@ -91,11 +87,28 @@ public:
 	{
 		va_list ap;
 		va_start(ap, fmt);
-		vsnprintf(m_msg, LOG_MAX_MSG_LEN, fmt, ap);  
-		log_add(level, file, func, line, m_msg);    
+		vsnprintf(m_msg, LOG_MAX_MSG_LEN, fmt, ap);
+		log_add(level, file, func, line, m_msg);
 		va_end(ap);
 		return;
 	}
+
+private:
+	void log_add(int level, const char *file, const char * func, int line, const char *msg)
+	{
+		const char *c = "IWEDX";
+		const char *datetime_format = "%Y-%m-%d %H:%M:%S";
+		time_t meow = time( NULL );
+		char buf[64];
+
+		if ( level < log_level || level < 0 ) return;
+
+		strftime( buf, 64, datetime_format, localtime(&meow) );
+		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , buf, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
+
+		this->displaycore();
+	}
+
 
 public:
 	static const int LOG_ALL; 
@@ -133,76 +146,99 @@ private:
 	static const char* RESET_COLOR;
 };
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_MAX_MSG_LEN 	= 	4096;
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_ALL 		= 	1		;
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_MAX_MSG_LEN 	= 	4096;
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_ERROR		= 	2		;
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_WARN		= 	3		;
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_ALL 		= 	1		;
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_DEBUG		= 	4		;
 
-template <typename T>
-const int LogcatDisplay<T>::LOG_INFO		= 	5		;
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_ERROR		= 	2		;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_WHITE		= 	"\x1B[0;m"	;   /* white */
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_RED    	= 	"\033[0;31m"	;   /* 0 -> normal ; 31 -> red */
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_WARN		= 	3		;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_RED_BOLD  	=	"\033[1;31m" 	;   /* 1 -> bold ; 31 -> red */
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_GREEN   	=	"\033[0;32m"  	;   /* 4 -> underline ; 32 -> green */
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_DEBUG		= 	4		;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_GREEN_BOLD	=       "\033[1;32m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_YELLOW 	=       "\033[0;33m"  	;   /* 0 -> normal ; 33 -> yellow */
+template < typename Display>
+const int LogcatDisplay<Display>::LOG_INFO		= 	5		;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_YELLOW_BOLD	=	"\033[1;33m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_BLUE  		=	"\033[0;34m"  	;   /* 9 -> strike ; 34 -> blue */
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_WHITE		= 	"\x1B[0;m"	;   /* white */
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_BLUE_BOLD    	=	"\033[1;34m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_CYAN   	=	"\033[0;36m"    ;   /* 0 -> normal ; 36 -> cyan */
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_RED    	= 	"\033[0;31m"	;   /* 0 -> normal ; 31 -> red */
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_CYAN_BOLD	=	"\033[0;36m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::FG_DEFAULT  	=	"\033[39m"	;
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_RED_BOLD  	=	"\033[1;31m" 	;   /* 1 -> bold ; 31 -> red */
 
-template <typename T>
-const char* LogcatDisplay<T>::BG_RED      	=	"\033[41m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::BG_GREEN    	=	"\033[42m"	;
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_GREEN   	=	"\033[0;32m"  	;   /* 4 -> underline ; 32 -> green */
 
-template <typename T>
-const char* LogcatDisplay<T>::BG_BLUE     	=	"\033[44m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::BG_DEFAULT  	= 	"\033[49m"	;
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_GREEN_BOLD	=       "\033[1;32m"	;
 
-template <typename T>
-const char* LogcatDisplay<T>::RESET_COLOR    	=	"\033[0m" 	;/* to flush the previous property */
 
-typedef WangV::LogcatDisplay<int> Logcat;
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_YELLOW 	=       "\033[0;33m"  	;   /* 0 -> normal ; 33 -> yellow */
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_YELLOW_BOLD	=	"\033[1;33m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_BLUE  		=	"\033[0;34m"  	;   /* 9 -> strike ; 34 -> blue */
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_BLUE_BOLD    	=	"\033[1;34m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_CYAN   	=	"\033[0;36m"    ;   /* 0 -> normal ; 36 -> cyan */
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_CYAN_BOLD	=	"\033[0;36m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::FG_DEFAULT  	=	"\033[39m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::BG_RED      	=	"\033[41m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::BG_GREEN    	=	"\033[42m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::BG_BLUE     	=	"\033[44m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::BG_DEFAULT  	= 	"\033[49m"	;
+
+
+template < typename Display>
+const char* LogcatDisplay<Display>::RESET_COLOR    	=	"\033[0m" 	;/* to flush the previous property */
+
+typedef WangV::LogcatDisplay<> Logcat;
 }
 
 #endif /* !defined(INCLUDED_LOGCATDISPLAY_H) */
