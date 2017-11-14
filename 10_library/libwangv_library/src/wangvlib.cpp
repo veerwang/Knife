@@ -28,6 +28,12 @@ namespace WangV {
 static const char PROJ_VERSION[] = {"V1.02"};
 
 /* module function  */
+void module_document()
+{
+	Logcat *logcat = Logcat::Instance();
+	logcat->log_module_write(Logcat::LOG_INFO,__FILE__,__FUNCTION__,__LINE__,"\t\twangvlib document");
+}
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  get_version 
