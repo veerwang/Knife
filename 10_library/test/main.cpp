@@ -120,6 +120,8 @@ main ( int argc, char *argv[] )
 		usleep(1000);
 		key = WangV::GetPCKey();
 		pc.doprocess();
+		if ( key == KEY_FUN2R )
+			WangV::module_document();
 	}
 
 	if ( pbasethread != NULL )	

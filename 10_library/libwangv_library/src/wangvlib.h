@@ -23,6 +23,7 @@ namespace WangV {
 
 /*　模块信息功能  */
 const char* get_version();
+void module_document();
 
 /* key按键检测功能 */
 void InitKey();
