@@ -44,9 +44,10 @@ class LogcatDisplay : public Singleton<LogcatDisplay<Display> >, public Display
 public:
 	LogcatDisplay() : log_device_fp(NULL), log_level(5) , m_msg(NULL)
 	{ 
-		m_msg = new char[LOG_MAX_MSG_LEN];
+		m_msg 		= new char[LOG_MAX_MSG_LEN];
+		m_timechar	= new char[64];
 	}
-	~LogcatDisplay() { deletearray(m_msg); }
+	~LogcatDisplay() { deletearray(m_msg); deletearray(m_timechar); }
 
 public:
 	void log_module_init(const char *device)
@@ -96,15 +97,14 @@ public:
 private:
 	void log_add(int level, const char *file, const char * func, int line, const char *msg)
 	{
+		if ( level < log_level || level < 0 ) return;
+
 		const char *c = "IWEDX";
 		const char *datetime_format = "%Y-%m-%d %H:%M:%S";
 		time_t meow = time( NULL );
-		char buf[64];
 
-		if ( level < log_level || level < 0 ) return;
-
-		strftime( buf, 64, datetime_format, localtime(&meow) );
-		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , buf, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
+		strftime( m_timechar, 64, datetime_format, localtime(&meow) );
+		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , m_timechar, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
 
 		this->displaycore();
 	}
@@ -123,7 +123,8 @@ private:
 private:
 	FILE *log_device_fp  ;
 	int   log_level      ;
-	char* m_msg;
+	char* m_msg	     ;
+	char* m_timechar     ;
 
 	static const int LOG_MAX_MSG_LEN;
 
