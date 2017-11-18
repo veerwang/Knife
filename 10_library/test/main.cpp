@@ -25,6 +25,7 @@
 #include <functionstemplate.h>
 #include <processcommunication.h>
 #include <logcatdisplay.h>
+#include <shellcommand.h> 
 
 #include <wangvlib.h>
 #include <keymap.h>
@@ -79,6 +80,36 @@ public:
 	}
 };
 
+class BaseShellCmd 
+{
+public:
+	void CodeProcess(int opt)
+	{
+		WangV::Logcat *logcat = WangV::Logcat::Instance();
+		switch ( opt )
+		{
+			case 'n':
+				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"normal");
+				break;
+			case 'h':
+				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"help help");
+				break;
+			case '?':
+				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"???");
+				break;
+		}
+	}
+};
+
+struct BasePara
+{
+	struct option longopts[2] =  
+	{
+		{ "normal",0,NULL,'n' },
+		{ "help",0,NULL,'h' },
+	};
+};
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -90,6 +121,10 @@ main ( int argc, char *argv[] )
 {
 	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;		// 注意这个函数
 	std::cout<<WangV::get_version()<<std::endl;
+
+	WangV::ShellCommand<BaseShellCmd,BasePara> shellcmd;
+	shellcmd.Analyze(argc,argv,"nh?");
+
 	WangV::Logcat *logcat = WangV::Logcat::Instance();
 	logcat->log_module_init(NULL);
 	logcat->log_module_level(WangV::Logcat::LOG_ERROR);
