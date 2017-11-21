@@ -80,6 +80,19 @@ public:
 	}
 };
 
+// 函数主体 
+
+struct BasePara
+{
+	struct option longopts[3] =  
+	{
+		{ "server",0,NULL,'s' },
+		{ "mdoc",0,NULL,'m' },
+		{ "help",0,NULL,'h' },
+	};
+};
+
+
 class BaseShellCmd 
 {
 public:
@@ -88,26 +101,66 @@ public:
 		WangV::Logcat *logcat = WangV::Logcat::Instance();
 		switch ( opt )
 		{
-			case 'n':
-				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"normal");
+			case 's':
+				{
+					WangV::Logcat *logcat = WangV::Logcat::Instance();
+					logcat->log_module_init(NULL);
+					logcat->log_module_level(WangV::Logcat::LOG_ERROR);
+					logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
+					WangV::InitKey();
+					char key = 0;
+
+					WangV::ThreadHost<MyPolicy>*  pbasethread; 
+					pbasethread = new WangV::ThreadHost<MyPolicy>();
+					pbasethread->Set_Interval_Second(1);
+					pbasethread->Start();
+
+					WangV::encrypt_file("test.dat","1.enc");
+					WangV::decrypt_file("1.enc","1.dec");
+
+					deviceinput *di = deviceinput::Instance();
+					di->version();
+
+					Base* base = new Base;
+					WangV::deletep(base);
+
+					WangV::ProcessCommunicationServer<DoProcess> pc;
+					if ( pc.init() )
+						logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
+
+					while ( key != KEY_ESC )
+					{
+						usleep(1000);
+						key = WangV::GetPCKey();
+						pc.doprocess();
+					}
+
+					if ( pbasethread != NULL )	
+					{
+						pbasethread->Stop();
+						WangV::deletep(pbasethread);
+					}
+
+					logcat->log_module_destroy();
+
+					WangV::RestoreKey();
+					pc.release();
+				}
+				break;
+			case 'm':
+				{
+					WangV::module_document();
+				}
 				break;
 			case 'h':
-				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"help help");
+				{
+				}
 				break;
 			case '?':
 				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"???");
 				break;
 		}
 	}
-};
-
-struct BasePara
-{
-	struct option longopts[2] =  
-	{
-		{ "normal",0,NULL,'n' },
-		{ "help",0,NULL,'h' },
-	};
 };
 
 /* 
@@ -122,52 +175,8 @@ main ( int argc, char *argv[] )
 	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;		// 注意这个函数
 	std::cout<<WangV::get_version()<<std::endl;
 
-	WangV::ShellCommand<BaseShellCmd,BasePara> shellcmd;
-	shellcmd.Analyze(argc,argv,"nh?");
+	WangV::ShellCommand<BaseShellCmd,BasePara> shellcmd;				// 注意这种方式可以推广
+	shellcmd.Analyze(argc,argv,"smh?");						// 注意这个地方容易被忽略
 
-	WangV::Logcat *logcat = WangV::Logcat::Instance();
-	logcat->log_module_init(NULL);
-	logcat->log_module_level(WangV::Logcat::LOG_ERROR);
-	logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
-	WangV::InitKey();
-	char key = 0;
-
-	WangV::ThreadHost<MyPolicy>*  pbasethread; 
-	pbasethread = new WangV::ThreadHost<MyPolicy>();
-	pbasethread->Set_Interval_Second(1);
-	pbasethread->Start();
-
-	WangV::encrypt_file("test.dat","1.enc");
-	WangV::decrypt_file("1.enc","1.dec");
-
-	deviceinput *di = deviceinput::Instance();
-	di->version();
-
-	Base* base = new Base;
-	WangV::deletep(base);
-
-	WangV::ProcessCommunicationServer<DoProcess> pc;
-	if ( pc.init() )
-		logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"Server Init OK");
-
-	while ( key != KEY_ESC )
-	{
-		usleep(1000);
-		key = WangV::GetPCKey();
-		pc.doprocess();
-		if ( key == KEY_FUN2R )
-			WangV::module_document();
-	}
-
-	if ( pbasethread != NULL )	
-	{
-		pbasethread->Stop();
-		WangV::deletep(pbasethread);
-	}
-
-	logcat->log_module_destroy();
-
-	WangV::RestoreKey();
-	pc.release();
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
