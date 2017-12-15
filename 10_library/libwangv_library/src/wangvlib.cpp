@@ -31,9 +31,9 @@ static const char PROJ_VERSION[] = {"V1.02"};
 void module_document()
 {
 	Logcat *logcat = Logcat::Instance();
-	logcat->log_module_write(Logcat::LOG_INFO,__FILE__,__FUNCTION__,__LINE__,"\t\tlibrary of wangvlib document");
-	logcat->log_module_write(Logcat::LOG_INFO,__FILE__,__FUNCTION__,__LINE__,"\n");
-	logcat->log_module_write(Logcat::LOG_INFO,__FILE__,__FUNCTION__,__LINE__,"logcat module: do the logcat stuff");
+	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"\t\tlibrary of wangvlib document");
+	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"\n");
+	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"logcat module: do the logcat stuff");
 }
 
 /* 
