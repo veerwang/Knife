@@ -84,14 +84,18 @@ public:
 
 struct BasePara
 {
-	struct option longopts[3] =  
+	struct option longopts[4] =  
 	{
 		{ "server",0,NULL,'s' },
 		{ "mdoc",0,NULL,'m' },
 		{ "help",0,NULL,'h' },
+		{ "version",0,NULL,'v' },
 	};
+
+	static const std::string var;
 };
 
+const std::string BasePara::var = "smhv?";
 
 class BaseShellCmd 
 {
@@ -99,13 +103,12 @@ public:
 	void CodeProcess(int opt)
 	{
 		WangV::Logcat *logcat = WangV::Logcat::Instance();
+		logcat->log_module_init(NULL);
+		logcat->log_module_level(WangV::Logcat::LOG_INFO);
 		switch ( opt )
 		{
 			case 's':
 				{
-					WangV::Logcat *logcat = WangV::Logcat::Instance();
-					logcat->log_module_init(NULL);
-					logcat->log_module_level(WangV::Logcat::LOG_ERROR);
 					logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"info %s","kevin");
 					WangV::InitKey();
 					char key = 0;
@@ -154,10 +157,25 @@ public:
 				break;
 			case 'h':
 				{
+					logcat->info(WangV::Logcat::LOG_INFO,"--server -s  run application as server mode");
+					logcat->info(WangV::Logcat::LOG_INFO,"--mdoc -m  show module information");
+					logcat->info(WangV::Logcat::LOG_INFO,"--help -h  show this information");
+					logcat->info(WangV::Logcat::LOG_INFO,"--version -v  version information of programe");
+				}
+				break;
+			case 'v':
+				{
+					std::string s1("Programe Version: ");
+					std::string s2(WangV::get_version());
+					s1 += s2;
+					logcat->info(WangV::Logcat::LOG_INFO,s1.c_str());
 				}
 				break;
 			case '?':
-				logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"???");
+				{
+					std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;		// 注意这个函数
+					logcat->log_module_write((WangV::Logcat::LOG_INFO),__FILE__,__FUNCTION__,__LINE__,"???");
+				}
 				break;
 		}
 	}
@@ -172,11 +190,8 @@ public:
 	int
 main ( int argc, char *argv[] )
 {
-	std::cout<<"Programe Version: "<<WangV::NumberToString(1.0)<<std::endl;		// 注意这个函数
-	std::cout<<WangV::get_version()<<std::endl;
-
 	WangV::ShellCommand<BaseShellCmd,BasePara> shellcmd;				// 注意这种方式可以推广
-	shellcmd.Analyze(argc,argv,"smh?");						// 注意这个地方容易被忽略
+	shellcmd.Analyze(argc,argv,BasePara::var.c_str());						// 注意这个地方容易被忽略
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
