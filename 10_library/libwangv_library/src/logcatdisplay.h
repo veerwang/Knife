@@ -21,7 +21,7 @@
  */
 
 #include <standard.h>
-#include <singletontemplate.h> 
+#include <singletontemplate.h>
 #include <functionstemplate.h>
 
 #include "wangvlib.h"
@@ -83,7 +83,9 @@ public:
 		}
 		return "";
 	}
-
+	/*
+	 *	调试信息输出接口 
+	 */
 	void log_module_write(int level, const char *file, const char * func, int line, const char *fmt, ...)
 	{
 		va_list ap;
@@ -92,6 +94,14 @@ public:
 		log_add(level, file, func, line, m_msg);
 		va_end(ap);
 		return;
+	}
+	/*
+	 *	普通信息输出口	
+	 */
+	void info(int level,const char *fmt, ...)
+	{
+		fprintf(log_device_fp, "%s%s%s\n",log_set_color(level, 0),fmt,log_set_color(level, 1) );
+		this->displaycore();
 	}
 
 private:
@@ -105,10 +115,7 @@ private:
 
 		strftime( m_timechar, 64, datetime_format, localtime(&meow) );
 		fprintf(log_device_fp, "%s%s[%d][%s(%s):%d] %c, %s%s\n",log_set_color(level, 0) , m_timechar, (int)getpid(), file, func, line, c[level], msg ,log_set_color(level, 1));
-
-		this->displaycore();
 	}
-
 
 public:
 	static const int LOG_ALL; 

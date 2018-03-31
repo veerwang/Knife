@@ -21,7 +21,7 @@
 
 #include <standard.h>
 
-#include "logcatdisplay.h" 
+#include "logcatdisplay.h"
 
 namespace WangV {
 
@@ -31,9 +31,9 @@ static const char PROJ_VERSION[] = {"V1.02"};
 void module_document()
 {
 	Logcat *logcat = Logcat::Instance();
-	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"\t\tlibrary of wangvlib document");
-	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"\n");
-	logcat->log_module_write(Logcat::LOG_INFO,"","",0,"logcat module: do the logcat stuff");
+	logcat->info(Logcat::LOG_INFO,"\t\tlibrary of wangvlib document");
+	logcat->info(Logcat::LOG_INFO,"\n");
+	logcat->info(Logcat::LOG_INFO,"logcat module: do the logcat stuff");
 }
 
 /* 
@@ -51,7 +51,7 @@ void __attribute__ ((constructor)) init_module()
 {
 	Logcat *logcat = Logcat::Instance();
 	logcat->log_module_init(NULL);
-	logcat->log_module_level(Logcat::LOG_ERROR);
+	logcat->log_module_level(Logcat::LOG_INFO);
 	logcat->log_module_write(Logcat::LOG_DEBUG,__FILE__,__FUNCTION__,__LINE__,"init module %s","wangvlib");
 }
 
