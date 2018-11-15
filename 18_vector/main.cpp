@@ -49,5 +49,7 @@ main ( int argc, char *argv[] )
 	for (std::vector<int>::reverse_iterator it=ngroup.rbegin();it!=ngroup.rend();it++) //　好蠢笨啊，谁还会去用另外一个iterator晕倒.
 		std::cout<<" value="<<*it<<std::endl;
 
+	std::cout<<" size= "<<ngroup.size()<<std::endl;
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
