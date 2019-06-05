@@ -13,7 +13,8 @@ public:
 	virtual void TemplateMethod();
 
 protected:
-	
+	virtual void Hook1();
+
 private:
 	
 };

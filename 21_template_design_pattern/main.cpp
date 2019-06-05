@@ -29,6 +29,7 @@ int main(int argc, const char *argv[])
 
 	Abstraction *imp = new Implementation ();
 	imp->TemplateMethod();
+	imp->Process();
 	delete imp;
 	
 	return EXIT_SUCCESS;

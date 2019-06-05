@@ -8,8 +8,9 @@ public:
 	~Abstraction();
 	
 	virtual void TemplateMethod ();
+	virtual void Process();
 protected:
-	
+	virtual void Hook1();	
 private:
 	
 };

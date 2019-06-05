@@ -1,5 +1,9 @@
 #include 	"abstraction.h"
 
+#include 	<cstdlib>
+#include 	<cstdio>
+#include 	<iostream>
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Abstraction
@@ -34,5 +38,28 @@ Abstraction::Abstraction(const Abstraction& theclass) {
  * =====================================================================================
  */
 void Abstraction::TemplateMethod () {
+	std::cout << "Abstraction TemplateMethod" << std::endl;
+	return;
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DoMethod1 
+ *  Description:  处理函数 
+ * =====================================================================================
+ */
+void Abstraction::Hook1() {
+	std::cout << "Abstraction Hook1" << std::endl;
+	return;
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Process 
+ *  Description:  整体处理函数 
+ * =====================================================================================
+ */
+void Abstraction::Process () {
+	Hook1();
 	return;
 }

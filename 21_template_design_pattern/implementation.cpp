@@ -40,3 +40,13 @@ Implementation::Implementation(const Implementation& theclass) {
 void Implementation::TemplateMethod () {
 	std::cout << "Implementation TemplateMethod" << std::endl;
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Hook 
+ *  Description:  钩子函数,调用由父类进行
+ * =====================================================================================
+ */
+void Implementation::Hook1() {
+	std::cout << "Implementation Hook1" << std::endl;
+}
