@@ -34,7 +34,7 @@ Implementation::Implementation(const Implementation& theclass) {
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  TemplateMethod
- *  Description:  模板程序 
+ *  Description:  模板函数，子类改写父类的行为
  * =====================================================================================
  */
 void Implementation::TemplateMethod () {
