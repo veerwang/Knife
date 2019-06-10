@@ -1,13 +1,18 @@
 #ifndef INCLUDED_STOPSTATUS_H
 #define INCLUDED_STOPSTATUS_H
 
-class StopStatus {
+#include 	"status.h"
+
+class Context;
+
+class StopStatus : public Status {
 public:
 	StopStatus();
 	StopStatus(const StopStatus&);
 	~StopStatus();
 	
-	virtual void Handle();
+	virtual void Stop(Context* con);	
+	virtual void Run(Context* con);	
 protected:
 	
 private:

@@ -1,4 +1,5 @@
 #include 	"status.h"
+#include 	"context.h"
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -29,9 +30,21 @@ Status::Status(const Status& theclass) {
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  Handle
+ *         Name:  Stop 
  *  Description:  处理函数 
  * =====================================================================================
  */
-void Status::Handle() {
+void Status::Stop(Context* con) {
+}
+void Status::Run(Context* con) {
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  ChangStatus
+ *  Description:  改变状态 
+ * =====================================================================================
+ */
+void Status::ChangStatus(Context* con, Status* s) {
+	con->SetStatus(s);
 }

@@ -21,9 +21,19 @@
 #include 	<iostream>
 
 #include 	"status.h"
+#include 	"context.h"
 
-int main(int argc, const char *argv[])
+int main(int argc, const char *argv[]) 
 {
 	std::cout << "status pattern test" << std::endl;	
+
+	Context context;
+	context.InitAllStatus();
+
+	context.SetStatus((Status *)context.mStopStatus);
+	context.Run();
+	context.Stop();
+
+	context.ReleaseAllStatus();
 	return EXIT_SUCCESS;
 }

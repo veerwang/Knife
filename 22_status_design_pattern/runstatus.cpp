@@ -1,4 +1,5 @@
 #include 	"runstatus.h"
+#include 	"context.h"
 
 #include 	<iostream>
 
@@ -31,10 +32,15 @@ RunStatus::RunStatus(const RunStatus& theclass) {
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  Handle 
+ *         Name:  Run 
  *  Description:  处理函数 
  * =====================================================================================
  */
-void RunStatus::Handle() {
-	std::cout << "RunStatus ..." << std::endl;
+void RunStatus::Run(Context* con) {
+	std::cout << "RunStatus Run" << std::endl;
+}
+void RunStatus::Stop(Context* con) {
+	std::cout << "RunStatus Stop" << std::endl;
+	ChangStatus(con,con->mStopStatus);
+	con->Stop();
 }

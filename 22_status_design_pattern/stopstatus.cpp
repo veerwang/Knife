@@ -1,4 +1,5 @@
 #include 	"stopstatus.h"
+#include 	"context.h"
 
 #include 	<iostream>
 /* 
@@ -30,10 +31,22 @@ StopStatus::StopStatus(const StopStatus& theclass) {
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  Handle 
+ *         Name:  Stop 
  *  Description:  拷贝构造函数 
  * =====================================================================================
  */
-void StopStatus::Handle() {
-	std::cout << "StopStatus Handle" << std::endl;
+void StopStatus::Stop(Context* con) {
+	std::cout << "StopStatus stop" << std::endl;
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Run 
+ *  Description:  拷贝构造函数 
+ * =====================================================================================
+ */
+void StopStatus::Run(Context* con) {
+	std::cout << "StopStatus Run" << std::endl;
+	ChangStatus(con,con->mRunStatus);
+	con->Run();
 }

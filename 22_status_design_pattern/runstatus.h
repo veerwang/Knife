@@ -3,14 +3,16 @@
 
 #include 	"status.h"
 
+class Context;
+
 class RunStatus : public Status {
 public:
 	RunStatus();
 	RunStatus(const RunStatus&);
 	~RunStatus();
 
-	virtual void Handle();
-	
+	virtual void Stop(Context* con);
+	virtual void Run(Context* con);
 protected:
 	
 private:
