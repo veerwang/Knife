@@ -28,6 +28,11 @@ void function(int i)
 	std::cout<<"index: "<<i<<std::endl;
 }
 
+void print_char(char c)
+{
+	std::cout<<"charactor: "<<c<<std::endl;
+}
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -43,7 +48,12 @@ main ( int argc, char *argv[] )
 	vgroup.push_back(30);
 	vgroup.push_back(40);
 
-	for_each(vgroup.begin(),vgroup.end(),function);
+	std::for_each(vgroup.begin(),vgroup.end(),function);
+
+/* ---------------------------------------------------------------- */
+
+	char sentence[] = "hello the world";
+	std::for_each(&sentence[0],&sentence[15],print_char);
 
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
