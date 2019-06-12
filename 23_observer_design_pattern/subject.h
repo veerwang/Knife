@@ -14,7 +14,7 @@ public:
 	void Attach(Observer &);
 	void Detach(Observer &);
 
-	void Notify();
+	virtual void Notify();
 
 protected:
 	
