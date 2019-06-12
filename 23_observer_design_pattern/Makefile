@@ -1,5 +1,5 @@
-all: main.o observer.o subject.o concretsubject.o
-	g++ -o play main.o observer.o subject.o concretsubject.o
+all: main.o observer.o subject.o concretsubject.o dogobserver.o
+	g++ -o play main.o observer.o subject.o concretsubject.o dogobserver.o
 
 main.o: main.cpp
 	g++ -c main.cpp
@@ -12,6 +12,9 @@ subject.o: subject.cpp subject.h
 
 concretsubject.o: concretsubject.cpp concretsubject.h
 	g++ -c concretsubject.cpp
+
+dogobserver.o: dogobserver.cpp dogobserver.h
+	g++ -c dogobserver.cpp
 
 clean:
 	rm -rf play *.o
