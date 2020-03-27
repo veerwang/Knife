@@ -1,0 +1,4 @@
+0.ps -A | grep "play"	: 显示某个进程的PID
+1.top -H -p PID 	: 显示某个进程的各个线程的cpu占用率
+2.进入top之后，按下f按键，显示pTH\P显示某个进程运行在哪个CPU之上
+

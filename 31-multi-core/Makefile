@@ -1,5 +1,5 @@
 all:
-	gcc -o play main.c -lpthread
+	g++ -o play main.cpp -lpthread
 
 clean:
 	rm -rf play *.o
