@@ -1,4 +1,5 @@
 #include<linux/init.h>  	//初始换函数
+#include <linux/cdev.h>
 #include<linux/kernel.h>  	//内核头文件
 #include<linux/module.h>  	//模块的头文件
 #include<linux/device.h>	//class_create/device_create相关头文件的定义
@@ -9,6 +10,79 @@ MODULE_AUTHOR("kevin.wang");
 
 static dev_t devId;
 static struct class *cls = NULL;
+struct cdev cdev;
+
+static int device_open(struct inode *, struct file *);
+static int device_release(struct inode *, struct file *);
+static ssize_t device_read(struct file *, char __user *, size_t, loff_t *);
+static ssize_t device_write(struct file *, const char __user *, size_t, loff_t *);
+
+enum { MAXLENGTH = 256 };
+static unsigned char gdatabuf[MAXLENGTH];
+
+struct file_operations eddy_fops = {
+       .owner 	 = THIS_MODULE,
+       .open  	 = device_open,
+       .release  = device_release,
+       .read     = device_read,
+       .write    = device_write,
+};
+
+static ssize_t device_write(struct file *mfile, const char __user *databuf, size_t mlen, loff_t *mloff) {
+	int j;
+	int i;
+	int write_bytes;
+        printk("wloff = %d!\n",(int)*mloff);
+        printk("wlen = %d!\n",(int)mlen);
+	write_bytes = mlen;
+	if ( *mloff + mlen > MAXLENGTH ) {
+		write_bytes = MAXLENGTH - *mloff;
+		mlen        = MAXLENGTH - *mloff;
+	}
+	write_bytes = mlen;
+	j = 0;
+	for ( i = *mloff;i < *mloff + mlen ;i++ ) {
+		gdatabuf[i] = databuf[j];
+		j++;
+	}
+
+	return write_bytes;
+}
+
+static ssize_t device_read(struct file *mfile, char __user *databuf, size_t mlen, loff_t *mloff) {
+	int j;
+	int i;
+	int read_bytes;
+        printk("rloff = %d!\n",(int)*mloff);
+        printk("rlen = %d!\n",(int)mlen);
+	read_bytes = mlen;
+	if ( *mloff + mlen > MAXLENGTH ) {
+		read_bytes = MAXLENGTH - *mloff;
+		mlen       = MAXLENGTH - *mloff;
+	}
+	read_bytes = mlen;
+	j = 0;
+	for ( i = *mloff;i < *mloff + mlen ;i++ ) {
+		databuf[j] = gdatabuf[i];
+		j++;
+	}
+
+	return read_bytes;
+}
+
+static int device_open(struct inode * mindoe, struct file *mfile) {
+	int i;
+        printk(KERN_ALERT "initmodule be open!\n");
+	for ( i=0;i<MAXLENGTH;i++ ) {
+		gdatabuf[i] = i;
+	}
+	return 0;
+}
+
+static int device_release(struct inode *minode, struct file *mfile) {
+        printk(KERN_ALERT "initmodule be release!\n");
+	return 0;
+}
  
 static int __init initmodule_start(void)
 {
@@ -30,6 +104,14 @@ static int __init initmodule_start(void)
                 printk(KERN_WARNING "create class error!\n");
                 goto err;
         }
+
+	// 设置设备节点的文件操作函数
+	cdev_init (&cdev, &eddy_fops);
+	cdev.owner = THIS_MODULE;
+	cdev.ops = &eddy_fops;
+	result = cdev_add (&cdev, devId , 1);
+	if (result)
+		printk (KERN_WARNING "Error %d adding char_reg_setup_cdev", result);
 
 	//实际在/dev目录下创建eddy%d的设备节点
         if(device_create(cls, NULL, devId, "", "eddy%d", 0) == NULL) {
