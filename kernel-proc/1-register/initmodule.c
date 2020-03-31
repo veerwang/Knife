@@ -1,3 +1,4 @@
+#include<linux/slab.h>		//kmalloc 函数定义
 #include<linux/init.h>  	//初始换函数
 #include <linux/cdev.h>
 #include<linux/kernel.h>  	//内核头文件
@@ -17,8 +18,9 @@ static int device_release(struct inode *, struct file *);
 static ssize_t device_read(struct file *, char __user *, size_t, loff_t *);
 static ssize_t device_write(struct file *, const char __user *, size_t, loff_t *);
 
-enum { MAXLENGTH = 256 };
-static unsigned char gdatabuf[MAXLENGTH];
+enum { MAXLENGTH = 4096 };
+static unsigned char *gdatabuf;
+
 
 struct file_operations eddy_fops = {
        .owner 	 = THIS_MODULE,
@@ -72,14 +74,17 @@ static ssize_t device_read(struct file *mfile, char __user *databuf, size_t mlen
 
 static int device_open(struct inode * mindoe, struct file *mfile) {
 	int i;
-        printk(KERN_ALERT "initmodule be open!\n");
+
+	gdatabuf = (unsigned char *)kmalloc(PAGE_SIZE,GFP_KERNEL); 
 	for ( i=0;i<MAXLENGTH;i++ ) {
 		gdatabuf[i] = i;
 	}
+        printk(KERN_ALERT "initmodule be open!\n");
 	return 0;
 }
 
 static int device_release(struct inode *minode, struct file *mfile) {
+	kfree(gdatabuf);
         printk(KERN_ALERT "initmodule be release!\n");
 	return 0;
 }
