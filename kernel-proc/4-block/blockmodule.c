@@ -134,6 +134,7 @@ static void __exit blockmodule_end(void)
 {
 	del_gendisk(simp_blkdev_disk);
 	put_disk(simp_blkdev_disk);
+	blk_cleanup_queue(simp_blkdev_queue);
     	printk(KERN_ALERT "blockmodule release\n");
 }
 
