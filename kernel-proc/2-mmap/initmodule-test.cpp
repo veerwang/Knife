@@ -80,6 +80,7 @@ int main(int argc, const char *argv[]) {
 			printf("%x\n",p_map[i]);
 		}
 	}
+	munmap(p_map,4096);
 	close(fd);
 
 	return EXIT_SUCCESS;
