@@ -7,11 +7,12 @@
 #include<linux/module.h>  //模块的头文件
 #include<linux/blkdev.h>  //块设备的相关函数
 #include <linux/hdreg.h>  //struct hd_geometry
+#include<linux/vmalloc.h> //申请内存
 MODULE_LICENSE("GPL");
 
 #define SIMP_BLKDEV_DISKNAME        "ramblkdev"
 #define SIMP_BLKDEV_DEVICEMAJOR     COMPAQ_SMART2_MAJOR
-#define SIMP_BLKDEV_BYTES           (500*1024)
+#define SIMP_BLKDEV_BYTES           (32*1024*1024)
 #define SIMP_BLKDEV_MAXPARTITIONS   (1)  // 分区数目
 
 // 一个扇区512个字节 >> 9
@@ -58,7 +59,7 @@ struct block_device_operations simp_blkdev_fops = {
 
 static int __init blockmodule_start(void) {
 	int ret;
-	simp_blkdev_data = (unsigned char*)kzalloc(SIMP_BLKDEV_BYTES,GFP_KERNEL);
+	simp_blkdev_data = (unsigned char*)vmalloc(SIMP_BLKDEV_BYTES);
 	if ( !simp_blkdev_data ) {
 		ret = -ENOMEM;
 		goto err_init_queue;
@@ -103,7 +104,7 @@ static void __exit blockmodule_end(void)
 	put_disk(simp_blkdev_disk);
 	blk_cleanup_queue(simp_blkdev_queue);
 	if (!simp_blkdev_data)
-		kfree(simp_blkdev_data);
+		vfree(simp_blkdev_data);
     	printk(KERN_ALERT "blockmodule release\n");
 }
 
