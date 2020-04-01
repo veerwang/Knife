@@ -14,6 +14,8 @@ MODULE_LICENSE("GPL");
 #define SIMP_BLKDEV_BYTES           (16*1024*1024)
 #define SIMP_BLKDEV_MAXPARTITIONS   (1)  // 分区数目
 
+// 一个扇区512个字节 >> 9
+
 static struct gendisk *simp_blkdev_disk;
 static struct request_queue *simp_blkdev_queue;
 static void simp_blkdev_do_request(struct request_queue *q);
@@ -75,6 +77,7 @@ static int __init blockmodule_start(void) {
 	simp_blkdev_disk->first_minor = 0;
 	simp_blkdev_disk->fops = &simp_blkdev_fops;
 	simp_blkdev_disk->queue = simp_blkdev_queue;
+	// 以扇区为单位,因此要>>9
 	set_capacity(simp_blkdev_disk, SIMP_BLKDEV_BYTES>>9);
 
 	// 将块设备的结构体添加到系统中
