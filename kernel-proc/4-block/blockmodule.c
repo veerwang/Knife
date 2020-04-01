@@ -1,5 +1,6 @@
 // 快设备的例子
 //https://www.xuebuyuan.com/3227084.html
+//https://blog.csdn.net/cxy_chen/article/details/80998510
 
 #include<linux/init.h>    //初始换函数
 #include<linux/kernel.h>  //内核头文件
@@ -11,11 +12,12 @@ MODULE_LICENSE("GPL");
 #define SIMP_BLKDEV_DISKNAME        "simp_blkdev"
 #define SIMP_BLKDEV_DEVICEMAJOR     COMPAQ_SMART2_MAJOR
 #define SIMP_BLKDEV_BYTES           (16*1024*1024)
-#define SIMP_BLKDEV_MAXPARTITIONS   (64)  // 分区数目
+#define SIMP_BLKDEV_MAXPARTITIONS   (1)  // 分区数目
 
 static struct gendisk *simp_blkdev_disk;
 static struct request_queue *simp_blkdev_queue;
 static void simp_blkdev_do_request(struct request_queue *q);
+unsigned char simp_blkdev_data[SIMP_BLKDEV_BYTES];
 
 static int simp_blkdev_getgeo(struct block_device *bdev,
                 struct hd_geometry *geo)
@@ -52,48 +54,6 @@ struct block_device_operations simp_blkdev_fops = {
 	  .getgeo  = simp_blkdev_getgeo,
 };
 
-static int simp_blkdev_make_request(struct request_queue *q, struct bio *bio)
-{
-        struct bio_vec *bvec;
-        int i;
-        unsigned long long dsk_offset;
-
-        dsk_offset = bio->bi_sector * 512;
-
-        bio_for_each_segment(bvec, bio, i) {
-                unsigned int count_done, count_current;
-                void *iovec_mem;
-                void *dsk_mem;
-
-                iovec_mem = kmap(bvec->bv_page) + bvec->bv_offset;
-
-                count_done = 0;
-                while (count_done < bvec->bv_len) {
-                        count_current = min(bvec->bv_len - count_done, PAGE_SIZE - (dsk_offset + count_done) % PAGE_SIZE);
-
-                        dsk_mem = radix_tree_lookup(&simp_blkdev_data, (dsk_offset + count_done) / PAGE_SIZE);
-                        dsk_mem += (dsk_offset + count_done) % PAGE_SIZE;
-
-                        switch (bio_rw(bio)) {
-                        case READ:
-                        case READA:
-                                memcpy(iovec_mem + count_done, dsk_mem, count_current);
-                                break;
-                        case WRITE:
-                                memcpy(dsk_mem, iovec_mem + count_done, count_current);
-                                break;
-                        }
-                        count_done += count_current;
-                }
-
-                kunmap(bvec->bv_page);
-                dsk_offset += bvec->bv_len;
-        }
-
-        bio_endio(bio, 0);
-        return 0;
-}
-
 static int __init blockmodule_start(void) {
 	int ret;
 	simp_blkdev_queue = blk_init_queue(simp_blkdev_do_request, NULL);
@@ -101,7 +61,7 @@ static int __init blockmodule_start(void) {
 		ret = -ENOMEM;
 		goto err_init_queue;
 	}
-	blk_queue_make_request(simp_blkdev_queue, simp_blkdev_make_request);
+	//blk_queue_make_request(simp_blkdev_queue, simp_blkdev_make_request);
 
 	// 申请一个块设备
 	simp_blkdev_disk = alloc_disk(SIMP_BLKDEV_MAXPARTITIONS);
@@ -122,11 +82,9 @@ static int __init blockmodule_start(void) {
     	printk(KERN_ALERT "Loading blockmodule...\n");
     	return 0;
 
-err_alloc_diskmem:
-        put_disk(simp_blkdev_disk);
 err_alloc_disk:
         blk_cleanup_queue(simp_blkdev_queue);
-err_alloc_queue:
+err_init_queue:
         return ret;
 }
  
@@ -141,31 +99,58 @@ static void __exit blockmodule_end(void)
 static void simp_blkdev_do_request(struct request_queue *q)
 {
         struct request *req;
-        while ((req = elv_next_request(q)) != NULL) {
-                if ((req->sector + req->current_nr_sectors) << 9
+	struct bio *req_bio;// 当前请求的bio
+	struct bio_vec *bvec;// 当前请求的bio的段(segment)链表
+
+	char *disk_mem;      // 需要读/写的磁盘区域
+	char *buffer;        // 磁盘块设备的请求在内存中的缓冲区
+	int i = 0;
+
+        while ((req = blk_fetch_request(q)) != NULL) {
+                if ((blk_rq_pos(req) + blk_rq_cur_sectors(req)) << 9
                         > SIMP_BLKDEV_BYTES) {
                         printk(KERN_ERR SIMP_BLKDEV_DISKNAME
                                 ": bad request: block=%llu, count=%u\n",
-                                (unsigned long long)req->sector,
-                                req->current_nr_sectors);
-                        end_request(req, 0);
+                                (unsigned long long)blk_rq_pos(req),
+                                blk_rq_cur_sectors(req));
+                        blk_end_request_all(req, -EIO);
                         continue;
                 }
 
+
+		disk_mem = simp_blkdev_data + (blk_rq_pos(req) << 9);
+		req_bio = req->bio;// 获取当前请求的bio
+
                 switch (rq_data_dir(req)) {
                 case READ:
-                        memcpy(req->buffer,
-                                simp_blkdev_data + (req->sector << 9),
-                                req->current_nr_sectors << 9);
-                        end_request(req, 1);
+			while(req_bio != NULL) {
+				//　for循环处理bio结构中的bio_vec结构体数组（bio_vec结构体数组代表一个完整的缓冲区）
+				for( i=0; i<req_bio->bi_vcnt; i++ ) {
+					bvec = &(req_bio->bi_io_vec[i]);
+					buffer = kmap(bvec->bv_page) + bvec->bv_offset;
+					memcpy(buffer, disk_mem, bvec->bv_len);
+					kunmap(bvec->bv_page);
+					disk_mem += bvec->bv_len;
+				}
+				req_bio = req_bio->bi_next;
+			}
+                        __blk_end_request_all(req, 0);
                         break;
                 case WRITE:
-                        memcpy(simp_blkdev_data + (req->sector << 9),
-                                req->buffer, req->current_nr_sectors << 9);
-                        end_request(req, 1);
+			while(req_bio != NULL) {
+				for(i=0; i<req_bio->bi_vcnt; i++) {
+					bvec = &(req_bio->bi_io_vec[i]);
+					buffer = kmap(bvec->bv_page) + bvec->bv_offset;
+					memcpy(disk_mem, buffer, bvec->bv_len);
+					kunmap(bvec->bv_page);
+					disk_mem += bvec->bv_len;
+				}
+				req_bio = req_bio->bi_next;
+			}
+                        __blk_end_request_all(req, 0);
                         break;
                 default:
-                        /* No default because rq_data_dir(req) is 1 bit */
+                        //No default because rq_data_dir(req) is 1 bit 
                         break;
                 }
         }
