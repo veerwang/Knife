@@ -11,7 +11,7 @@ MODULE_LICENSE("GPL");
 
 #define SIMP_BLKDEV_DISKNAME        "ramblkdev"
 #define SIMP_BLKDEV_DEVICEMAJOR     COMPAQ_SMART2_MAJOR
-#define SIMP_BLKDEV_BYTES           (16*1024*1024)
+#define SIMP_BLKDEV_BYTES           (500*1024)
 #define SIMP_BLKDEV_MAXPARTITIONS   (1)  // 分区数目
 
 // 一个扇区512个字节 >> 9
@@ -19,7 +19,7 @@ MODULE_LICENSE("GPL");
 static struct gendisk *simp_blkdev_disk;
 static struct request_queue *simp_blkdev_queue;
 static void simp_blkdev_do_request(struct request_queue *q);
-unsigned char simp_blkdev_data[SIMP_BLKDEV_BYTES];
+unsigned char *simp_blkdev_data;
 
 static int simp_blkdev_getgeo(struct block_device *bdev,
                 struct hd_geometry *geo)
@@ -58,6 +58,12 @@ struct block_device_operations simp_blkdev_fops = {
 
 static int __init blockmodule_start(void) {
 	int ret;
+	simp_blkdev_data = (unsigned char*)kzalloc(SIMP_BLKDEV_BYTES,GFP_KERNEL);
+	if ( !simp_blkdev_data ) {
+		ret = -ENOMEM;
+		goto err_init_queue;
+	}
+
 	simp_blkdev_queue = blk_init_queue(simp_blkdev_do_request, NULL);
 	if (!simp_blkdev_queue) {
 		ret = -ENOMEM;
@@ -96,6 +102,8 @@ static void __exit blockmodule_end(void)
 	del_gendisk(simp_blkdev_disk);
 	put_disk(simp_blkdev_disk);
 	blk_cleanup_queue(simp_blkdev_queue);
+	if (!simp_blkdev_data)
+		kfree(simp_blkdev_data);
     	printk(KERN_ALERT "blockmodule release\n");
 }
 
