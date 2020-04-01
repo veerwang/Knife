@@ -9,7 +9,7 @@
 #include <linux/hdreg.h>  //struct hd_geometry
 MODULE_LICENSE("GPL");
 
-#define SIMP_BLKDEV_DISKNAME        "simp_blkdev"
+#define SIMP_BLKDEV_DISKNAME        "ramblkdev"
 #define SIMP_BLKDEV_DEVICEMAJOR     COMPAQ_SMART2_MAJOR
 #define SIMP_BLKDEV_BYTES           (16*1024*1024)
 #define SIMP_BLKDEV_MAXPARTITIONS   (1)  // 分区数目
