@@ -3,7 +3,10 @@
 # sudo apt-get install linux-headers-$(uname -r) 
 # cat /var/log/syslog
 
-obj-m :=initmodule.o
+# ko模块的名字
+obj-m := miscdrv.o 
+miscdrv-objs := initmodule.o
+
 KVERSION  = $(shell uname -r)
 KERNELDIR = /usr/src/linux-headers-$(KVERSION)
 all:
