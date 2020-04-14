@@ -25,6 +25,8 @@
 #include 	<linux/input.h>  
 #include 	<string.h>
  
+int last_time_sec = 0;
+int last_time_usec = 0;
 
 void read_event(int fd,input_event& event, int &x,int &y) {
 	memset(&event,0,sizeof(event));
@@ -39,6 +41,7 @@ void read_event(int fd,input_event& event, int &x,int &y) {
 
 int main(int argc, const char *argv[]) {
 	std::cout << "input event programe" << std::endl;
+
 	int fd = -1;
 	struct input_event event; 
 	char *tmp;
@@ -53,8 +56,12 @@ int main(int argc, const char *argv[]) {
 	while(1) {
 		read_event(fd,event,x,y);
 		if ( x != 0 && y != 0 ) {
-			printf("x=%x,y=%x\n",x,y);
-			x = 0;y = 0;
+			if ( event.time.tv_sec - last_time_sec >= 1 || (event.time.tv_usec - last_time_usec >= 600000 && event.time.tv_sec - last_time_sec == 0) ) {
+				printf("x=%x,y=%x time: %ld %ld\n",x,y,event.time.tv_sec,event.time.tv_usec);
+				last_time_sec  = event.time.tv_sec;
+				last_time_usec = event.time.tv_usec;
+				x = 0;y = 0;
+			}
 		}
 		else  // 如果都是0,那就跳过 break
 			continue;
