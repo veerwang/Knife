@@ -26,19 +26,41 @@
 #include 	<string.h>
  
 
-int main(int argc, const char *argv[])
-{
+void read_event(int fd,input_event& event, int &x,int &y) {
+	memset(&event,0,sizeof(event));
+	read(fd,&event,sizeof(event));
+	if ( event.type == EV_ABS ) {
+		if ( event.code == ABS_X )
+			x = event.value;
+		if ( event.code == ABS_Y )
+			y = event.value;
+	}
+}
+
+int main(int argc, const char *argv[]) {
 	std::cout << "input event programe" << std::endl;
 	int fd = -1;
 	struct input_event event; 
 	char *tmp;
 
-	fd = open("/dev/input/by-id/usb-VMware_VMware_Virtual_USB_Mouse-event-mouse",O_RDWR|O_NONBLOCK);
+	fd = open("/dev/input/event2",O_RDWR|O_NONBLOCK);
 	if ( fd == -1 ) {
 		perror("open file fail");
 		return EXIT_SUCCESS;
 	}
 
+	int x = 0; int y = 0;
+	while(1) {
+		read_event(fd,event,x,y);
+		if ( x != 0 && y != 0 ) {
+			printf("x=%x,y=%x\n",x,y);
+			x = 0;y = 0;
+		}
+		else  // 如果都是0,那就跳过 break
+			continue;
+	}
+
+	/*
 	while(1) {
 		memset(&event,0,sizeof(event));
 		read(fd,&event,sizeof(event));
@@ -96,7 +118,7 @@ int main(int argc, const char *argv[])
 					case ABS_MISC:     tmp = "MISC";     break;  
 					default:           tmp = "UNKNOWN";  break;  
 				}  
-				printf("Absolute %s %d", tmp, event.value);  
+				printf("Absolute %s %d\n", tmp, event.value);  
 				break;  
 			case EV_MSC: printf("Misc"); break;  
 			case EV_LED: printf("Led");  break;  
@@ -104,8 +126,9 @@ int main(int argc, const char *argv[])
 			case EV_REP: printf("Rep");  break;  
 			case EV_FF:  printf("FF");   break;  
 				     break;  
-		}  
+		}
 	}
+	*/
 
 	close(fd);
 	return EXIT_SUCCESS;
