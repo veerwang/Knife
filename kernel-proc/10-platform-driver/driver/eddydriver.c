@@ -199,7 +199,7 @@ MODULE_DEVICE_TABLE(of, eddy_of_match);
 
 static struct platform_driver eddy_driver = {
 	.driver = {
-		.name = DRIVER_NAME,
+		.name = DRIVER_NAME,    // 与platform_device中的要一样
 		.owner = THIS_MODULE,
 		.of_match_table	= eddy_of_match,
 	},

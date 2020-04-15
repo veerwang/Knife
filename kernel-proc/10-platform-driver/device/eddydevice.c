@@ -27,7 +27,7 @@ static void eddy_release(struct device * dev)       //释放函数
 {}
 
 static struct platform_device eddy_dev = {
-    .name         = "eddy",                    //对应的platform_driver驱动的名字
+    .name         = "eddy",                    //对应的platform_driver驱动的名字 要与platform_device一样
     .id       = -1,                                    //表示只有一个设备
     .num_resources    = ARRAY_SIZE(eddy_resource),        //资源数量,ARRAY_SIZE()函数:获取数量
     .resource     = eddy_resource,      //资源数组led_resource
