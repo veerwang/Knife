@@ -1,19 +1,7 @@
 /*  eddy.c - The simplest kernel module.
 
-* Copyright (C) 2013 - 2016 Xilinx, Inc
-*
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
-
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-*
-*   You should have received a copy of the GNU General Public License along
-*   with this program. If not, see <http://www.gnu.org/licenses/>.
+注意会在该路径下添加这个设备节点
+/sys/bus/platform/drivers/eddy
 
 */
 #include <linux/kernel.h>
@@ -146,7 +134,7 @@ static int eddy_remove(struct platform_device *pdev)
 }
 
 static struct of_device_id eddy_of_match[] = {
-	{ .compatible = "vendor,eddy", },
+	{ .compatible = "vendor eddy", },
 	{ /* end of list */ },
 };
 MODULE_DEVICE_TABLE(of, eddy_of_match);
