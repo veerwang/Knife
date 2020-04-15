@@ -4,8 +4,8 @@
 # cat /var/log/syslog
 
 # ko模块的名字
-obj-m := eddy.o 
-miscdrv-objs := eddydriver.o
+obj-m := eddydriver.o
+eddydriver-objs := eddy.o
 
 KVERSION  = $(shell uname -r)
 KERNELDIR = /usr/src/linux-headers-$(KVERSION)
