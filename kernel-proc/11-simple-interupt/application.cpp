@@ -27,6 +27,9 @@
 
 /* cat /proc/interrupts 查看各个中断号情况  */
 
+// 网页资料
+// http://edsionte.com/techblog/archives/1539
+
 int main(int argc, const char *argv[]) {
 	std::cout << "Programe Version 1.0.0" << std::endl;	
 
