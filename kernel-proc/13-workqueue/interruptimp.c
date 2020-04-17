@@ -6,8 +6,9 @@
 
 static char* interface = "intimp";
 static int irq = 1;
+static int looptimes = 100;
+
 void workqueue_fn(struct work_struct *work);
-static int looptimes = 10;
 
 static void workqueue_handler(struct work_struct *work) {
     printk("This is workqueue handler.. %d\n",looptimes);
@@ -36,5 +37,6 @@ int init_interrupt_request(void) {
 
 /* 释放中断处理函数 */
 void release_interrupt_request(void) {
+	cancel_work_sync(&workqueue);
 	free_irq(irq,&irq);
 }
