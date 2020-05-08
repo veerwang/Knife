@@ -37,6 +37,12 @@ struct ImplOf<colorfactory> {
 	void init_color_element();
 };
 
+#define COLORMACRO(VALUE) { \
+		e.name 	= std::string(#VALUE); \
+		e.color = graphic::VALUE; \
+		mlist.push_back(e); \
+		} while( 0 );
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  init_color_element 
