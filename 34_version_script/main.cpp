@@ -20,13 +20,13 @@
 #include 	<cstdio>
 #include 	<iostream>
 
-/* version V1.0.0 */
-void 
-display_version() {
-	std::cout << "This version V1.0.0" << std::endl;
-}
+void display_version();
+void do_action();
 
-void 
-do_action() {
-	std::cout << "Do action start" << std::endl;
+int main(int argc, const char *argv[])
+{
+	std::cout << "Programe Test V1.0.0" << std::endl;	
+	display_version();
+	do_action();
+	return EXIT_SUCCESS;
 }
