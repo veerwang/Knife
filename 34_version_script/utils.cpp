@@ -30,3 +30,10 @@ void
 do_action() {
 	std::cout << "Do action start" << std::endl;
 }
+
+/* 由于该函数没有导出，因此不能被其他模块调用 */
+void 
+private_function() {
+
+	std::cout << "private function" << std::endl;
+}
