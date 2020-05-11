@@ -22,11 +22,15 @@
 
 extern "C" void display_version();
 void do_action();
+void display_version_2();
+extern "C" void drawme();
 
 int main(int argc, const char *argv[])
 {
 	std::cout << "Programe Test V1.0.0" << std::endl;	
 	display_version();
 	do_action();
+	display_version_2();
+	drawme();
 	return EXIT_SUCCESS;
 }

@@ -9,6 +9,7 @@ local:
 VERS_2 {
 global:
 	*display_version_2*;
+	drawme;
 local:
 	*;
-};
+} ;

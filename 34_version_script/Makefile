@@ -1,6 +1,6 @@
 all: utils.o
 	g++ --shared -o libutils.so utils.o -Wl,--version-script,libutils.vers
-	g++ -o play main.cpp -DVERS_1 -L ./ -lutils -Wl,-rpath .
+	g++ -o play main.cpp -L ./ -lutils -Wl,-rpath .
 
 utils.o:
 	g++ -fPIC -c utils.cpp

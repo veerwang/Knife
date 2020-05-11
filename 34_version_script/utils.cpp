@@ -43,3 +43,8 @@ void
 display_version_2() {
 	std::cout << "This version V2.0.0" << std::endl;
 }
+
+extern "C" void 
+drawme() {
+	std::cout << "drawme version 2.0" << std::endl;
+}
