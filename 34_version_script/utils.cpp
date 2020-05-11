@@ -21,7 +21,7 @@
 #include 	<iostream>
 
 /* version V1.0.0 */
-void 
+extern "C" void 
 display_version() {
 	std::cout << "This version V1.0.0" << std::endl;
 }
@@ -36,4 +36,10 @@ void
 private_function() {
 
 	std::cout << "private function" << std::endl;
+}
+
+/* version V2.0.0 */
+void
+display_version_2() {
+	std::cout << "This version V2.0.0" << std::endl;
 }

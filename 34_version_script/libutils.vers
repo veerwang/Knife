@@ -1,7 +1,14 @@
 VERS_1 {
 global:
-	*display_version*;
+	display_version;
 	*do_action*;
+local:
+	*;
+};
+
+VERS_2 {
+global:
+	*display_version_2*;
 local:
 	*;
 };

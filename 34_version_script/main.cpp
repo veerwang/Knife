@@ -20,7 +20,7 @@
 #include 	<cstdio>
 #include 	<iostream>
 
-void display_version();
+extern "C" void display_version();
 void do_action();
 
 int main(int argc, const char *argv[])
