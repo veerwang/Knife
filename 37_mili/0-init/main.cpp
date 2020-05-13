@@ -67,8 +67,8 @@ private:
 	
 };
 
-int main(int argc, const char *argv[])
-{
+int 
+main(int argc, const char *argv[]) {
 	std::cout << "mili test" << std::endl;
 
 	mili::Factory<std::string, object, int> shapes_factory; 
