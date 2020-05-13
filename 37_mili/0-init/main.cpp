@@ -19,6 +19,8 @@
 #include 	<cstdlib>
 #include 	<cstdio>
 #include 	<iostream>
+#include 	<vector>
+#include 	<set>
 
 #include	<mili/mili.h>
 
@@ -67,6 +69,8 @@ private:
 	
 };
 
+struct S {};
+
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "mili test" << std::endl;
@@ -77,6 +81,12 @@ main(int argc, const char *argv[]) {
 
 	object* obj = shapes_factory.new_class("circle",10);
 	obj->drawme();
+
+	std::cout << bool(mili::template_info<S>::is_native) << std::endl;
+	std::cout << bool(mili::template_info<char>::is_native) << std::endl;
+	std::cout << bool(mili::template_info<int>::is_same_size<long int>::value) << std::endl;
+	std::cout << bool(mili::template_info<std::vector<int> >::is_container) << std::endl;
+	std::cout << bool(mili::template_info<std::set<int> >::is_container) << std::endl;
 
 	return EXIT_SUCCESS;
 }
