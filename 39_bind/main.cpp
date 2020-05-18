@@ -21,6 +21,8 @@
 #include 	<iostream>
 #include 	<functional>
 
+#include 	"basic.h"
+
 int 
 add(int x1,int x2) {
 	return x1 + x2;
@@ -39,8 +41,17 @@ private:
 	
 };
 
-int main(int argc, const char *argv[])
-{
+template<typename T>
+class ginterface {
+public:
+	ginterface () {;}
+	ginterface (const ginterface&) {;}
+	virtual ~ginterface() {;}
+
+	void display(void) { std::cout << "ginterface" << std::endl;;}
+};
+
+int main(int argc, const char *argv[]) {
 	/* auto -std=c++11  */
 	auto fun = std::bind(add,std::placeholders::_1,std::placeholders::_2);
 	std::cout << "bind test" << std::endl;
@@ -50,6 +61,15 @@ int main(int argc, const char *argv[])
 	typedef std::function<int (int,int)> Interface;
 	Interface classfun = std::bind(&object::add,&obj,std::placeholders::_1,std::placeholders::_2);
 	std::cout << "result-2:= " << classfun(10,20) << std::endl;
+
+	typedef std::function<void (void)> GINTERFACE;
+	ginterface<int> gi;
+	GINTERFACE gf = std::bind(&ginterface<int>::display,&gi);
+	gf();
+
+	basic bb;
+
+
 
 	return EXIT_SUCCESS;
 }
