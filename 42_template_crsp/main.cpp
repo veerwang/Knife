@@ -58,6 +58,8 @@ main(int argc, const char *argv[]) {
 	tvalue.mName = "WangWei";
 	std::cout << tvalue.mName << std::endl;
 
+	//object obj;
+	human<tobject<int>> hm;
 
 	return EXIT_SUCCESS;
 }
