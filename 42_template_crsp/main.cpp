@@ -30,7 +30,7 @@ public:
 	int getId() { return mId; }
 protected:
 	int mId;
-	
+ff	
 private:
 };
 
