@@ -21,6 +21,7 @@
 #include 	<cstdlib>
 #include 	<cstdio>
 #include 	<iostream>
+#include	<ctime>
 
 #include	<fmt/color.h>
 #include	<fmt/format.h>
@@ -49,6 +50,9 @@ int main(int argc, const char *argv[]) {
 
 	fmt::print("{}\n", std::numeric_limits<double>::infinity());
 
+	std::time_t t = std::time(nullptr);
+	std::localtime(&t);
+	//fmt::print("The date is {:%Y-%m-%d}.\n", *std::localtime(&t));
 
 	return EXIT_SUCCESS;
 }
