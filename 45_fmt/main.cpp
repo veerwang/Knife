@@ -42,8 +42,9 @@ int main(int argc, const char *argv[]) {
 	// 打印生成错误码
 	fmt::print(stderr, "System error code = {}\n", errno);
 
+	// 可以有颜色显示
 	using namespace fmt::literals;
-	fmt::print("Hello, {name}! The answer is {number}. Goodbye, {name}.\n",
+	fmt::print(fg(fmt::color::red),"Hello, {name}! The answer is {number}. Goodbye, {name}.\n",
 			"name"_a="World", "number"_a=42);
 
 	fmt::print("{}\n", std::numeric_limits<double>::infinity());
