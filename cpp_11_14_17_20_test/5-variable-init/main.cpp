@@ -29,8 +29,10 @@ public:
 
 	void display() {
 		std::cout << "id = " << id << std::endl;
+		std::cout << "name = " << name << std::endl;
 	}
 
+	const std::string name = {"kevin"};
 protected:
 	
 private:
