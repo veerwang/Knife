@@ -1,0 +1,5 @@
+1.获取数据的命令
+ifconfig | grep inet | grep -v inet6
+
+2.参考网路链接
+https://cloud.tencent.com/developer/article/1159061
