@@ -1,0 +1,6 @@
+总用量 24
+drwxrwxr-x 2 kevin kevin  4096 6月  30 16:52 .
+drwxrwxr-x 7 kevin kevin  4096 6月  30 16:48 ..
+-rw-rw-r-- 1 kevin kevin     0 6月  30 16:52 data.txt
+-rwxrwxr-x 1 kevin kevin   615 6月  30 16:52 run.sh
+-rw-r--r-- 1 kevin kevin 12288 6月  30 16:52 .run.sh.swp
