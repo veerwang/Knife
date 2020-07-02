@@ -7,6 +7,9 @@
 #include <linux/device.h>  
 #include <linux/miscdevice.h>
 #include <linux/fs.h>
+#include <linux/of_address.h>
+#include <linux/of_device.h>
+#include <linux/of_platform.h>
 
 /*
 #define KERN_EMERG     "<0>"
@@ -26,6 +29,7 @@ MODULE_DESCRIPTION("eddy project practice for platform driver and device");
 
 #define MODULE_NAME  "eddydrv"
 #define DEVICE_NAME  MODULE_NAME
+#define DRIVER_NAME  MODULE_NAME
 
 #define __FILENAME__  (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
