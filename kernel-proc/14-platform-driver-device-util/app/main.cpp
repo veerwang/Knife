@@ -28,8 +28,8 @@
 int main(int argc, const char *argv[]) {
 	std::cout << "driver test" << std::endl;	
 	FILE* fp = NULL;
-	if ( (fp = fopen("/dev/eddydriver","a+")) == NULL ) {
-		perror("open /dev/eddy0 fail");
+	if ( (fp = fopen("/dev/eddydrv","a+")) == NULL ) {
+		perror("open /dev/eddydrv fail");
 		return EXIT_SUCCESS;
 	}
 
