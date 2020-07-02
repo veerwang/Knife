@@ -3,6 +3,7 @@
 注意会在该路径下添加这个设备节点
 /sys/bus/platform/drivers/eddy
 
+
 */
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -31,6 +32,7 @@ MODULE_DESCRIPTION
 unsigned myint = 0xdeadbeef;
 char *mystr = "default";
 
+/* insmod eddydrv.ko myint=1024 mystr=kevin  */
 module_param(myint, int, S_IRUGO);
 module_param(mystr, charp, S_IRUGO);
 
