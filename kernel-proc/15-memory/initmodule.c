@@ -3,6 +3,7 @@
 #include <linux/miscdevice.h>
 #include <linux/fs.h>
 #include <linux/mm.h>
+#include <linux/vmalloc.h>
 
 /* 参考网络链接 */
 // https://www.cnblogs.com/xiaojiang1025/p/6375811.html
@@ -13,7 +14,14 @@
 #define DEVICE_NAME "miscdev_memory"
 
 /* 内部存储指针 */
-static unsigned char* buffer = NULL;
+/* 由kmalloc申请，可以被用在中断上下文中 */
+static unsigned char* buffer  = NULL;
+
+/* 使用vmalloc的函数进行申请 */
+static unsigned char* vbuffer = NULL;
+
+/* 虚拟内存长度 */
+static int MAXVBUFLENGTH = 1024 * 1024;
 
 //实现open函数
 int my_misc_dev_open(struct inode *inode, struct file *filp) {
@@ -29,10 +37,28 @@ int my_misc_dev_open(struct inode *inode, struct file *filp) {
 
 	GFP_ATOMIC就可以用于上述三种情境,这个flag表示如果申请的内存不能用，则立即返回。
 	*/
-	buffer = (unsigned char *)kmalloc(PAGE_SIZE,GFP_KERNEL); 
+
+	/*
+	flags 的参考用法： 
+	　|– 进程上下文，可以睡眠　　　　　GFP_KERNEL 
+	　|– 进程上下文，不可以睡眠　　　　GFP_ATOMIC 
+	　|　　|– 中断处理程序　　　　　　　GFP_ATOMIC 
+	　|　　|– 软中断　　　　　　　　　　GFP_ATOMIC 
+	　|　　|– Tasklet　　　　　　　　　GFP_ATOMIC 
+	　|– 用于DMA的内存，可以睡眠　　　GFP_DMA | GFP_KERNEL 
+	　|– 用于DMA的内存，不可以睡眠　　GFP_DMA |GFP_ATOMIC 
+	*/
+
+	buffer = (unsigned char *)kmalloc(PAGE_SIZE,GFP_KERNEL);
 	/* 注意使用kmalloc函数只能申请小于 PAGE_SIZE的物理连续的地址 */
 	for ( i = 0; i < PAGE_SIZE; i++ ) {
-		buffer[i] = i;
+		buffer[i]  = i;
+	}
+
+	/* 大内存申请，不可用于中断上下文 */
+	vbuffer = (unsigned char *)vmalloc(MAXVBUFLENGTH);
+	for ( i = 0; i < MAXVBUFLENGTH; i++ ) {
+		vbuffer[i] = 0x55; 
 	}
 
 	printk("kernel memory virtual addr  = %p\n",buffer);
@@ -58,8 +84,8 @@ static int my_misc_dev_mmap(struct file *filp, struct vm_area_struct *vma) {
 	//
 	if(remap_pfn_range(vma,start,page>>PAGE_SHIFT,size,PAGE_SHARED))	//第三个参数是页帧号，由物理地址右移PAGE_SHIFT得到 
 		return -1; 
-	buffer[0] = 0xaa; 
-	buffer[1] = 0x55; 
+	printk("[-2] %02x\n",vbuffer[MAXVBUFLENGTH-2]);
+	printk("[-1] %02x\n",vbuffer[MAXVBUFLENGTH-1]);
 
 	printk("remap finish!\n");
 	return 0;
@@ -67,8 +93,9 @@ static int my_misc_dev_mmap(struct file *filp, struct vm_area_struct *vma) {
 
 //实现close函数
 int my_misc_dev_close(struct inode *inode, struct file *filp) {
-	printk("minipc misc dev close!\n");
+	vfree(vbuffer);
 	kfree(buffer);
+	printk("minipc misc dev close!\n");
 	return 0 ;
 }
 
