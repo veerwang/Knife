@@ -15,6 +15,10 @@
 */
 
 MODULE_LICENSE("shaohef  BSD/GPL");
+
+#ifdef ANDROID_1
+fff
+#endif
  
 static int __init initmodule_start(void)
 {
