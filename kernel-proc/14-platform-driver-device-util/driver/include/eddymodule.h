@@ -23,6 +23,7 @@
 级别越小，越紧急
 */
 
+MODULE_VERSION("1.0.0");  
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("kevin.wang");
 MODULE_DESCRIPTION("eddy project practice for platform driver and device");

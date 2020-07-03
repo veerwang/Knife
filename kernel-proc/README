@@ -2,3 +2,15 @@
 
 2.linux驱动的学习网站
 https://embetronicx.com/tutorials/linux/device-drivers/workqueue-in-linux-kernel/
+
+3. 解决设备节点权限不够的问题
+https://stackoverrun.com/cn/q/7980460
+a.编写相关文件
+/etc/udev/rules.d
+
+b.vim 98-miscdev-memory.rules
+KERNEL=="miscdev_memory", MODE="0666"
+其中:miscdev_memory是设备节点的名称
+
+c.重新载入udev
+sudo udevadm trigger
