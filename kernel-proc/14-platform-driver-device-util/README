@@ -1,1 +1,8 @@
 本工程创建一个完整的基于platform的驱动与工程应用范例
+
+1.app 应用程序，最后调用
+2.driver/eddydrv  该模块先编译,并且插入内核
+3.driver/eddydev  该模块后编译，并且插入内核
+4.当eddydev模块插入内核以后，会调用eddydrv中的probe函数，并且在这个eddydrv中创建/dev/eddydrv这个设备节点
+
+本实验的主要目的是实现platform框架的功能，该驱动模型将driver与device进行分离
