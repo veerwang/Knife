@@ -14,3 +14,5 @@ KERNEL=="miscdev_memory", MODE="0666"
 
 c.重新载入udev
 sudo udevadm trigger
+
+4.modinto xxx.ko 查看模块的内容
