@@ -3,6 +3,9 @@
 2.linux驱动的学习网站
 https://embetronicx.com/tutorials/linux/device-drivers/workqueue-in-linux-kernel/
 
+2.5.非常有意思的驱动的网站
+https://www.cnblogs.com/downey-blog/p/10507703.html
+
 3. 解决设备节点权限不够的问题
 https://stackoverrun.com/cn/q/7980460
 a.编写相关文件
