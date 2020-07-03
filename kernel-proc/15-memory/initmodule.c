@@ -58,6 +58,10 @@ static int my_misc_dev_mmap(struct file *filp, struct vm_area_struct *vma) {
 	//
 	if(remap_pfn_range(vma,start,page>>PAGE_SHIFT,size,PAGE_SHARED))	//第三个参数是页帧号，由物理地址右移PAGE_SHIFT得到 
 		return -1; 
+	buffer[0] = 0xaa; 
+	buffer[1] = 0x55; 
+
+	printk("remap finish!\n");
 	return 0;
 }
 

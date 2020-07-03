@@ -41,8 +41,8 @@ int main(int argc, const char *argv[]) {
 		return EXIT_SUCCESS;
 	}
 
-	for ( int i=0;i<4096;i++ )
-		std::cout << p_map[i] << std::endl;
+	for ( int i=0;i<256;i++ )
+		printf("x[%d] = %02x\n",i,p_map[i]);
 	munmap(p_map,4096);
 	close(fp);
 	return EXIT_SUCCESS;
