@@ -21,10 +21,8 @@
 #include 	<iostream>
 #include	<regex>
 
-int
-main(int argc, const char *argv[]) {
-	std::cout << "regex test V1.0.0" << std::endl;
-
+void 
+test_case1() {
 	std::string fnames[] = { "abc.txt","ccc.txt","wang.txt" };
 	std::regex text_regex("[a-z]*c\\.txt");
 
@@ -33,6 +31,39 @@ main(int argc, const char *argv[]) {
 	for( const auto &fname : fnames ) {
 		std::cout << fname << ":" << std::regex_match(fname,text_regex) << std::endl;
 	}
+}
 
+void
+test_case2() {
+	std::string fnames[] = { "color","colour","colosr" };
+	std::regex text_regex("colou?r");
+
+	// ? 之前的字母可以存在，也可以不存在 
+
+	for( const auto &fname : fnames ) {
+		std::cout << fname << ":" << std::regex_match(fname,text_regex) << std::endl;
+	}
+}
+
+void
+test_case3() {
+	std::string fnames[] = { "color","colour","colosr" };
+	std::regex text_regex("colou?r");
+
+	// ? 之前的字母可以存在，也可以不存在 
+
+	for( const auto &fname : fnames ) {
+		std::cout << fname << ":" << std::regex_match(fname,text_regex) << std::endl;
+	}
+}
+
+int
+main(int argc, const char *argv[]) {
+	std::cout << "regex test V1.0.0" << std::endl;
+	test_case1();
+	std::cout << "------" << std::endl;
+	test_case2();
+	std::cout << "------" << std::endl;
+	test_case3();
 	return EXIT_SUCCESS;
 }
