@@ -3,10 +3,12 @@
 #include <linux/miscdevice.h>
 #include <linux/fs.h>
 #include <linux/slab.h>
+#include <linux/uaccess.h>
+#include <linux/vmalloc.h>
 
 #define DEVICE_NAME "miscdev_memory"
 
-static unsigned char* k_buffer = NULL;
+static unsigned char *k_buffer = NULL;
 
 void 
 init_internal_data(void) {
@@ -29,14 +31,18 @@ release_internal_data(void) {
 
 //实现read函数
 static ssize_t my_misc_dev_read(struct file *filep, char __user *buf, size_t length, loff_t *offset) {
+	int i;
 	printk("read fun: length = %ld  offset = %lld\n",length,*offset);
-	return length;
+	for (i=0;i<length;i++) {
+		k_buffer[i] += 2;
+	}
+	return copy_to_user(buf,k_buffer,length);
 }
  
 //实现write数
 static ssize_t my_misc_dev_write(struct file *filep, const char __user *buf, size_t length, loff_t *offset) {
 	printk("write fun: length = %ld  offset = %lld\n",length,*offset);
-	return length;
+	return copy_from_user(k_buffer,buf,length);
 }
 
 //实现open函数

@@ -27,25 +27,29 @@
 
 int main(int argc, const char *argv[]) {
 	std::cout << "driver test" << std::endl;	
-	FILE* fp = NULL;
-	if ( (fp = fopen("/dev/miscdev_memory","a+")) == NULL ) {
+	int fp = 0;
+	if ( (fp = open("/dev/miscdev_memory",O_RDWR)) == -1 ) {
 		perror("open /dev/miscdev fail");
 		return EXIT_SUCCESS;
 	}
 
 	unsigned char buf[20];
 	for (int i=0;i<20;i++) {
-		buf[i] = i;
+		buf[i] = i + 2;
 	}
 
-	result = fwrite(buf,1,20,fp);
+	int result = write(fp,buf,20);
 	if (!result)
 		perror("write data fail");
 
-	int result = fread(buf,1,20,fp);
+	result = read(fp,buf,20);
 	if (!result)
 		perror("read data fail");
 
-	fclose(fp);
+	for (int i=0;i<20;i++) {
+		printf("data[%d] = %d\n",i,buf[i]);
+	}
+
+	close(fp);
 	return EXIT_SUCCESS;
 }
