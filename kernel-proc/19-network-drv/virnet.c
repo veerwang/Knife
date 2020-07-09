@@ -47,7 +47,7 @@ static int virnet_init(void)
     // 创建一个网络设备，名为“virnet%d"，kernel会自动填写%d为网卡编号
     //sg_dev=alloc_netdev(0,"virnet%d",ether_setup);
     // kernel 4.4.0-97上需要四个参数如下
-    sg_dev=alloc_netdev(0,"kevinnet%d", NET_NAME_UNKNOWN, ether_setup);
+    sg_dev=alloc_netdev(0,"virnet%d", NET_NAME_UNKNOWN, ether_setup);
     // 该网络设备的操作集
     sg_dev->netdev_ops=&sg_ops;
     // MAC地址是01:02:03:04:05:06
