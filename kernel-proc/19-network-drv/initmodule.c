@@ -233,7 +233,7 @@ int snull_tx(struct sk_buff *skb, struct net_device *dev)
   
     int len;
     char *data;
-    struct snull_priv *priv = (struct snull_priv *) dev->priv;
+    struct snull_priv *priv = netdev_priv(dev);
  
     if ( skb == NULL) {
         PDEBUG("tint for %p,  skb %p/n", dev,  skb);
@@ -257,7 +257,7 @@ int snull_tx(struct sk_buff *skb, struct net_device *dev)
 void snull_tx_timeout (struct net_device *dev)
 {
    printk("call snull_tx_timeout/n");
-    struct snull_priv *priv = (struct snull_priv *) dev->priv;
+    struct snull_priv *priv = netdev_priv(dev);
     PDEBUG("Transmit timeout at %ld, latency %ld/n", jiffies,
                     jiffies - dev->trans_start);
     priv->status = SNULL_TX_INTR;
@@ -281,7 +281,7 @@ int snull_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
  */
 struct net_device_stats *snull_stats(struct net_device *dev)
 {
-    struct snull_priv *priv = (struct snull_priv *) dev->priv;
+    struct snull_priv *priv = netdev_priv(dev);
     return &priv->stats;//得到统计资料信息
 }
  
@@ -289,6 +289,8 @@ struct net_device_stats *snull_stats(struct net_device *dev)
 //设备初始化函数
 int snull_init(struct net_device *dev)
 {
+	struct snull_priv* sp;
+
    printk("call snull_init/n");
  
     /*
@@ -318,11 +320,16 @@ int snull_init(struct net_device *dev)
      * and a few private fields.
      */
 //为priv分配内存
+/*
     dev->priv = kmalloc(sizeof(struct snull_priv), GFP_KERNEL);
-  if (dev->priv == NULL)
+    if (dev->priv == NULL)
        return -ENOMEM;
     memset(dev->priv, 0, sizeof(struct snull_priv));
     spin_lock_init(& ((struct snull_priv *) dev->priv)->lock);
+*/
+    sp = netdev_priv(dev);
+    spin_lock_init(&sp->lock);
+
     return 0;
 }
  
@@ -348,7 +355,6 @@ void snull_cleanup(void)
     int i;
  
     for (i=0; i<2;  i++) {
-        kfree(snull_devs[i].priv);
         unregister_netdev(snull_devs+i);
     }
     return;

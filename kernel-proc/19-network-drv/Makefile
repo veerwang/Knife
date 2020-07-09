@@ -4,6 +4,7 @@
 # cat /var/log/syslog
 
 obj-m :=virnet.o
+#obj-m :=initmodule.o
 KVERSION  = $(shell uname -r)
 KERNELDIR = /usr/src/linux-headers-$(KVERSION)
 all:
