@@ -21,6 +21,7 @@ properties: A minimal library that implements object properties.
 
 #include <iostream>
 #include "mili/mili.h"
+#include "object.h"
 
 using namespace mili;
 using namespace std;
@@ -69,14 +70,19 @@ private:
     float _celcius;
 };
 
-int main()
-{
+int main() {
     TemperatureSensor s;
     s.kelvin = 0;
     float f = s.celcius;
 
     std::cout << f << std::endl;
     std::cout << sizeof(s) << std::endl;
+
+    std::cout << "--------------" << std::endl;
+
+    object obj;
+    obj.id = 100;
+    std::cout << "obj.id = " << obj.id << std::endl;
 
     return 0;
 }
