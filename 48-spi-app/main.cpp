@@ -65,7 +65,7 @@ void set_parameters() {
 	/* 标准三线制 */
 	mode |= SPI_3WIRE;
 
-	/* 低字节在前 */
+	/* 低字节在前,可能需要修改 */
 	mode |= SPI_LSB_FIRST;
 
 	/* 发送完数据之后，不进行片选 */
