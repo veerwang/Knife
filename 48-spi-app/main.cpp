@@ -59,12 +59,17 @@ void init_spi_handle() {
 void set_parameters() {
 	int ret = 0;
 
-	
-	/*三线制 */
-	//mode |= SPI_3WIRE;
+	/* 低电平空闲，在第一个slk边缘采样 */
+	mode |= SPI_MODE_0;
+
+	/* 标准三线制 */
+	mode |= SPI_3WIRE;
 
 	/* 低字节在前 */
 	mode |= SPI_LSB_FIRST;
+
+	/* 发送完数据之后，不进行片选 */
+	mode |= SPI_NO_CS;
 
 	ret = ioctl(fd, SPI_IOC_WR_MODE32, &mode);
 	if (ret == -1)
@@ -106,9 +111,12 @@ void release_spi_handle() {
 
 void send_data(uint16_t value) {
 	int ret;
+	/*设置数据 */
+	//sprintf((char *)tx,"%2x",value);
+
 	struct spi_ioc_transfer tr;
-	tr.tx_buf = (unsigned long)tx,
-	tr.rx_buf = (unsigned long)rx,
+	tr.tx_buf = (unsigned long)(&value);
+	tr.rx_buf = (unsigned long)rx;
 	tr.len = 2;
 	// 10ms delay
 	tr.delay_usecs = delay;
@@ -117,9 +125,7 @@ void send_data(uint16_t value) {
 	// 16bits a word
 	tr.bits_per_word = bits;
 
-	/*设置数据 */
-	sprintf((char *)tx,"%2x",value);
-
+	/* 这里是标准三线制 */
 	if (mode & SPI_TX_QUAD)
 		tr.tx_nbits = 4;
 	else if (mode & SPI_TX_DUAL)
@@ -149,6 +155,7 @@ int main(int argc, const char *argv[]) {
 
 	set_parameters();
 
+	/* 需要按照实际的要求来 */
 	send_data(0x5A5A);
 	send_data(0xA5A5);
 
