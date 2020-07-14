@@ -1,8 +1,8 @@
 /*
-platform-detection:
+properties: A minimal library that implements object properties.
     This file is part of the MiLi Minimalistic Library.
 
-    Copyright (C) Daniel Muñoz, FuDePAN 2012
+    Copyright (C) Daniel Gutson, FuDePAN 2009
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt in the root directory or 
     copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,99 +18,65 @@ platform-detection:
     This is an example file.
 */
 
+
 #include <iostream>
 #include "mili/mili.h"
 
-/* Operating System example */
-#if defined (MILI_OS)
-#    if   MILI_OS == MILI_OS_LINUX
-#        define OS_STRING "Linux"
-#    elif MILI_OS == MILI_OS_WINDOWS
-#        define OS_STRING "Windows"
-#    elif MILI_OS == MILI_OS_MAC
-#        define OS_STRING "Mac"
-#    elif MILI_OS == MILI_OS_UNKNOWN
-#        define OS_STRING "Unknown"
-#    else
-#        define OS_STRING "Error (MILI_OS has an invalid value)"
-#    endif
+using namespace mili;
+using namespace std;
 
-#else /* !defined (MILI_OS) */
-#    define OS_STRING "Error (MILI_OS is not defined)"
+class TemperatureSensor
+{
+private:
+    float get_celcius() const
+    {
+        return _celcius;
+    };
 
-#endif /* defined (MILI_OS) */
+    void set_celcius(float val)
+    {
+        _celcius = val;
+    }
 
-/* Compiler example */
-#if defined (MILI_COMPILER)
-#    if   MILI_COMPILER == MILI_COMPILER_VS
-#        define COMPILER_STRING "Visual C++"
-#    elif MILI_COMPILER == MILI_COMPILER_GCC
-#        define COMPILER_STRING "GNU-GCC"
-#    elif MILI_COMPILER == MILI_COMPILER_ICC
-#        define COMPILER_STRING "Intel C/C++"
-#    elif MILI_COMPILER == MILI_COMPILER_UNKNOWN
-#        define COMPILER_STRING "Unknown"
-#    else
-#        define COMPILER_STRING "Error (MILI_COMPILER has an invalid value)"
-#    endif
+    float get_farenheit() const
+    {
+        return _celcius * (9.0f / 5.0f) + 32.0f;
+    }
 
-#else /* !defined (MILI_COMPILER) */
-#    define COMPILER_STRING "Error (MILI_COMPILER is not defined)"
+    void set_farenheit(float f)
+    {
+        _celcius = (f - 32.0f) * (5.0f / 9.0f);
+    }
 
-#endif /* defined (MILI_COMPILER) */
+    float get_kelvin() const
+    {
+        return _celcius + 273.15f;
+    }
+
+    void set_kelvin(float k)
+    {
+        _celcius = k - 273.15f;
+    }
+
+public:
+    PROPERTIES
+    {
+        PropertyRW<TemperatureSensor, float, &TemperatureSensor::get_celcius,   &TemperatureSensor::set_celcius>   celcius;
+        PropertyRW<TemperatureSensor, float, &TemperatureSensor::get_farenheit, &TemperatureSensor::set_farenheit> farenheit;
+        PropertyRW<TemperatureSensor, float, &TemperatureSensor::get_kelvin,    &TemperatureSensor::set_kelvin>    kelvin;
+    };
+private:
+    float _celcius;
+};
 
 int main()
 {
-    int result = EXIT_SUCCESS;
+    TemperatureSensor s;
+    s.kelvin = 0;
+    float f = s.celcius;
 
-    std::cout<<"switch/case output: ";
+    std::cout << f << std::endl;
+    std::cout << sizeof(s) << std::endl;
 
-    /* Another Operating System example */
-    switch(MILI_OS)
-    {
-        case MILI_OS_LINUX:
-            std::cout<<"Linux"; 
-            break;
-        case MILI_OS_WINDOWS:
-            std::cout<<"Windows";
-            break;
-        case MILI_OS_MAC:
-            std::cout<<"Mac";
-            break;
-        case MILI_OS_UNKNOWN:
-            std::cout<<"Unknown";
-            break;
-        default:
-            std::cout<<"Error (MILI_OS has an invalid value)";
-            result = EXIT_FAILURE;
-    }
-
-    std::cout<<" OS / ";
-
-    /* Another Compiler example */
-    switch(MILI_COMPILER)
-    {
-        case MILI_COMPILER_VS:
-            std::cout<<"Visual C++"; 
-            break;
-        case MILI_COMPILER_GCC:
-            std::cout<<"GNU-GCC";
-            break;
-        case MILI_COMPILER_ICC:
-            std::cout<<"Intel C/C++";
-            break;
-        case MILI_COMPILER_UNKNOWN:
-            std::cout<<"Unknown";
-            break;
-        default:
-            std::cout<<"Error (MILI_COMPILER has an invalid value)";
-            result = EXIT_FAILURE;
-    }
-
-    std::cout<<" Compiler"<<std::endl;
-    
-    std::cout<<"Conditional compilation output: " OS_STRING " OS / " COMPILER_STRING " Compiler"<<std::endl;
-
-    return result;
+    return 0;
 }
-
