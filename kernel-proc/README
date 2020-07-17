@@ -19,3 +19,7 @@ c.重新载入udev
 sudo udevadm trigger
 
 4.modinto xxx.ko 查看模块的内容
+
+5.对于声明与使用混合使用的申明
+在Makefile中注意声明
+ccflags-y := -std=gnu99 -Wno-declaration-after-statement

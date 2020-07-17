@@ -3,9 +3,12 @@
 # sudo apt-get install linux-headers-$(uname -r) 
 # cat /var/log/syslog
 
-obj-m :=initmodule.o
+obj-m :=moduleinterface.o initmodule.o
+ccflags-y := -std=gnu99 -Wno-declaration-after-statement
+
 KVERSION  = $(shell uname -r)
 KERNELDIR = /usr/src/linux-headers-$(KVERSION)
+
 all:
 	make -C $(KERNELDIR) M=$(shell pwd) modules
 clean:
