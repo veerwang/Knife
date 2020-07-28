@@ -1,0 +1,20 @@
+/dts-v1/;
+
+/ {
+	compatible = "zynq", "zynq-7000";
+
+	cpus {
+
+		cpu@0 {
+			compatible = "arm cortext-a8";
+		};
+
+		cpu@1 {
+			compatible = "arm cortext-a8";
+		};
+	};
+
+	serial@101F0000 {
+		compatible = "arm,pl011";
+	};
+};
