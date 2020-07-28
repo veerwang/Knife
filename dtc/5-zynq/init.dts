@@ -1,0 +1,22 @@
+/dts-v1/;
+
+/include/ "zynq-7000.dtsi"
+
+/ {
+	aliases {
+		spi0 = &spi0;
+	};
+
+	/*  注意，这边由于之前有aliases，因此可以这样使用
+	spi0 {
+		status = "okay";
+		dr_mode = "host";
+	};
+	*/
+};
+
+/* 注意，是放在根节点之外的 */
+&spi0 {
+	status = "okay";
+	dr_mode = "host";
+};
