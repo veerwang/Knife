@@ -1,0 +1,6 @@
+概念说明
+
+1.dtsi
+device-tree的头文件，一般无需进行修改，一些标准的定义通常放在当中
+
+2.dts普通的device-tree源文件
