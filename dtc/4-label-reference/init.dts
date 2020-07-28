@@ -1,0 +1,43 @@
+/dts-v1/;
+
+/*
+   本文档用于熟悉dtc语法
+*/
+
+/ {
+	// 可以有两个名称
+	compatible = "zynq", "zynq-7000";
+
+	cpus {
+		cpu@0 {
+			compatible = "arm cortext-a8";
+		};
+		cpu@1 {
+			compatible = "arm cortext-a8";
+		};
+	};
+
+serial0: serial@101F0000 { 
+		 compatible = "arm,pl011"; 
+	 };
+
+	 /* 注意这边的用法,这边使用的是label */
+	 @serial0 {
+		status = "okay";
+	 };
+
+	 /*  如过不使用@serial0这样的写法,就只能按照以下的写法这样写了
+	serial@101F0000 {
+		reg = <0x101F0000 0x100>;
+	};
+	*/
+
+	 aliases {
+		serial0 = &serial0;
+	 };
+
+	 /* 由于有别名的存在，那就不用再加@了 */
+	 serial0 {
+		string-prop = "a string";
+	 };
+};
