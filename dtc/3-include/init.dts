@@ -1,0 +1,56 @@
+/dts-v1/;
+
+/*
+   本文档用于熟悉dtc语法
+*/
+
+/include/ "project.dtsi"
+
+/ {
+	// 可以有两个名称
+	compatible = "zynq", "zynq-7000";
+	#address-cells = <1>; 
+	#size-cells = <1>; 
+
+	cpus {
+		cpu@0 {
+			compatible = "arm cortext-a8";
+		};
+
+		cpu@1 {
+			compatible = "arm cortext-a8";
+		};
+
+		cpu@2,3 {
+			compatible = "arm cortext-a8";
+		};
+	};
+
+	/* myserial是一个标签 */
+	myserial: serial@101F0000 { 
+		compatible = "arm,pl011"; 
+		// 注意地址值与名称对应起来
+		reg = <0x101F0000 0x20>;
+
+	};
+
+	/*
+		可选设备节点，不是一个实际的物理节点，可能是传递的信息
+	 */
+	chosen { 
+
+		bootargs = "root=/dev/nfs rw nfsroot=192.168.1.1 console=ttyS0,115200"; 
+	};
+
+	aliases { 
+		// 进行别名
+		serial0 = &myserial;
+		myi2c   = &i2c0;
+	};
+
+	serial0 {
+		interrupt = <2 3>;
+	};
+};
+
+
