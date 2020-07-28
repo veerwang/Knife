@@ -1,0 +1,24 @@
+/dts-v1/;
+
+/*
+   本文档用于熟悉dtc语法
+*/
+
+/ {
+	// 可以有两个名称
+	compatible = "zynq", "zynq-7000";
+
+	cpus {
+		cpu@0 {
+			compatible = "arm cortext-a8";
+		};
+		cpu@1 {
+			compatible = "arm cortext-a8";
+		};
+	};
+
+	serial@101F0000 { 
+		compatible = "arm,pl011"; 
+	};
+
+};
