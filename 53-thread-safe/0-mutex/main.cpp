@@ -30,6 +30,12 @@ void print_block (int n, char c) {
 	for (int i=0; i<n; ++i) { std::cout << c; }
 	std::cout << '\n';
 	mtx.unlock();
+
+	//if (mtx.try_lock()) {
+		//for (int i=0; i<n; ++i) { std::cout << c; }
+		//std::cout << '\n';
+		//mtx.unlock();
+	//}
 }
 
 int 
