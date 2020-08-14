@@ -77,7 +77,7 @@ void uclmrg::release() {
  *  Description:  配置数据 
  * =====================================================================================
  */
-void uclmrg::compress_config(u_int8_t* inb,u_int32_t length) {
+void uclmrg::config(u_int8_t* inb,u_int32_t length) {
 	inbuf = inb;
 	in_length = length;
 
@@ -97,14 +97,30 @@ void uclmrg::compress_config(u_int8_t* inb,u_int32_t length) {
  */
 bool uclmrg::compress() {
 	int r = ucl_nrv2b_99_compress(inbuf,in_length,outbuf,&out_length,NULL,5,NULL,NULL);
-	if (r == UCL_E_OUT_OF_MEMORY) {
+	if ( r == UCL_E_OUT_OF_MEMORY ) {
 		printf("out of memory in compress\n");
 		return false;
 	}
 
-	if (r != UCL_E_OK) {
+	if ( r != UCL_E_OK ) {
 		/* this should NEVER happen */
 		printf("internal error - compression failed: %d\n", r);
+		return false;
+	}
+	return true;
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  depress 
+ *  Description:  进行数据解压缩 
+ * =====================================================================================
+ */
+bool uclmrg::deprocess() {
+	int r = ucl_nrv2b_decompress_8(inbuf,in_length,outbuf,&out_length,NULL);
+	if ( r != UCL_E_OK ) {
+		/* this should NEVER happen */
+		printf("internal error - decompression failed: %d\n", r);
 		return false;
 	}
 	return true;

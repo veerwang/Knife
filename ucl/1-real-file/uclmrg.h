@@ -37,8 +37,9 @@ public:
 	/*
 	 * 配置程序，输入数据的缓冲区,缓冲区长度
 	 */
-	void compress_config(u_int8_t* inbuf,u_int32_t length);
+	void config(u_int8_t* inbuf,u_int32_t length);
 	bool compress();
+	bool deprocess();
 
 	u_int32_t out_length;
 	u_int8_t* outbuf;
