@@ -46,12 +46,26 @@ protected:
 private:
 };
 
+class goodbox : public box {
+public:
+	using box::box;
+
+protected:
+	
+private:
+	
+};
+
+
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "using head" << std::endl;
 
 	box b;
 	b.display();
+
+	goodbox gb;
+	gb.display();
 
 	return EXIT_SUCCESS;
 }
