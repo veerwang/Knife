@@ -32,14 +32,4 @@ private:
 
 };
 
-template<typename T>
-void Object<T>::Display() {
-	std::cout << "Display" << std::endl;
-}
-
-template<Msgbox>
-void Object<>::Display() {
-	std::cout << "Msgbox Display" << std::endl;
-}
-
 #endif /* INCLUDED_OBJECT_H */

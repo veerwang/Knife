@@ -18,3 +18,15 @@
 
 #include "Object.h"
 
+template class Object<Core>;
+template class Object<Msgbox>;
+
+template<>
+void Object<Msgbox>::Display() {
+	std::cout << "Msgbox Display" << std::endl;
+}
+
+template<typename T>
+void Object<T>::Display() {
+	std::cout << "Display" << std::endl;
+}
