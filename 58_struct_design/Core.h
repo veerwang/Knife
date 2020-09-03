@@ -3,22 +3,37 @@
 
 #include <iostream>
 
-class Core {
+class None {
 public:
-	Core() {;}
-	Core (const Core& c) {;}
-	virtual ~Core() {;}
+	None () {;}
+	None (const None&) {;}
+	virtual ~None() {;}
+
+};
+
+class Core : public None {
+public:
+	using None::None;
 
 	virtual void DoProcess() {;}
 };
 
-class Msgbox {
+class Msgbox : public None {
 public:
-	Msgbox () {;}
-	Msgbox (const Msgbox&) {;}
-	virtual ~Msgbox() {;}
+	using None::None;
 
 	virtual void DoProcess() { std::cout << "msgbox" << std::endl;;}
+protected:
+	
+private:
+	
+};
+
+class Frame : public None {
+public:
+	using None::None;
+
+	virtual void DoProcess() { std::cout << "Frame" << std::endl;;}
 protected:
 	
 private:

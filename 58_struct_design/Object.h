@@ -18,7 +18,7 @@
  *
  * =====================================================================================
  */
-#include "Core.h"
+class Core;
 
 template <typename T=Core>
 class Object : public T {

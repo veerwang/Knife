@@ -27,7 +27,7 @@ int
 main(int argc, const char *argv[]) {
 	std::cout << "Struct Designed V1.0.0" << std::endl;
 
-	Object<Msgbox> obj;
+	Object<Frame> obj;
 	obj.DoProcess();
 	obj.Display();
 	return EXIT_SUCCESS;
