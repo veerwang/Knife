@@ -18,17 +18,28 @@
  *
  * =====================================================================================
  */
+#include "Core.h"
 
-class Object {
+template <typename T=Core>
+class Object : public T {
 public:
-	Object ();
-	Object (const Object&);
-	virtual ~Object();
+	using T::T;
 
+	void Display();
 protected:
-	
+
 private:
-	
+
 };
+
+template<typename T>
+void Object<T>::Display() {
+	std::cout << "Display" << std::endl;
+}
+
+template<Msgbox>
+void Object<>::Display() {
+	std::cout << "Msgbox Display" << std::endl;
+}
 
 #endif /* INCLUDED_OBJECT_H */

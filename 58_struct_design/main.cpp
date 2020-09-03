@@ -20,8 +20,15 @@
 #include 	<cstdio>
 #include 	<iostream>
 
+#include	"Core.h"
+#include	"Object.h"
+
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "Struct Designed V1.0.0" << std::endl;
+
+	Object<Msgbox> obj;
+	obj.DoProcess();
+	obj.Display();
 	return EXIT_SUCCESS;
 }
