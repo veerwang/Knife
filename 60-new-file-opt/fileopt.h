@@ -40,15 +40,47 @@ public:
      *  Description:  初始化，获得绝对路径 
      * =====================================================================================
      */
-    ZFileT(const this_string &path) {
+    ZFileT(const this_string &path,char flag) {
 	    char *crealpath = new char[PATH_MAX];
 	    if ( realpath(path.c_str(),crealpath) )
 		    mPath = this_string(crealpath);
 	    else
 		    mPath = ""; 
+	    
+	    switch ( flag ) {
+	    	case 'r':
+			mifs.open(mPath, std::ios::binary);
+			if (mifs.is_open())
+				mOpenFlag = true;
+			else
+				mOpenFlag = false;
+			mType = flag;
+	    		break;
+	    	case 'w':
+			mofs.open(mPath, std::ios::binary);
+			if (mofs.is_open())
+				mOpenFlag = true;
+			else
+				mOpenFlag = false;
+			mType = flag;
+	    		break;
+	    }
 
 	    delete[] crealpath;
 	    crealpath = nullptr;
+    }
+
+    ~ZFileT() {
+	    if ( mOpenFlag ) {
+		    switch ( mType ) {
+			    case 'r':
+				    mifs.close();
+				    break;
+			    case 'w':
+				    mofs.close();
+				    break;
+		    }
+	    } 
     }
 
     /* 
@@ -88,7 +120,7 @@ public:
 
     /* 
      * ===  FUNCTION  ======================================================================
-     *         Name:  Read
+     *         Name:  ReadAll
      *  Description:  获取换从前 
      *
      * \param path 文件路径
@@ -97,23 +129,17 @@ public:
      *
      * =====================================================================================
      */
-    bool Read(const this_string &path, std::vector<char> &context) {
-        std::ifstream ifs;
-        ifs.open(path, std::ios::binary);
-        if (!ifs.is_open())
-            return false;
- 
+    bool ReadAll(std::vector<char> &context) {
         //获取文件大小
-        auto pos = ifs.tellg();
-        ifs.seekg(0, std::ios::end);
-        auto size = ifs.tellg();
-        ifs.seekg(pos);
+        auto pos = mifs.tellg();
+        mifs.seekg(0, std::ios::end);
+        auto size = mifs.tellg();
+        mifs.seekg(pos);
  
         //读取全部
         context.resize((size_t)size);
-        ifs.read(context.data(), size);
-        ifs.close();
-        return ifs.good();
+        mifs.read(context.data(), size);
+        return mifs.good();
     }
 
     /* 
@@ -202,6 +228,10 @@ public:
 private:
 	this_string mPath;
 	bool mOpenFlag {false};
+	char mType;
+
+        std::ifstream mifs;
+        std::ofstream mofs;
 };
 
 typedef ZFileT<char> ZFileA;

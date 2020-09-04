@@ -20,16 +20,25 @@
 #include 	<cstdio>
 #include 	<iostream>
 
+#include	<vector>
+
 #include	"fileopt.h"
 
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "File Opt" << std::endl;	
 
-	ZFile zf("README.md");
+	ZFile zf("README.md",'r');
 	ZFile::this_string p = zf.GetPath();
 	std::cout << p << std::endl;
 	std::cout << zf.GetFileLength() << std::endl;
+
+	std::vector<char> context;
+	zf.ReadAll(context);
+	for (auto a : context) {
+		std::cout << a;
+	}
+	std::cout << "" << std::endl;
 
 	return EXIT_SUCCESS;
 }
