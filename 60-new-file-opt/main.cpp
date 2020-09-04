@@ -29,6 +29,7 @@ main(int argc, const char *argv[]) {
 	ZFile zf("README.md");
 	ZFile::this_string p = zf.GetPath();
 	std::cout << p << std::endl;
+	std::cout << zf.GetFileLength() << std::endl;
 
 	return EXIT_SUCCESS;
 }

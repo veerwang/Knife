@@ -49,6 +49,25 @@ public:
 	return mPath;
     }
 
+    u_int64_t GetFileLength() {
+        std::ifstream ifs;
+	if (!mOpenFlag) {
+		ifs.open(mPath, std::ios::binary);
+		if (!ifs.is_open())
+			return 0;
+	}
+        //获取文件大小
+        auto pos = ifs.tellg();
+        ifs.seekg(0, std::ios::end);
+        auto size = ifs.tellg();
+        ifs.seekg(pos);
+
+	if (!mOpenFlag)
+        	ifs.close();
+
+	return size;
+    }
+
     /*!
     * 读取文件缓冲区数据
     *
@@ -158,6 +177,7 @@ public:
 
 private:
 	this_string mPath;
+	bool mOpenFlag {false};
 };
 
 typedef ZFileT<char> ZFileA;
