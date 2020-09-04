@@ -34,6 +34,12 @@ public:
         this_istringstream;
 
 public:
+    /* 
+     * ===  FUNCTION  ======================================================================
+     *         Name:  ZFileT 
+     *  Description:  初始化，获得绝对路径 
+     * =====================================================================================
+     */
     ZFileT(const this_string &path) {
 	    char *crealpath = new char[PATH_MAX];
 	    if ( realpath(path.c_str(),crealpath) )
@@ -45,10 +51,22 @@ public:
 	    crealpath = nullptr;
     }
 
+    /* 
+     * ===  FUNCTION  ======================================================================
+     *         Name:  GetPath
+     *  Description:  获得文件名的绝对路径 
+     * =====================================================================================
+     */
     this_string GetPath() {
 	return mPath;
     }
 
+    /* 
+     * ===  FUNCTION  ======================================================================
+     *         Name:  GetFileLength 
+     *  Description:  获得文件长度 
+     * =====================================================================================
+     */
     u_int64_t GetFileLength() {
         std::ifstream ifs;
 	if (!mOpenFlag) {
@@ -68,14 +86,18 @@ public:
 	return size;
     }
 
-    /*!
-    * 读取文件缓冲区数据
-    *
-    * \param path 文件路径
-    * \param context 内容
-    * \return 成功返回true，否则返回false。
-    */
-    static bool Read(const this_string &path, std::vector<char> &context) {
+    /* 
+     * ===  FUNCTION  ======================================================================
+     *         Name:  Read
+     *  Description:  获取换从前 
+     *
+     * \param path 文件路径
+     * \param context 内容
+     * \return 成功返回true，否则返回false。
+     *
+     * =====================================================================================
+     */
+    bool Read(const this_string &path, std::vector<char> &context) {
         std::ifstream ifs;
         ifs.open(path, std::ios::binary);
         if (!ifs.is_open())
@@ -94,16 +116,18 @@ public:
         return ifs.good();
     }
 
-    /**
-    * 将缓冲区的数据写入文件
-    *
-    * \param path 文件路径
-    * \param buffer 缓冲区
-    * \param size 字节数
-    * \return 成功返回true，否则返回false
-    * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
-    */
-    static bool Write(const this_string &path, const void *buffer, size_t size) {
+    /* 
+     * ===  FUNCTION  ======================================================================
+     *         Name:  Write 
+     *  Description:   
+     * \param path 文件路径
+     * \param buffer 缓冲区
+     * \param size 字节数
+     * \return 成功返回true，否则返回false
+     * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
+     * =====================================================================================
+     */
+    bool Write(const this_string &path, const void *buffer, size_t size) {
         std::ofstream ofs;
         ofs.open(path, std::ios::binary);
         if (!ofs.is_open())
