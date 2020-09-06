@@ -47,6 +47,19 @@ public:
 	    else
 		    mPath = ""; 
 	    
+	    auto GetFileLength = [](this_string path) {
+		    
+		    ifs.open(mPath, std::ios::binary);
+		    if (mifs.is_open())
+
+		    auto pos = ifs.tellg();
+		    ifs.seekg(0, std::ios::end);
+		    auto size = ifs.tellg();
+		    ifs.seekg(pos);
+		    return size;
+
+	    }
+
 	    switch ( flag ) {
 	    	case 'r':
 			mifs.open(mPath, std::ios::binary);
@@ -220,6 +233,7 @@ private:
 	this_string mPath;
 	bool mOpenFlag {false};
 	char mType;
+	int  mLength;
 
 	/*读操作的变量*/
         std::ifstream mifs;
