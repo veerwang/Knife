@@ -75,9 +75,11 @@ public:
 		    switch ( mType ) {
 			    case 'r':
 				    mifs.close();
+				    mifs.good();
 				    break;
 			    case 'w':
 				    mofs.close();
+				    mofs.good();
 				    break;
 		    }
 	    } 
@@ -99,23 +101,18 @@ public:
      *  Description:  获得文件长度 
      * =====================================================================================
      */
-    u_int64_t GetFileLength() {
-        std::ifstream ifs;
-	if (!mOpenFlag) {
-		ifs.open(mPath, std::ios::binary);
-		if (!ifs.is_open())
-			return 0;
-	}
-        //获取文件大小
-        auto pos = ifs.tellg();
-        ifs.seekg(0, std::ios::end);
-        auto size = ifs.tellg();
-        ifs.seekg(pos);
-
-	if (!mOpenFlag)
-        	ifs.close();
-
-	return size;
+    int GetFileLength() {
+	    if ( this->mOpenFlag ) {
+		    //获取文件大小
+		    if ( mType == 'r' ) {
+			    auto pos = mifs.tellg();
+			    mifs.seekg(0, std::ios::end);
+			    auto size = mifs.tellg();
+			    mifs.seekg(pos);
+			    return size;
+		    }
+	    }
+	    return 0;
     }
 
     /* 
@@ -153,16 +150,10 @@ public:
      * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
      * =====================================================================================
      */
-    bool Write(const this_string &path, const void *buffer, size_t size) {
-        std::ofstream ofs;
-        ofs.open(path, std::ios::binary);
-        if (!ofs.is_open())
-            return false;
- 
+    bool Write(const void *buffer, size_t size) {
         //写入缓冲区数据到文件
-        ofs.write((const char *)buffer, size);
-        ofs.close();
-        return ofs.good();
+        mofs.write((const char *)buffer, size);
+	return mofs.good();
     }
 
     /*!
@@ -230,7 +221,9 @@ private:
 	bool mOpenFlag {false};
 	char mType;
 
+	/*读操作的变量*/
         std::ifstream mifs;
+	/*写操作的变量*/
         std::ofstream mofs;
 };
 
