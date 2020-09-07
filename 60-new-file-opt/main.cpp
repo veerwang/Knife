@@ -29,10 +29,7 @@ int
 main(int argc, const char *argv[]) {
 	std::cout << "File Opt" << std::endl;	
 
-<<<<<<< HEAD
 	/*
-=======
->>>>>>> aa4b8af64287a2335afbc19af0abac98da6f84b3
 	WFile *wf = new WFile("README");
 	ZFile::this_string msg = "hello the world 我进行的测试 abc";
 	wf->Write(msg);
