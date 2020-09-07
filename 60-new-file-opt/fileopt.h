@@ -25,8 +25,7 @@
 #include <limits.h>
 
 template <typename tchar>
-class ZFileT
-{
+class ZFileT {
 public:
     typedef std::basic_string<tchar, std::char_traits<tchar>, std::allocator<tchar> >
         this_string;
@@ -41,7 +40,7 @@ public:
      *  Description:  初始化，获得绝对路径 
      * =====================================================================================
      */
-    ZFileT(const this_string &path,char flag) {
+    ZFileT(const this_string &path) {
 	    /* 判断文件是否存在 */
 	    auto FileExist = [] (const this_string& path) {
 		    std::ifstream fin(path);
@@ -54,9 +53,12 @@ public:
 		    }
 	    };
 
-	    /* 如国是写操作，并且文件不存在 */
-	    if ( flag == 'w' && !FileExist(path) ) {
+	    /* 创建文件标志 */
+	    bool cf = false;
+	    /* 如果是写操作，并且文件不存在 */
+	    if ( !FileExist(path) ) {
 		    std::ofstream fout(path); 
+		    cf = true;
 		    fout.close();
 	    }
 
@@ -68,6 +70,9 @@ public:
 
 	    delete[] crealpath;
 	    crealpath = nullptr;
+
+	    if (cf)
+	    	remove(path.c_str());
 	    
 	    auto GetFileLength = [](this_string& path) {
 		    std::ifstream ifs;
@@ -84,40 +89,9 @@ public:
 	    };
 
 	    mLength = GetFileLength(mPath);
-
-	    switch ( flag ) {
-	    	case 'r':
-			mifs.open(mPath, std::ios::binary);
-			if (mifs.is_open())
-				mOpenFlag = true;
-			else
-				mOpenFlag = false;
-			mType = flag;
-	    		break;
-	    	case 'w':
-			mofs.open(mPath,std::ios::binary|std::ios::app);
-			if (mifs.is_open())
-				mOpenFlag = true;
-			else
-				mOpenFlag = false;
-			mType = flag;
-	    		break;
-	    }
     }
 
     ~ZFileT() {
-	    if ( mOpenFlag ) {
-		    switch ( mType ) {
-			    case 'r':
-				    mifs.close();
-				    mifs.good();
-				    break;
-			    case 'w':
-				    mofs.close();
-				    mofs.good();
-				    break;
-		    }
-	    } 
     }
 
     /* 
@@ -144,61 +118,6 @@ public:
 	    return mLength;
 	else
 		return 0;
-    }
-
-    /* 
-     * ===  FUNCTION  ======================================================================
-     *         Name:  ReadAll
-     *  Description:  获取换从前 
-     *
-     * \param path 文件路径
-     * \param context 内容
-     * \return 成功返回true，否则返回false。
-     *
-     * =====================================================================================
-     */
-    bool ReadAll(std::vector<char> &context) {
-        //获取文件大小
-        auto pos = mifs.tellg();
-        mifs.seekg(0, std::ios::end);
-        auto size = mifs.tellg();
-        mifs.seekg(pos);
- 
-        //读取全部
-        context.resize((size_t)size);
-        mifs.read(context.data(), size);
-        return mifs.good();
-    }
-
-    /* 
-     * ===  FUNCTION  ======================================================================
-     *         Name:  Write 
-     *  Description:   
-     * \param path 文件路径
-     * \param buffer 缓冲区
-     * \param size 字节数
-     * \return 成功返回true，否则返回false
-     * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
-     * =====================================================================================
-     */
-    bool Write(this_string msg) {
-    	//写入缓冲区数据到文件
-    	mofs.write(msg.c_str(), msg.size());
-    	return mofs.good();
-    }
-
-    bool Read(this_string& msg,int start,int length ) {
-    	if ( start + length > mLength ) {
-		return false;
-    	}
-
-    	char *buf = new char[length];
-    	mifs.seekg(start, std::ios::beg);
-    	mifs.read(buf,length);
-    	msg = buf;
-    	delete[] buf;
-    	buf = nullptr;
-	return true;
     }
 
     /*!
@@ -261,25 +180,123 @@ public:
         return !ifs.bad();  //此处不能使用ifs.good()，ifs.eof()为true时此函数返回false
     }
 
-private:
+protected:
 	this_string mPath;
 	bool mOpenFlag {false};
 	char mType;
 	int  mLength;
 
+private:
+};
+
+template <typename tchar>
+class RFileT : public ZFileT<tchar> {
+public:
+	/* 如果基类没有默认构造函数，需要显式的调用基类的构造函数 */
+	/* 注意typename的用法 */
+	RFileT(const typename ZFileT<tchar>::this_string &path) : ZFileT<tchar>(path) {
+		mifs.open(this->mPath, std::ios::binary);
+		if (mifs.is_open())
+			this->mOpenFlag = true;
+		else
+			this->mOpenFlag = false;
+	}
+	~RFileT() {
+		if ( this->mOpenFlag ) {
+			mifs.close();
+			mifs.good();
+		} 
+	}
+
+	bool Read(typename ZFileT<tchar>::this_string& msg,int start,int length ) {
+		if ( start + length > this->mLength ) {
+			return false;
+		}
+
+		char *buf = new char[length];
+		mifs.seekg(start, std::ios::beg);
+		mifs.read(buf,length);
+		msg = buf;
+		delete[] buf;
+		buf = nullptr;
+		return true;
+	}
+
+	bool ReadAll(std::vector<char> &context) {
+		//获取文件大小
+		auto pos = mifs.tellg();
+		mifs.seekg(0, std::ios::end);
+		auto size = mifs.tellg();
+		mifs.seekg(pos);
+
+		//读取全部
+		context.resize((size_t)size);
+		mifs.read(context.data(), size);
+		return mifs.good();
+	}
+
+private:
 	/*读操作的变量*/
         std::ifstream mifs;
+};
+
+template <typename tchar>
+class WFileT : public ZFileT<tchar> {
+public:
+	/* 如果基类没有默认构造函数，需要显式的调用基类的构造函数 */
+	/* 注意typename的用法 */
+	WFileT(const typename ZFileT<tchar>::this_string &path) : ZFileT<tchar>(path) {
+		mofs.open(this->mPath,std::ios::binary|std::ios::app);
+		if (mofs.is_open())
+			this->mOpenFlag = true;
+		else
+			this->mOpenFlag = false;
+	}
+	~WFileT() {
+		if ( this->mOpenFlag ) {
+			mofs.close();
+			mofs.good();
+		}
+	}
+
+	/* 
+	 * ===  FUNCTION  ======================================================================
+	 *         Name:  Write 
+	 *  Description:   
+	 * \param path 文件路径
+	 * \param buffer 缓冲区
+	 * \param size 字节数
+	 * \return 成功返回true，否则返回false
+	 * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
+	 * =====================================================================================
+	 */
+	bool Write(const typename ZFileT<tchar>::this_string msg) {
+		//写入缓冲区数据到文件
+		mofs.write(msg.c_str(), msg.size());
+		return mofs.good();
+	}
+private:
 	/*写操作的变量*/
         std::ofstream mofs;
 };
 
 typedef ZFileT<char> ZFileA;
 typedef ZFileT<wchar_t> ZFileW;
+
+typedef RFileT<char> RFileA;
+typedef RFileT<wchar_t> RFileW;
+
+typedef WFileT<char> WFileA;
+typedef WFileT<wchar_t> WFileW;
  
 #ifdef UNICODE
 typedef ZFileW ZFile;
+typedef RFileW RFile;
+typedef WFileW WFile;
 #else
 typedef ZFileA ZFile;
+typedef RFileA RFile;
+typedef WFileA WFile;
 #endif // UNICODE
 
 #endif /* INCLUDED_FILEOPT_H */
