@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+
 #include <limits.h>
 
 template <typename tchar>
@@ -41,24 +42,48 @@ public:
      * =====================================================================================
      */
     ZFileT(const this_string &path,char flag) {
+	    /* 判断文件是否存在 */
+	    auto FileExist = [] (const this_string& path) {
+		    std::ifstream fin(path);
+		    if(!fin){
+			    return false;
+		    }
+		    else {
+			fin.close();
+		    	return true;
+		    }
+	    };
+
+	    /* 如国是写操作，并且文件不存在 */
+	    if ( flag == 'w' && !FileExist(path) ) {
+		    std::ofstream fout(path); 
+		    fout.close();
+	    }
+
 	    char *crealpath = new char[PATH_MAX];
 	    if ( realpath(path.c_str(),crealpath) )
 		    mPath = this_string(crealpath);
 	    else
 		    mPath = ""; 
+
+	    delete[] crealpath;
+	    crealpath = nullptr;
 	    
-	    auto GetFileLength = [](this_string path) {
-		    
-		    ifs.open(mPath, std::ios::binary);
-		    if (mifs.is_open())
+	    auto GetFileLength = [](this_string& path) {
+		    std::ifstream ifs;
+		    ifs.open(path, std::ios::binary);
+		    if (ifs.is_open()) {
+			    auto pos = ifs.tellg();
+			    ifs.seekg(0, std::ios::end);
+			    auto size = ifs.tellg();
+			    ifs.seekg(pos);
+			    ifs.close();
+			    if ( ifs.good() )
+			    	return size;
+		    }
+	    };
 
-		    auto pos = ifs.tellg();
-		    ifs.seekg(0, std::ios::end);
-		    auto size = ifs.tellg();
-		    ifs.seekg(pos);
-		    return size;
-
-	    }
+	    mLength = GetFileLength(mPath);
 
 	    switch ( flag ) {
 	    	case 'r':
@@ -70,17 +95,14 @@ public:
 			mType = flag;
 	    		break;
 	    	case 'w':
-			mofs.open(mPath, std::ios::binary);
-			if (mofs.is_open())
+			mofs.open(mPath,std::ios::binary|std::ios::app);
+			if (mifs.is_open())
 				mOpenFlag = true;
 			else
 				mOpenFlag = false;
 			mType = flag;
 	    		break;
 	    }
-
-	    delete[] crealpath;
-	    crealpath = nullptr;
     }
 
     ~ZFileT() {
@@ -105,7 +127,10 @@ public:
      * =====================================================================================
      */
     this_string GetPath() {
-	return mPath;
+	if ( mOpenFlag )
+		return mPath;
+	else
+		return "";
     }
 
     /* 
@@ -115,17 +140,10 @@ public:
      * =====================================================================================
      */
     int GetFileLength() {
-	    if ( this->mOpenFlag ) {
-		    //获取文件大小
-		    if ( mType == 'r' ) {
-			    auto pos = mifs.tellg();
-			    mifs.seekg(0, std::ios::end);
-			    auto size = mifs.tellg();
-			    mifs.seekg(pos);
-			    return size;
-		    }
-	    }
-	    return 0;
+	if ( mOpenFlag )
+	    return mLength;
+	else
+		return 0;
     }
 
     /* 
@@ -163,10 +181,24 @@ public:
      * \note 如果文件已经存在，之前的内容都将被清除，如果内容不存在，则创建新的文件
      * =====================================================================================
      */
-    bool Write(const void *buffer, size_t size) {
-        //写入缓冲区数据到文件
-        mofs.write((const char *)buffer, size);
-	return mofs.good();
+    bool Write(this_string msg) {
+    	//写入缓冲区数据到文件
+    	mofs.write(msg.c_str(), msg.size());
+    	return mofs.good();
+    }
+
+    bool Read(this_string& msg,int start,int length ) {
+    	if ( start + length > mLength ) {
+		return false;
+    	}
+
+    	char *buf = new char[length];
+    	mifs.seekg(start, std::ios::beg);
+    	mifs.read(buf,length);
+    	msg = buf;
+    	delete[] buf;
+    	buf = nullptr;
+	return true;
     }
 
     /*!
