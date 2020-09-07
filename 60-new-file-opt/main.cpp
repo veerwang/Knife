@@ -29,15 +29,16 @@ int
 main(int argc, const char *argv[]) {
 	std::cout << "File Opt" << std::endl;	
 
-	ZFile *zwf = new ZFile("README",'w');
+	/*
+	WFile *wf = new WFile("README");
 	ZFile::this_string msg = "hello the world 我进行的测试 abc";
-	zwf->Write(msg);
+	wf->Write(msg);
 	msg = " 春眠不觉晓，处处闻啼鸟";
-	zwf->Write(msg);
-	delete zwf;
-	zwf = NULL;
+	wf->Write(msg);
+	delete wf;
+	wf = NULL;
 
-	ZFile *zf = new ZFile("README",'r');
+	RFile *zf = new RFile("README");
 	std::cout << "File Length = " << zf->GetFileLength() << std::endl;
 	std::cout << "File Path = " << zf->GetPath() << std::endl;
 
@@ -45,6 +46,26 @@ main(int argc, const char *argv[]) {
 	zf->Read(msg,10,20);
 	std::cout << msg << std::endl;
 
+	std::cout << "---------" << std::endl;
+
+	std::vector<char> buf;
+	zf->ReadAll(buf);
+	for (auto a : buf) {
+		std::cout << a;
+	}
+
+	delete zf;
+	zf = NULL;
+	*/
+
+	RFile *zf = new RFile("README");
+	std::cout << "File Length = " << zf->GetFileLength() << std::endl;
+	std::cout << "File Path = " << zf->GetPath() << std::endl;
+	std::vector<char> buf;
+	zf->ReadAll(buf);
+	for (auto a : buf) {
+		std::cout << a;
+	}
 	delete zf;
 	zf = NULL;
 
