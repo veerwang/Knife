@@ -22,7 +22,7 @@
 #include <vector>
 #include <fstream>
 
-#include <limits.h>
+#include <climits>
 
 template <typename tchar>
 class ZFileT {
@@ -66,7 +66,7 @@ public:
 	    if ( realpath(path.c_str(),crealpath) )
 		    mPath = this_string(crealpath);
 	    else
-		    mPath = ""; 
+		    mPath = "";
 
 	    delete[] crealpath;
 	    crealpath = nullptr;
