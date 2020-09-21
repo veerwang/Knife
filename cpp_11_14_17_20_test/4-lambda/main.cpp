@@ -44,11 +44,50 @@ void display() {
 	std::cout << add(10,20) << std::endl;
 }
 
-int main(int argc, const char *argv[])
-{
-	std::cout << "lambda V1.0.0" << std::endl;	
+/* lambda捕获实验代码 */
+void lambda_test1() {
+	int a = 3721;
+	std::cout << "before fun:" << a << std::endl;
+	auto myfun = [&a]() {
+		a ++;
+	};
+
+	/*当调用这个lambda函数的时候，会使用到函数外的变量a */
+	myfun();
+
+	std::cout << "after fun:" << a << std::endl;
+}
+
+/* lambda捕获实验代码 */
+void lambda_test2() {
+	int a = 9981;
+	int c = 0x11;
+	std::cout << "before fun:" << a << std::endl;
+
+	/* 注意这边的写法，->后面接的是函数体返回的数值 */
+	/* 变量a是传地址捕获， 其他(b)是传数值捕获 */
+	auto myfun = [=,&a]() -> bool {
+		int b = a;
+		a = a + c;
+		if (a == b)
+			return false;
+		return true;
+	};
+
+	/*当调用这个lambda函数的时候，会使用到函数外的变量a */
+	myfun();
+
+	std::cout << "after fun:" << a << std::endl;
+
+}
+
+int 
+main(int argc, const char *argv[]) {
+	std::cout << "lambda V1.0.0" << std::endl;
 
 	display();
+	lambda_test1();
+	lambda_test2();
 
 	return EXIT_SUCCESS;
 }
