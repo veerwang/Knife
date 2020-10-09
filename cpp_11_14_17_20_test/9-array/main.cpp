@@ -27,7 +27,7 @@ int main(int argc, const char *argv[]) {
 	std::cout << "array test V1.0.0" << std::endl;
 	constexpr int maxlength = 10;
 	std::array<int,maxlength> buf = {1,2,3,4,5,6,7,8,9,0};
-	for (e : buf) {
+	for (auto e : buf) {
 		std::cout << e << std::endl;
 	}
 	return EXIT_SUCCESS;
