@@ -26,7 +26,7 @@ namespace WangV {
 
 // new type exception define
 struct OverMaxLength : public std::exception {
-	const char * what () const throw () {
+	const char * what () noexcept {
 		return "OverMaxLength";
 	}
 };

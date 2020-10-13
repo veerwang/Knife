@@ -25,7 +25,7 @@
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "new" << std::endl;	
-	int* point = WangV::New(int,100);
+	int* point = WangV::New(int,1024*1024*4);
 	if ( point == nullptr ) return EXIT_FAILURE;
 	for (int i=0;i<100;i++) {
 		point[i] = i;
