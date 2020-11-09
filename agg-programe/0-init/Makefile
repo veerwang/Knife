@@ -20,7 +20,7 @@ main: main.o
 	$(CPP) $(CFLAGS) -o $@ $+
 
 clean:
-	rm -f *.o core.*
+	rm -f *.o core.* *.ppm
 
 mrproper: clean
 	rm -f main
