@@ -9,6 +9,8 @@ CPP = g++
 CFLAGS = -g -Wall -std=c++11 -I../include
 
 all: main
+	./main
+	feh agg_test.ppm
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
