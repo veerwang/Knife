@@ -22,8 +22,7 @@
 
 #include <agg_basics.h>
 #include <agg_rendering_buffer.h>
-
-#include <agg_pixfmt_rgba.h>
+#include <agg_pixfmt_rgb.h>
 
 #include <agg_rasterizer_scanline_aa.h>
 #include <agg_scanline_p.h>
@@ -67,21 +66,20 @@ int
 main(int argc, const char *argv[]) {
 	std::cout << "agg library program" << std::endl;	
 
-	int frame_width = 640;
-	int frame_height = 480;
+	int frame_width = 320;
+	int frame_height = 240;
 
 	unsigned char* buffer = new unsigned char[frame_width * frame_height * 3];
 
 	memset(buffer, 255, frame_width * frame_height * 3);
-
-	typedef agg::pixfmt_rgba32 pixfmt;
 
 	agg::rendering_buffer rbuf(buffer, 
 			frame_width, 
 			frame_height, 
 			frame_width * 3);
 
-	pixfmt pixf(rbuf);
+	agg::pixfmt_rgb24 pixf(rbuf);
+
 	agg::rgba8 span[frame_width];
 
 	for( int i = 0; i < frame_width; ++i ) {
@@ -90,7 +88,7 @@ main(int argc, const char *argv[]) {
 	}
 
 	for( int i = 0; i < frame_height; ++i ) {
-		pixf.blend_color_hspan(0, i, frame_height, span, 0,0xff);
+		pixf.blend_color_hspan(0, i, frame_width, span, 0, 255);
 	}
 
 	write_ppm(buffer, frame_width, frame_height, "agg_test.ppm");
