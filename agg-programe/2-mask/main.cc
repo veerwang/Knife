@@ -3,7 +3,7 @@
  *
  *       Filename:  main.cpp
  *
- *    Description:  进行agg库的实验代码
+ *    Description:  mask 可以将颜色给掩盖掉,留下本来的底色 
  *
  *        Version:  1.0
  *        Created:  2020年11月09日 
