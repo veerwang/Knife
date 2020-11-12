@@ -73,7 +73,8 @@ main(int argc, const char *argv[]) {
 
 	unsigned char* buffer = new unsigned char[frame_width * frame_height * 3];
 
-	memset(buffer, 0, frame_width * frame_height * 3);
+	// 0 为黑底  255 白底 背景底颜色
+	memset(buffer, 120, frame_width * frame_height * 3);
 
 	agg::rendering_buffer rbuf(buffer, 
 			frame_width, 
@@ -91,7 +92,8 @@ main(int argc, const char *argv[]) {
  	agg::pixfmt_amask_adaptor<agg::pixfmt_rgb24, 
                               agg::amask_no_clip_gray8> pixf_amask(pixf, amask);
 
-	for( int i = 0; i < frame_height; ++i ) {
+	// 间隔条纹
+	for( int i = 0; i < frame_height; i=i+2 ) {
 		unsigned val = 255 * i / frame_height;
 		memset(mask_rbuf.row_ptr(i), val, frame_width);
 	}
@@ -103,7 +105,7 @@ main(int argc, const char *argv[]) {
 	}
 
 	for( int i = 0; i < frame_height; ++i ) {
-		pixf_amask.blend_color_hspan(0, i, frame_width, span, 0, 255);
+		pixf_amask.blend_color_hspan(0, i, frame_width, span, 0, 120);
 	}
 
 	write_ppm(buffer, frame_width, frame_height, "agg_test.ppm");
