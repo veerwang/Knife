@@ -73,8 +73,10 @@ main(int argc, const char *argv[]) {
 
 	unsigned char* buffer = new unsigned char[frame_width * frame_height * 3];
 
+	// 设置mask为0的时候的背景颜色
 	// 0 为黑底  255 白底 背景底颜色
 	memset(buffer, 120, frame_width * frame_height * 3);
+	// 设置mask为0的时候的背景颜色
 
 	agg::rendering_buffer rbuf(buffer, 
 			frame_width, 
@@ -82,31 +84,38 @@ main(int argc, const char *argv[]) {
 			frame_width * 3);
 	agg::pixfmt_rgb24 pixf(rbuf);
 
-
+	// 定义mask的buffer
 	unsigned char* mask_buffer = new unsigned char[frame_width * frame_height];
 	agg::rendering_buffer mask_rbuf(mask_buffer, 
 			frame_width, 
 			frame_height, 
 			frame_width);
 	agg::amask_no_clip_gray8 amask(mask_rbuf);
+	// 定义mask的buffer
+	
+	// 链接具体图形与灰度
  	agg::pixfmt_amask_adaptor<agg::pixfmt_rgb24, 
                               agg::amask_no_clip_gray8> pixf_amask(pixf, amask);
+	// 链接具体图形与灰度
 
+	// 绘制mask的灰度
 	// 间隔条纹
 	for( int i = 0; i < frame_height; i=i+2 ) {
 		unsigned val = 255 * i / frame_height;
 		memset(mask_rbuf.row_ptr(i), val, frame_width);
 	}
+	// 绘制mask的灰度
 
+	// 绘制正常的图形
 	agg::rgba8 span[frame_width];
 	for( int i = 0; i < frame_width; ++i ) {
 		agg::rgba c(380.0 + 400.0 * i / frame_width, 0.8);
 		span[i] = agg::rgba8(c);
 	}
-
 	for( int i = 0; i < frame_height; ++i ) {
 		pixf_amask.blend_color_hspan(0, i, frame_width, span, 0, 120);
 	}
+	// 绘制正常的图形
 
 	write_ppm(buffer, frame_width, frame_height, "agg_test.ppm");
 
