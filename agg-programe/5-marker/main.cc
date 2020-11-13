@@ -3,7 +3,7 @@
  *
  *       Filename:  main.cpp
  *
- *    Description:  mask 可以将颜色给掩盖掉,留下本来的底色 
+ *    Description:  进行agg库的实验代码
  *
  *        Version:  1.0
  *        Created:  2020年11月09日 
@@ -43,6 +43,8 @@
 #include <agg_span_allocator.h>
 #include <agg_span_interpolator_linear.h>
 #include <agg_blur.h>
+#include <agg_renderer_primitives.h>
+#include <agg_renderer_markers.h>
 
 #include <agg_gsv_text.h> 
 
@@ -71,54 +73,66 @@ main(int argc, const char *argv[]) {
 	int frame_width  = 640;
 	int frame_height = 480;
 
-	unsigned char* buffer = new unsigned char[frame_width * frame_height * 3];
+	typedef agg::pixfmt_rgb24                     pixfmt_type;
+	typedef agg::renderer_base<agg::pixfmt_rgb24> renbase_type;
 
-	// 设置mask为0的时候的背景颜色
-	// 0 为黑底  255 白底 背景底颜色
-	memset(buffer, 120, frame_width * frame_height * 3);
-	// 设置mask为0的时候的背景颜色
+	enum { bytes_per_pixel = 3 };
+
+	unsigned char* buffer = new unsigned char[frame_width * 
+		frame_height * 
+		bytes_per_pixel];
 
 	agg::rendering_buffer rbuf(buffer, 
 			frame_width, 
 			frame_height, 
-			frame_width * 3);
-	agg::pixfmt_rgb24 pixf(rbuf);
+			frame_width * bytes_per_pixel);
 
-	// 定义mask的buffer
-	unsigned char* mask_buffer = new unsigned char[frame_width * frame_height];
-	agg::rendering_buffer mask_rbuf(mask_buffer, 
-			frame_width, 
-			frame_height, 
-			frame_width);
-	agg::amask_no_clip_gray8 amask(mask_rbuf);
-	// 定义mask的buffer
-	
-	// 链接具体图形与灰度
- 	agg::pixfmt_amask_adaptor<agg::pixfmt_rgb24, 
-                              agg::amask_no_clip_gray8> pixf_amask(pixf, amask);
-	// 链接具体图形与灰度
+	pixfmt_type pixf(rbuf);
+	// 关键代码
+	renbase_type rbase(pixf);
+	// 关键代码
 
-	// 绘制mask的灰度
-	// 间隔条纹
-	for( int i = 0; i < frame_height; i=i+2 ) {
-		unsigned val = 255 * i / frame_height;
-		memset(mask_rbuf.row_ptr(i), val, frame_width);
-	}
-	// 绘制mask的灰度
+	// 背景颜色设置
+	agg::rgba c(380.0 + 400.0 * 0 / frame_width, 0.8);
+	rbase.clear(c);
+	// 背景颜色设置
 
-	// 绘制正常的图形
-	agg::rgba8 span[frame_width];
-	for( int i = 0; i < frame_width; ++i ) {
-		agg::rgba c(380.0 + 400.0 * i / frame_width, 0.8);
-		span[i] = agg::rgba8(c);
-	}
-	for( int i = 0; i < frame_height; ++i ) {
-		pixf_amask.blend_color_hspan(0, i, frame_width, span, 0, 120);
-	}
-	// 绘制正常的图形
+	// render_markers 绘制基本元素,例如特殊图形等等，renderer_markers来自primitive基类
+	agg::renderer_markers<renbase_type> rm(rbase);
+	agg::rgba fc(380.0 + 400.0 * 1 / 3, 0.8);
+	rm.fill_color(fc);
+
+	agg::rgba lc(380.0 + 400.0 * 2 / 3, 0.8);
+	rm.line_color(lc);
+
+	rm.square(200,200,40);
+	rm.diamond(100,100,20);
+	rm.four_rays(300,300,50);
+	rm.semiellipse_right(200,300,50);
+
+	/*
+	void square(int x, int y, int r);
+	void diamond(int x, int y, int r);
+	void circle(int x, int y, int r);
+	void crossed_circle(int x, int y, int r);
+	void semiellipse_left(int x, int y, int r);
+	void semiellipse_right(int x, int y, int r);
+	void semiellipse_up(int x, int y, int r);
+	void semiellipse_down(int x, int y, int r);
+	void triangle_left(int x, int y, int r);
+	void triangle_right(int x, int y, int r);
+	void triangle_up(int x, int y, int r);
+	void triangle_down(int x, int y, int r);
+	void four_rays(int x, int y, int r);
+	void cross(int x, int y, int r);
+	void xing(int x, int y, int r);
+	void dash(int x, int y, int r);
+	void dot(int x, int y, int r);
+	void pixel(int x, int y, int);
+	*/
+
 
 	write_ppm(buffer, frame_width, frame_height, "agg_test.ppm");
-
 	delete [] buffer;
 	buffer = NULL;
 
