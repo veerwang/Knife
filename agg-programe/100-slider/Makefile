@@ -6,8 +6,7 @@
 .PHONY: clean, mrproper
 CC = gcc
 CPP = g++
-CFLAGS = -g -Wall -std=c++11 -I../include 
-LDFLAGS = -lagg -L../lib
+CFLAGS = -g -Wall -std=c++11 -I../include  -fPIE
 
 all: main
 	./main
