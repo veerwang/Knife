@@ -66,6 +66,39 @@ bool write_ppm(const unsigned char* buf,
     return false;
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  
+ *        Input:  draw_slider 
+ *       Output:
+ *  Description:  绘制圆角矩形 
+ * =====================================================================================
+ */
+void draw_slider(agg::rendering_buffer& rbuf,int left,int up,int right,int down,int radium) {
+	typedef agg::pixfmt_rgb24                     		pixfmt_type;
+	typedef agg::renderer_base<agg::pixfmt_rgb24> 		renbase_type;
+	typedef agg::renderer_scanline_aa_solid<renbase_type> 	render_scanline_type;
+
+	pixfmt_type pixf(rbuf);
+	// 关键代码
+	renbase_type rbase(pixf);
+	// 关键代码
+	render_scanline_type rens(rbase);
+	// 关键代码
+	agg::rasterizer_scanline_aa<> ras;
+	// 关键代码
+	agg::scanline_u8 sl; 
+
+	// 初始化一个矢量图形
+	agg::rounded_rect r(left,up,right,down,radium);
+	// 矢量图形，首先栅格化
+	ras.add_path(r);
+	// 渲染，也就是颜色的定义
+	rens.color( agg::rgba8(0xff,0xff,0,0xff) ); 
+	// 真正进行渲染
+	agg::render_scanlines(ras,sl,rens); 
+}
+
 int 
 main(int argc, const char *argv[]) {
 	std::cout << "agg library program" << std::endl;	
@@ -93,31 +126,14 @@ main(int argc, const char *argv[]) {
 	// 关键代码
 
 	// 背景颜色设置
-	agg::rgba c(380.0 + 400.0 , 0.8);
+	//agg::rgba c(380.0 + 400.0 , 0.8);
+	// agg:rgba 每个分量的类型是double，并且从0~1.0
+	agg::rgba c(0,0,0,1.0);
 	rbase.clear(c);
 	// 背景颜色设置
 
-
-	/*
-	void square(int x, int y, int r);
-	void diamond(int x, int y, int r);
-	void circle(int x, int y, int r);
-	void crossed_circle(int x, int y, int r);
-	void semiellipse_left(int x, int y, int r);
-	void semiellipse_right(int x, int y, int r);
-	void semiellipse_up(int x, int y, int r);
-	void semiellipse_down(int x, int y, int r);
-	void triangle_left(int x, int y, int r);
-	void triangle_right(int x, int y, int r);
-	void triangle_up(int x, int y, int r);
-	void triangle_down(int x, int y, int r);
-	void four_rays(int x, int y, int r);
-	void cross(int x, int y, int r);
-	void xing(int x, int y, int r);
-	void dash(int x, int y, int r);
-	void dot(int x, int y, int r);
-	void pixel(int x, int y, int);
-	*/
+	// 绘制图形
+	draw_slider(rbuf,50,50,250,80,10);
 
 	write_ppm(buffer, frame_width, frame_height, "agg_test.ppm");
 	delete [] buffer;

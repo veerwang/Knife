@@ -6,7 +6,8 @@
 .PHONY: clean, mrproper
 CC = gcc
 CPP = g++
-CFLAGS = -g -Wall -std=c++11 -I../include
+CFLAGS = -g -Wall -std=c++11 -I../include 
+LDFLAGS = -lagg -L../lib
 
 all: main
 	./main
@@ -19,7 +20,7 @@ all: main
 	$(CPP) $(CFLAGS) -c -o $@ $<
 
 main: main.o
-	$(CPP) $(CFLAGS) -o $@ $+
+	$(CPP) $(CFLAGS) -o $@ $+ -L../lib -Wl,-Bstatic -lagg -Wl,-Bdynamic 
 
 clean:
 	rm -f *.o core.* *.ppm
