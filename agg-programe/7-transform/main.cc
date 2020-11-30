@@ -95,7 +95,9 @@ void draw_slider(agg::rendering_buffer& rbuf,int left,int up,int right,int down,
 
 	// 进行缩放的核心代码
 	agg::trans_affine polygon_mtx;
-	polygon_mtx *= agg::trans_affine_scaling(0.5, 2);
+	polygon_mtx *= agg::trans_affine_scaling(1, 1);
+	polygon_mtx *= agg::trans_affine_rotation(1.0 * agg::pi / 180.0);
+
 	// conv_transform 核心函数，进行缩放
 	agg::conv_transform<agg::rounded_rect> tr(r, polygon_mtx);
 	// 矢量图形，首先栅格化
