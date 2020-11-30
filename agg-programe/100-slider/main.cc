@@ -175,7 +175,7 @@ void draw_circle(agg::rendering_buffer& rbuf,int up,int down,int indicate,int ra
 	// 关键代码
 	agg::rasterizer_scanline_aa<> ras;
 	// 关键代码
-	agg::scanline_u8 sl; 
+	agg::scanline_p8 sl; 
 
         agg::ellipse e1;
 	e1.init(pointx, pointy, radium, radium);
@@ -187,8 +187,9 @@ void draw_circle(agg::rendering_buffer& rbuf,int up,int down,int indicate,int ra
 
 	if ( shadowflag ) {
 		int shadow = 2;
+		agg::rendering_buffer   renBuffer;
 		agg::recursive_blur<agg::rgba8, agg::recursive_blur_calc_rgba<> > blur;
-		pixfmt_type subpixfmt(rbuf);
+		pixfmt_type subpixfmt(renBuffer);
 		subpixfmt.attach(pixf,pointx-radium-shadow,pointy-radium-shadow,pointx+radium+shadow,pointy+radium+shadow);
 		blur.blur(subpixfmt,shadow);
 	}
@@ -208,7 +209,7 @@ void draw_slider(agg::rendering_buffer& rbuf,int left,int up,int right,int down,
 	int indicate = right - 50;
 	draw_mid_line(rbuf,left,up,indicate,down,agg::rgba8(0x00,0x00,0xFF,0xff));
 	draw_circle(rbuf,up,down,indicate,8,agg::rgba8(0x00,0x00,0x00,0xFF),true);
-	//draw_circle(rbuf,up,down,indicate,7,agg::rgba8(0xFF,0xFF,0xFF,0xFF),false);
+	draw_circle(rbuf,up,down,indicate,8,agg::rgba8(0xFF,0xFF,0xFF,0xFF),false);
 }
 
 int 
