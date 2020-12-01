@@ -13,11 +13,13 @@ agg实验代码集合
 &emsp;&emsp;Agg开源库用于绘制图形。
 
 ## 1.工程描述
-* 0-init        初始工程
-* 7-transform   变幻图形
-
-* include       Agg头文件
-* lib           Agg库文件
+| 目录   	| 描述          |
+|:------ 	| :------       |
+| 0-init 	| 初始工程	|
+| 7-transform 	| 变幻图形      |
+|  		| 	        |
+| include 	| Agg头文件	|
+| lib     	| Agg库文件	|
 
 ## 参考文档链接
 [1.AGG的官方文档][1]
