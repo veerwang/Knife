@@ -91,14 +91,18 @@ void draw_slider(agg::rendering_buffer& rbuf,int left,int up,int right,int down,
 
 	// 初始化一个矢量图形
 	agg::rounded_rect r(left,up,right,down,radium);
+	agg::rounded_rect r1(left+100,up+100,right+100,down+100,radium);
 
 	// 进行缩放的核心代码
 	agg::trans_affine polygon_mtx;
-	polygon_mtx *= agg::trans_affine_scaling(0.5, 0.5);
+	polygon_mtx *= agg::trans_affine_scaling(1, 1);
+	polygon_mtx *= agg::trans_affine_rotation(1.0 * agg::pi / 180.0);
+
 	// conv_transform 核心函数，进行缩放
 	agg::conv_transform<agg::rounded_rect> tr(r, polygon_mtx);
 	// 矢量图形，首先栅格化
 	ras.add_path(tr);
+	ras.add_path(r1);
 	// 渲染，也就是颜色的定义
 	rens.color( agg::rgba8(0xff,0xff,0,0xff) ); 
 	// 真正进行渲染
