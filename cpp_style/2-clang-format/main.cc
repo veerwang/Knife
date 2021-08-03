@@ -1,0 +1,26 @@
+/*
+ * =============================================================================
+ *
+ *       Filename:  main.cpp
+ *
+ *    Description:  用于测试clang-format工具
+ *
+ *        Version:  1.0
+ *        Created:  2021年08月03日
+ *       Revision:  1
+ *       Compiler:  gcc
+ *
+ *         Author:  kevin.wang
+ *   Organization:
+ *
+ * =============================================================================
+ */
+
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+
+int main(int argc, const char *argv[]) {
+        std::cout << "hello the world" << std::endl;
+        return EXIT_SUCCESS;
+}
