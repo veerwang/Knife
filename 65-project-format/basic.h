@@ -24,6 +24,7 @@ class basic {
         basic(const basic&);
         virtual ~basic();
 
+	void disp_name();
   protected:
   private:
 };

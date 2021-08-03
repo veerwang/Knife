@@ -24,6 +24,8 @@ class Base {
 	Base ();
 	Base (const Base&);
 	virtual ~Base();
+	void Display();
+	void GetID();
 
   protected:
 	

@@ -18,6 +18,8 @@
 
 #include "basic.h"
 
+#include <iostream>
+
 /*
  * ===  FUNCTION  ==============================================================
  *         Name:  basic
@@ -41,3 +43,16 @@ basic::~basic() {}
  * =============================================================================
  */
 basic::basic(const basic& theclass) {}
+
+/*
+ * ===  FUNCTION  ==============================================================
+ *         Name:  disp_name
+ *        Input:  void
+ *       Output:
+ *  Description:  函数说明文档
+ * =============================================================================
+ */
+void basic::disp_name(void) {
+        std::cout << "hello" << std::endl;
+        std::cout << "hello" << std::endl;
+}

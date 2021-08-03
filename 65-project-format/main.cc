@@ -46,8 +46,10 @@ int main(int argc, const char *argv[]) {
                         std::cout << "hello" << std::endl;
                         break;
                 default:
-			std::cout << "baby" << std::endl;
+                        std::cout << "baby" << std::endl;
         }
         basic b;
+        basic *c = new basic();
+        c->disp_name();
         return EXIT_SUCCESS;
 }
