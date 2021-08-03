@@ -8,15 +8,18 @@ CC = gcc
 CPP = g++
 CFLAGS = -g -Wall -std=c++11
 
+SRCS=$(wildcard *.cc *.c)
+OBJS:=$(SRCS:=.o)
+
 all: main
 
-%.o: %.c
+%.c.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-%.o: %.cc
+%.cc.o: %.cc
 	$(CPP) $(CFLAGS) -c -o $@ $<
 
-main: main.o
+main: $(OBJS)
 	$(CPP) $(CFLAGS) -o $@ $+
 
 clean:

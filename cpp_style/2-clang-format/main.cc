@@ -20,7 +20,11 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "basic.h"
+
 int main(int argc, const char *argv[]) {
+	Basic b;
         std::cout << "hello the world" << std::endl;
+	b.Display();
         return EXIT_SUCCESS;
 }
