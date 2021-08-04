@@ -6,7 +6,8 @@
 .PHONY: clean, mrproper
 CC = gcc
 CPP = g++
-CFLAGS = -g -Wall -std=c++11
+CPPFLAGS = -g -Wall -std=c++11
+CFLAGS = -g -Wall
 
 SRCS=$(wildcard *.cc *.c)
 OBJS:=$(SRCS:=.o)
@@ -17,10 +18,10 @@ all: main
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.cc.o: %.cc
-	$(CPP) $(CFLAGS) -c -o $@ $<
+	$(CPP) $(CPPFLAGS) -c -o $@ $<
 
 main: $(OBJS)
-	$(CPP) $(CFLAGS) -o $@ $+
+	$(CPP) $(CPPFLAGS) -o $@ $+
 
 clean:
 	rm -f *.o core.*

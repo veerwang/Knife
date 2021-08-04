@@ -22,9 +22,12 @@
 
 #include "basic.h"
 
+extern "C" int GetVersion();
+
 int main(int argc, const char *argv[]) {
-	Basic b;
+        Basic b;
         std::cout << "hello the world" << std::endl;
-	b.Display();
+        b.Display();
+        std::cout << GetVersion() << std::endl;
         return EXIT_SUCCESS;
 }
