@@ -65,12 +65,10 @@ bool write_ppm(const unsigned char *buf, unsigned width, unsigned height,
 }
 
 /*
- * ===  FUNCTION
- * ====================================================================== Name:
- *        Input:  draw_slider
- *       Output:
+ * ===  FUNCTION  =============================================================
+ *         Name:  draw_slider
  *  Description:  绘制圆角矩形
- * =====================================================================================
+ * ============================================================================
  */
 void draw_slider(agg::rendering_buffer &rbuf, int left, int up, int right,
                  int down, int radium) {
