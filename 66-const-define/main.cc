@@ -20,11 +20,15 @@
 #include <cstdio>
 #include <iostream>
 
+#include "base.h"
+
 // 该变量在外部模块,被声明为100
 extern const int cversion;
 
 int 
 main(int argc, const char *argv[]) {
+	Base b;
+	b.Disp();
 	std::cout << cversion  << std::endl;	
 	return EXIT_SUCCESS;
 }
