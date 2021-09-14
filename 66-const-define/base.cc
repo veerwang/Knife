@@ -19,13 +19,20 @@
 #include <iostream>
 #include "base.h"
 
+const int Base::MAXACCOUNT = 5;
+
+typedef struct Opt {
+	int Version[Base::MAXACCOUNT];
+} OPT;
+
+
 /* 
  * ===  FUNCTION  ==============================================================
  *         Name:  Base
  *  Description:  默认构造函数 
  * =============================================================================
  */
-Base::Base () : MAXACCOUNT(5) {
+Base::Base () {
 }
 
 /* 
@@ -43,7 +50,7 @@ Base::~Base () {
  *  Description:  拷贝构造函数 
  * =============================================================================
  */
-Base::Base(const Base& theclass) : MAXACCOUNT(5) {
+Base::Base(const Base& theclass) {
 }
 
 /* 

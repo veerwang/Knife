@@ -27,10 +27,10 @@ class Base {
 
 	void Disp();
 
+	static const int MAXACCOUNT;
   protected:
 	
   private:
-	const int MAXACCOUNT;
 };
 
 #endif /* INCLUDED_BASE_H */
