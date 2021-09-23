@@ -26,7 +26,8 @@ class Device : public Base {
 	Device ();
 	Device (const Device&);
 	virtual ~Device();
-
+	
+	void Disp();
   protected:
 	
   private:

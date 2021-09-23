@@ -25,5 +25,6 @@
 int
 main(int argc, const char *argv[]) {
 	Device b;	
+	b.Disp();
 	return EXIT_SUCCESS;
 }
