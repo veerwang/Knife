@@ -35,5 +35,6 @@ int main(int argc, const char *argv[]) {
         for (auto e : buf) {
                 std::cout << e << std::endl;
         }
+	std::cout << buf[2] << std::endl;
         return EXIT_SUCCESS;
 }
