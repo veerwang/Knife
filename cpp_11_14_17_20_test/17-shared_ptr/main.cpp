@@ -45,7 +45,13 @@ void test1()
 	else
 		std::cout << "it is not unique" << std::endl;
 
-	tp->Display();
+	// 将tp给清空、复位掉
+	tp.reset();
+
+	if (ptr.unique())
+		std::cout << "it is unique" << std::endl;
+	else
+		std::cout << "it is not unique" << std::endl;
 }
 
 void test2() {
@@ -55,6 +61,6 @@ void test2() {
 
 int main(int argc, const char* argv[])
 {
-	test2();
+	test1();
 	return EXIT_SUCCESS;
 }
