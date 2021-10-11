@@ -30,6 +30,7 @@ class Base {
   protected:
 	
   private:
+	int mID {0};
 	
 };
 

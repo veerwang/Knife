@@ -25,7 +25,8 @@
  *  Description:  默认构造函数 
  * =============================================================================
  */
-Device::Device () {
+// 注意这边需要显示的初始化给智能指针
+Device::Device () : mBase(new Base) {
 	std::cout << "Device create" << std::endl;
 }
 

@@ -27,6 +27,7 @@
  */
 Base::Base () {
 	std::cout << "Base Create" << std::endl;
+	mID = 100;
 }
 
 /* 
@@ -55,5 +56,5 @@ Base::Base(const Base& theclass) {
  * ============================================================================
  */
 void Base::Display() {
-	std::cout << "My Name = kevin" << std::endl;
+	std::cout << "My Name = kevin" << " ID:" << mID << std::endl;
 }
