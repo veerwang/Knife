@@ -41,6 +41,7 @@ void *thread_fun1(void *msg) {
 		std::cout << msg << " saying.." << times << " times" << std::endl;
 		sleep(1);
 	}
+	return 0;
 }
 
 void *thread_fun2(void *msg) {
@@ -57,6 +58,7 @@ void *thread_fun2(void *msg) {
 		std::cout << msg << " saying.." << times << " times" << std::endl;
 		sleep(1);
 	}
+	return 0;
 }
 
 int main(int argc, const char *argv[]) {
