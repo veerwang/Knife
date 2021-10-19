@@ -5,7 +5,7 @@ class Abstraction {
 public:
 	Abstraction();
 	Abstraction(const Abstraction&);
-	~Abstraction();
+	virtual ~Abstraction();
 	
 	virtual void TemplateMethod ();
 	virtual void Process();

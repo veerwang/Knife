@@ -8,7 +8,7 @@ class Implementation : public Abstraction
 public:
 	Implementation();
 	Implementation(const Implementation&);
-	~Implementation();
+	virtual ~Implementation();
 
 	virtual void TemplateMethod();
 
