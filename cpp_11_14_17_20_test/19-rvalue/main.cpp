@@ -52,9 +52,13 @@ void testRightValue(Object &&v) {
 
 int
 main(int argc, const char *argv[]) {
-	//Object obj;
+	Object obj;
 	//testDefaultValue(obj);	
 	//testNormalValue(Object());
-	testRightValue(Object());
+	//testRightValue(Object());
+	
+	// 重要代码，这样的调用，只产生一次的构造过程
+	// 没有调用复制构造函数
+	testRightValue(std::move(obj));
 	return EXIT_SUCCESS;
 }
