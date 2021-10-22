@@ -35,13 +35,26 @@ class Object {
 
 // 重点测试，这种传递方式产生拷贝构造函数 
 // 效率很低 
-void testRValue(Object v) {
+void testDefaultValue(Object v) {
 	v.Disp();
 }
 
-int 
+// 该种传递方式比上面一种要强
+// 不会发生拷贝复制过程
+void testNormalValue(Object &v) {
+	v.Disp();
+}
+
+//
+void testRightValue(Object &&v) {
+	v.Disp();
+}
+
+int
 main(int argc, const char *argv[]) {
-	Object obj;
-	testRValue(obj);	
+	//Object obj;
+	//testDefaultValue(obj);	
+	//testNormalValue(Object());
+	testRightValue(Object());
 	return EXIT_SUCCESS;
 }
