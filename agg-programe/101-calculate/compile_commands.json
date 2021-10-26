@@ -1,0 +1,18 @@
+[
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wall",
+            "-std=c++11",
+            "-I../include",
+            "-fPIE",
+            "-o",
+            "main.o",
+            "main.cc"
+        ],
+        "directory": "/home/kevin/github.com/Knife/agg-programe/101-calculate",
+        "file": "main.cc"
+    }
+]
