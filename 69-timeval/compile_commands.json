@@ -1,0 +1,16 @@
+[
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wall",
+            "-std=c++11",
+            "-o",
+            "main.cc.o",
+            "main.cc"
+        ],
+        "directory": "/home/kevin/github.com/Knife/69-timeval",
+        "file": "main.cc"
+    }
+]
