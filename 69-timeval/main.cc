@@ -69,8 +69,11 @@ void test2() {
 	struct timeval endp;
 	gettimeofday(&endp, NULL);
 
-	std::cout << "sec:" << endp.tv_sec - startp.tv_sec << std::endl;
-	std::cout << "usec:" << endp.tv_usec - startp.tv_usec << std::endl;
+	//std::cout << "sec:" << endp.tv_sec - startp.tv_sec << std::endl;
+	//std::cout << "usec:" << endp.tv_usec - startp.tv_usec << std::endl;
+	double e = static_cast<double>(endp.tv_usec - startp.tv_usec) + static_cast<double>((endp.tv_sec - startp.tv_sec) * 1000 * 1000);
+	e = e / (1000 * 1000);
+	std::cout << "second: " << e << std::endl;
 }
 
 int 
