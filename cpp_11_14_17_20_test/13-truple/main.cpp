@@ -23,15 +23,14 @@
 #include 	<tuple>
 #include	<string>
 
+#include 	"basic.h"
+
 std::tuple<int,std::string>
 get_value() {
 	return std::make_tuple(100,"kevin");
 }
 
-int 
-main(int argc, const char *argv[]) {
-	std::cout << "tuple test code" << std::endl;
-
+void test1() {
 	// C++ 17 的类型
 	/*
 	auto [x,y] = get_value();
@@ -44,9 +43,21 @@ main(int argc, const char *argv[]) {
 	std::tuple<int,std::string> result = get_value();
 	std::cout << std::get<0>(result) << std::endl;
 	std::cout << std::get<1>(result) << std::endl;
+}
 
+int GetValue() {
+	return 0;
+}
 
+void test2() {
+	Basic b;
+	auto e = b.GetValue();
+}
 
-
+int 
+main(int argc, const char *argv[]) {
+	std::cout << "tuple test code" << std::endl;
+	//test1();
+	test2();
 	return EXIT_SUCCESS;
 }
