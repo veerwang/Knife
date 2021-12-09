@@ -1,4 +1,4 @@
-#include <mcs51/8051.h>
+#include <mcs51/C8051F920.h>
 
 int main(void)
 {
