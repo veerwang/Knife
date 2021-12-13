@@ -20,5 +20,6 @@
  */
 
 extern int init_frame();
+extern int device_init();
 
 #endif /* INCLUDED_MAIN_H */

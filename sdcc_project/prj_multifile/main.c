@@ -30,6 +30,7 @@
 int main(void)
 {
 	init_frame();
+	device_init();
 	while (1) {
 		;
 	}

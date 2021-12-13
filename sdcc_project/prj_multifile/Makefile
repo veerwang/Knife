@@ -13,7 +13,8 @@ all: main
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 main: $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $+
+	@echo library path is absolutely
+	$(CC) $(CFLAGS) -L ./ -o $@ $+ utils.lib
 
 clean:
 	rm -f  main *.rel *.sym *.lst *.asm *.lk *.ihx *.map *.mem *.rst main.hex
