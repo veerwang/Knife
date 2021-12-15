@@ -20,8 +20,8 @@
 
 #include "main.h"
 
-#include "libs/serials/serials.h"
-#include "libs/timers//timers.h"
+#include "modules/serials/serials.h"
+#include "modules/timers//timers.h"
 
 /* 
  * ===  FUNCTION  =============================================================
