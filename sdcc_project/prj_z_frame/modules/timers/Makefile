@@ -2,7 +2,7 @@
 
 CC = sdcc
 AR = sdar
-CFLAGS = -mmcs51 --std-c2x
+CFLAGS = -mmcs51 --std-c2x --model-large
 
 SRCS=$(wildcard *.c)
 OBJS:=$(SRCS:=.rel)

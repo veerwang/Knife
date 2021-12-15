@@ -21,5 +21,6 @@
 
 /* utils.c */
 extern int init_frame();
+extern void asm_delay(int);
 
 #endif /* INCLUDED_MAIN_H */

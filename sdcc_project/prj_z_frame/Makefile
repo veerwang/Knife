@@ -1,7 +1,7 @@
 .PHONY: clean, mrproper
 
 CC = sdcc
-CFLAGS = -mmcs51 --std-c2x
+CFLAGS = -mmcs51 --std-c2x --model-large
 TARGET = main
 
 SRCS=$(wildcard *.c)

@@ -37,6 +37,8 @@ int main(void)
 	// 关键代码，内部寄存器
 	__near unsigned char times = 0;
 
+	asm_delay(1);
+
 	init_frame();
 	init_serial();
 	init_timer();
