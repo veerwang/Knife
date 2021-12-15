@@ -16,6 +16,7 @@
  * =============================================================================
  */
 
+#include <stdint.h>
 #include <mcs51/C8051F920.h>
 
 #include "main.h"
@@ -35,7 +36,7 @@ int main(void)
 	EA = 0;
 
 	// 关键代码，内部寄存器
-	__near unsigned char times = 0;
+	__near uint8_t times = 0;
 
 	asm_delay(1);
 
