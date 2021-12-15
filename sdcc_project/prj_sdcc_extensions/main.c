@@ -29,6 +29,8 @@
 
 int main(void)
 {
+	EA = 0;
+
 	// 关键代码，内部寄存器
 	__near unsigned char times = 0;
 
