@@ -1,12 +1,12 @@
 /*
  * =============================================================================
  *
- *       Filename:  main.c
+ *       Filename:  serials.c
  *
- *    Description:  8051单片机框架程序
+ *    Description:  进行窜口的初始化操作 
  *
  *        Version:  1.0
- *        Created:  2021年12月13日 
+ *        Created:  2021年12月15日 
  *       Revision:  1 
  *       Compiler:  gcc
  *
@@ -16,30 +16,12 @@
  * =============================================================================
  */
 
-#include <mcs51/C8051F920.h>
-
-#include "main.h"
-
-#include "libs/serials/serials.h"
-
 /* 
  * ===  FUNCTION  =============================================================
- *         Name:  main 
- *  Description:  程序的入口 
+ *         Name:  init_serial
+ *  Description:  初始化串口 
  * ============================================================================
  */
-
-int main(void)
-{
-	EA = 0;
-
-	// 关键代码，内部寄存器
-	__near unsigned char times = 0;
-
-	init_frame();
-	init_serial();
-
-	while (1) {
-		;
-	}
+int init_serial() {
+	return 0;
 }

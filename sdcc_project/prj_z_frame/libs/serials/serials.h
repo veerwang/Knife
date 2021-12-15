@@ -1,15 +1,15 @@
-#ifndef INCLUDED_MAIN_H
-#define INCLUDED_MAIN_H
+#ifndef INCLUDED_SERIALS_H
+#define INCLUDED_SERIALS_H
 
 /*
  * =============================================================================
  *
- *       Filename:  main.h
+ *       Filename:  serials.h
  *
- *    Description:  工程头文件 
+ *    Description:  类介绍 
  *
  *        Version:  1.0
- *        Created:  2021年12月13日 
+ *        Created:  2021年12月15日 
  *       Revision:  1 
  *       Compiler:  gcc
  *
@@ -19,7 +19,6 @@
  * =============================================================================
  */
 
-/* utils.c */
-extern int init_frame();
+extern int init_serial();
 
-#endif /* INCLUDED_MAIN_H */
+#endif /* INCLUDED_SERIALS_H */
