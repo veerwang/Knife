@@ -1,12 +1,12 @@
 /*
  * =============================================================================
  *
- *       Filename:  main.c
+ *       Filename:  timers.c
  *
- *    Description:  8051单片机框架程序
+ *    Description:  定时器相关代码 
  *
  *        Version:  1.0
- *        Created:  2021年12月13日 
+ *        Created:  2021年12月15日 
  *       Revision:  1 
  *       Compiler:  gcc
  *
@@ -16,32 +16,12 @@
  * =============================================================================
  */
 
-#include <mcs51/C8051F920.h>
-
-#include "main.h"
-
-#include "libs/serials/serials.h"
-#include "libs/timers//timers.h"
-
 /* 
  * ===  FUNCTION  =============================================================
- *         Name:  main 
- *  Description:  程序的入口 
+ *         Name:  init_timer
+ *  Description:  初始化定时器相关代码 
  * ============================================================================
  */
-
-int main(void)
-{
-	EA = 0;
-
-	// 关键代码，内部寄存器
-	__near unsigned char times = 0;
-
-	init_frame();
-	init_serial();
-	init_timer();
-
-	while (1) {
-		;
-	}
+int init_timer() {
+	return 0;
 }

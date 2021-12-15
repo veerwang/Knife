@@ -2,12 +2,17 @@
 
 CC = sdcc
 CFLAGS = -mmcs51 --std-c2x
+TARGET = main
 
 SRCS=$(wildcard *.c)
 OBJS:=$(SRCS:=.rel)
 
-all: library main
-	packihx main > main.hex
+LIBDIRS := $(shell cd libs;find * -maxdepth 0 -type d)
+LIBRARIES:=$(LIBDIRS:=.lib)
+LIBPATH:=$(patsubst %,-L ./libs/%/,$(LIBDIRS))
+
+all: library $(TARGET) 
+	packihx $(TARGET) > $(TARGET).hex
 
 library:
 	@cd libs;make
@@ -15,10 +20,9 @@ library:
 %.c.rel: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-main: $(OBJS)
-	@echo library path is absolutely
-	$(CC) $(CFLAGS) -L ./libs/serials/ -o $@ $+ serials.lib
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(LIBPATH) -o $@ $+ $(LIBRARIES) 
 
 clean:
 	@cd libs;make clean
-	rm -f  main *.rel *.sym *.lst *.asm *.lk *.ihx *.map *.mem *.rst main.hex
+	rm -f  $(TARGET) *.rel *.sym *.lst *.asm *.lk *.ihx *.map *.mem *.rst $(TARGET).hex
