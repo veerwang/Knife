@@ -1,10 +1,12 @@
-#include<linux/slab.h>		//kmalloc 函数定义
-#include<linux/init.h>  	//初始换函数
-#include<linux/mm.h>  		//remap_pfn_range
-#include <linux/cdev.h>
-#include<linux/kernel.h>  	//内核头文件
-#include<linux/module.h>  	//模块的头文件
-#include<linux/device.h>	//class_create/device_create相关头文件的定义
+#include	<linux/slab.h>		//kmalloc 函数定义
+#include	<linux/init.h>  	//初始换函数
+#include	<linux/mm.h>  		//remap_pfn_range
+#include	<asm-generic/io.h>
+#include	<linux/cdev.h>
+#include	<linux/fs.h>
+#include	<linux/kernel.h>  	//内核头文件
+#include	<linux/module.h>  	//模块的头文件
+#include	<linux/device.h>	//class_create/device_create相关头文件的定义
 				//相关头文件在KERNELDIR中有定义
 
 MODULE_LICENSE("GPL");
