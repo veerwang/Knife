@@ -1,6 +1,7 @@
 #include<linux/slab.h>		//kmalloc 函数定义
 #include<linux/init.h>  	//初始换函数
 #include<linux/mm.h>  		//remap_pfn_range
+#include	<asm-generic/io.h>
 #include <linux/cdev.h>
 #include <asm/uaccess.h>	// __get_user/__put_user
 #include<linux/kernel.h>  	//内核头文件
