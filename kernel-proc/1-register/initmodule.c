@@ -1,6 +1,7 @@
 #include<linux/slab.h>		//kmalloc 函数定义
 #include<linux/init.h>  	//初始换函数
 #include <linux/cdev.h>
+#include <linux/fs.h>
 #include<linux/kernel.h>  	//内核头文件
 #include<linux/module.h>  	//模块的头文件
 #include<linux/device.h>	//class_create/device_create相关头文件的定义
