@@ -3,6 +3,8 @@
 #include<linux/mm.h>  		//remap_pfn_range
 #include <linux/cdev.h>
 #include <asm/uaccess.h>	// __get_user/__put_user
+#include <asm-generic/io.h>
+#include <linux/timer.h>
 #include<linux/kernel.h>  	//内核头文件
 #include<linux/module.h>  	//模块的头文件
 #include<linux/version.h>  	//linux版本信息
@@ -173,8 +175,8 @@ static int device_release(struct inode *minode, struct file *mfile) {
 	return 0;
 }
 
-static void second_timer_handle (unsigned long arg) {
-	mod_timer (&module_timer, jiffies + HZ);
+static void second_timer_handle (struct timer_list* mtimer) {
+	mod_timer (mtimer, jiffies + HZ);
 	atomic_inc (&counter);
 	printk ("current jiffies is %ld\n", jiffies);
 }
@@ -214,8 +216,7 @@ static int __init initmodule_start(void)
                 goto err;
         }
 
-	init_timer(&module_timer);
-	module_timer.function = second_timer_handle;
+	timer_setup(&module_timer, second_timer_handle, 0);
 	atomic_set(&counter, 0);
 	// 开启定时器
 	add_timer(&module_timer);
