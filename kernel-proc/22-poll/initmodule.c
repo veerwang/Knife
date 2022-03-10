@@ -36,7 +36,7 @@ static ssize_t device_write(struct file *, const char __user *, size_t, loff_t *
 static ssize_t sysfs_show(struct kobject* kobj, struct kobj_attribute* attr, char* buf);
 static ssize_t sysfs_store(struct kobject* kobj, struct kobj_attribute* attr, const char* buf, size_t count);
 
-struct kobj_attribute etx_attr = __ATTR(etx_value, 0666, sysfs_show, sysfs_store);
+struct kobj_attribute etx_attr = __ATTR(etx_value, 0660, sysfs_show, sysfs_store);
 
 struct file_operations eddy_fops = {
        .owner 	 = THIS_MODULE,
