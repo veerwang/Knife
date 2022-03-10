@@ -1,70 +1,49 @@
-/***************************************************************************/ /**
-*  \file       poll_driver.c
-*
-*  \details    Poll driver 
-*
-*  \author     EmbeTronicX
-*
-*  \Tested with Linux raspberrypi 5.4.51-v7l+
-*
-* *****************************************************************************/
+#include<linux/slab.h>		//kmalloc 函数定义
+#include<linux/init.h>  	//初始换函数
 #include <linux/cdev.h>
-#include <linux/device.h>
 #include <linux/fs.h>
-#include <linux/init.h>
+#include<linux/kernel.h>  	//内核头文件
+#include<linux/module.h>  	//模块的头文件
+#include<linux/device.h>	//class_create/device_create相关头文件的定义
+				//相关头文件在KERNELDIR中有定义
+
 #include <linux/kdev_t.h>
 #include <linux/kernel.h>
 #include <linux/kobject.h>
 #include <linux/kthread.h>
-#include <linux/module.h>
-#include <linux/poll.h>
-#include <linux/slab.h> //kmalloc()
-#include <linux/sysfs.h>
-#include <linux/uaccess.h> //copy_to/from_user()
-#include <linux/wait.h>	   //Required for the wait queues
+#include <linux/wait.h>	   	//Required for the wait queues
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("kevin.wang");
 
 //Waitqueue
 DECLARE_WAIT_QUEUE_HEAD(wait_queue_etx_data);
 
-dev_t dev = 0;
-static struct class* dev_class;
-static struct cdev etx_cdev;
-struct kobject* kobj_ref;
+static dev_t devId;
+static struct class *cls = NULL;
+struct cdev cdev;
 
-static bool can_write = false;
-static bool can_read = false;
 static char etx_value[20];
 
-/*
-** Function Prototypes
-*/
-static int __init etx_driver_init(void);
-static void __exit etx_driver_exit(void);
+struct kobject* kobj_ref;
 
-/*************** Driver Fuctions **********************/
-static int etx_open(struct inode* inode, struct file* file);
-static int etx_release(struct inode* inode, struct file* file);
-static ssize_t etx_read(struct file* filp, char __user* buf, size_t len, loff_t* off);
-static ssize_t etx_write(struct file* filp, const char* buf, size_t len, loff_t* off);
-static unsigned int etx_poll(struct file* filp, struct poll_table_struct* wait);
+static int device_open(struct inode *, struct file *);
+static int device_release(struct inode *, struct file *);
+static ssize_t device_read(struct file *, char __user *, size_t, loff_t *);
+static ssize_t device_write(struct file *, const char __user *, size_t, loff_t *);
 
 /*************** Sysfs Fuctions **********************/
-static ssize_t sysfs_show(struct kobject* kobj,
-    struct kobj_attribute* attr, char* buf);
-static ssize_t sysfs_store(struct kobject* kobj,
-    struct kobj_attribute* attr, const char* buf, size_t count);
-struct kobj_attribute etx_attr = __ATTR(etx_value, 0660, sysfs_show, sysfs_store);
+static ssize_t sysfs_show(struct kobject* kobj, struct kobj_attribute* attr, char* buf);
+static ssize_t sysfs_store(struct kobject* kobj, struct kobj_attribute* attr, const char* buf, size_t count);
 
-/*
-** File operation sturcture
-*/
-static struct file_operations fops = {
-	.owner = THIS_MODULE,
-	.read = etx_read,
-	.write = etx_write,
-	.open = etx_open,
-	.release = etx_release,
-	.poll = etx_poll
+struct kobj_attribute etx_attr = __ATTR(etx_value, 0666, sysfs_show, sysfs_store);
+
+struct file_operations eddy_fops = {
+       .owner 	 = THIS_MODULE,
+       .open  	 = device_open,
+       .release  = device_release,
+       .read     = device_read,
+       .write    = device_write,
 };
 
 /*
@@ -75,8 +54,6 @@ static ssize_t sysfs_show(struct kobject* kobj,
     char* buf)
 {
 	pr_info("Sysfs Show - Write Permission Granted!!!\n");
-
-	can_write = true;
 
 	//wake up the waitqueue
 	wake_up(&wait_queue_etx_data);
@@ -96,122 +73,62 @@ static ssize_t sysfs_store(struct kobject* kobj,
 
 	strcpy(etx_value, buf);
 
-	can_read = true;
-
 	//wake up the waitqueue
 	wake_up(&wait_queue_etx_data);
 
 	return count;
 }
 
-/*
-** This function will be called when we open the Device file
-*/
-static int etx_open(struct inode* inode, struct file* file)
-{
-	pr_info("Device File Opened...!!!\n");
+static ssize_t device_write(struct file *mfile, const char __user *databuf, size_t mlen, loff_t *mloff) {
+	return 0; 
+}
+
+static ssize_t device_read(struct file *mfile, char __user *databuf, size_t mlen, loff_t *mloff) {
+	return 0; 
+}
+
+static int device_open(struct inode * mindoe, struct file *mfile) {
 	return 0;
 }
 
-/*
-** This function will be called when we close the Device file
-*/
-static int etx_release(struct inode* inode, struct file* file)
-{
-	pr_info("Device File Closed...!!!\n");
+static int device_release(struct inode *minode, struct file *mfile) {
 	return 0;
 }
-
-/*
-** This fuction will be called when we read the Device file
-*/
-static ssize_t etx_read(struct file* filp, char __user* buf, size_t len, loff_t* off)
+ 
+static int __init initmodule_start(void)
 {
-	pr_info("Read Function : etx_value = %s\n", etx_value);
+	int result;
 
-	len = strlen(etx_value);
+	printk(KERN_ALERT "Loading initmodule...\n");
 
-	strcpy(buf, etx_value);
-
-#if 0  
-  if( copy_to_user(buf, etx_value, len) > 0)
-  {
-    pr_err("ERROR: Not all the bytes have been copied to user\n");
-  }
-#endif
-
-	return 0;
-}
-
-/*
-** This fuction will be called when we write the Device file
-*/
-static ssize_t etx_write(struct file* filp, const char __user* buf, size_t len, loff_t* off)
-{
-	strcpy(etx_value, buf);
-
-	pr_info("Write function : etx_value = %s\n", etx_value);
-
-	return len;
-}
-
-/*
-** This fuction will be called when app calls the poll function
-*/
-static unsigned int etx_poll(struct file* filp, struct poll_table_struct* wait)
-{
-	__poll_t mask = 0;
-
-	poll_wait(filp, &wait_queue_etx_data, wait);
-	pr_info("Poll function\n");
-
-	if (can_read) {
-		can_read = false;
-		mask |= (POLLIN | POLLRDNORM);
+	// 动态申请主设备号
+	//if(( result = alloc_chrdev_region(&devId, 0, 1, "stone-alloc-dev") ) != 0) {
+	if(( result = alloc_chrdev_region(&devId, 0, 1, "eddy-dev") ) != 0) {
+		printk(KERN_WARNING "register dev id error:%d\n", result);
+		goto err;
+	} else {
+		printk(KERN_WARNING "register dev id success!\n");
 	}
 
-	if (can_write) {
-		can_write = false;
-		mask |= (POLLOUT | POLLWRNORM);
-	}
+	cls = class_create(THIS_MODULE, "eddy-class");
+        if(IS_ERR(cls)) {
+                printk(KERN_WARNING "create class error!\n");
+                goto err;
+        }
 
-	return mask;
-}
+	// 设置设备节点的文件操作函数
+	cdev_init (&cdev, &eddy_fops);
+	cdev.owner = THIS_MODULE;
+	cdev.ops = &eddy_fops;
+	result = cdev_add (&cdev, devId , 1);
+	if (result)
+		printk (KERN_WARNING "Error %d adding char_reg_setup_cdev", result);
 
-/*
-** Module Init function
-*/
-static int __init etx_driver_init(void)
-{
-	/*Allocating Major number*/
-	if ((alloc_chrdev_region(&dev, 0, 1, "etx_Dev")) < 0) {
-		pr_err("Cannot allocate major number\n");
-		return -1;
-	}
-	pr_info("Major = %d Minor = %d \n", MAJOR(dev), MINOR(dev));
-
-	/*Creating cdev structure*/
-	cdev_init(&etx_cdev, &fops);
-	etx_cdev.owner = THIS_MODULE;
-	etx_cdev.ops = &fops;
-
-	/*Adding character device to the system*/
-	if ((cdev_add(&etx_cdev, dev, 1)) < 0) {
-		pr_err("Cannot add the device to the system\n");
-		goto r_class;
-	}
-
-	/*Creating struct class*/
-	if ((dev_class = class_create(THIS_MODULE, "etx_class")) == NULL) {
-		pr_err("Cannot create the struct class\n");
-		goto r_class;
-	}
-
-	/*Creating device*/
-	if ((device_create(dev_class, NULL, dev, NULL, "etx_device")) == NULL) {
-		pr_err("Cannot create the Device 1\n");
-		goto r_device;
-	}
+	//实际在/dev目录下创建eddy%d的设备节点
+        if(device_create(cls, NULL, devId, "", "eddy%d", 0) == NULL) {
+                printk(KERN_WARNING "create device error!\n");
+                goto err;
+        }
 
 	/*Creating a directory in /sys/kernel/ */
 	kobj_ref = kobject_create_and_add("etx_sysfs", kernel_kobj);
@@ -222,40 +139,30 @@ static int __init etx_driver_init(void)
 		goto r_sysfs;
 	}
 
-	//Initialize wait queue
-	//init_waitqueue_head(&wait_queue_etx_data);
-
-	pr_info("Device Driver Insert...Done!!!\n");
-	return 0;
+        printk(KERN_ALERT "initmodule load success!\n");
+        return 0;
 
 r_sysfs:
 	kobject_put(kobj_ref);
 	sysfs_remove_file(kernel_kobj, &etx_attr.attr);
-r_device:
-	class_destroy(dev_class);
-r_class:
-	unregister_chrdev_region(dev, 1);
-	return -1;
-}
 
-/*
-** Module exit function
-*/
-static void __exit etx_driver_exit(void)
+err:
+        device_destroy(cls, devId);
+        class_destroy(cls);
+        unregister_chrdev_region(devId, 1);
+        return -1;
+}
+ 
+static void __exit initmodule_end(void)
 {
 	kobject_put(kobj_ref);
 	sysfs_remove_file(kernel_kobj, &etx_attr.attr);
-	device_destroy(dev_class, dev);
-	class_destroy(dev_class);
-	cdev_del(&etx_cdev);
-	unregister_chrdev_region(dev, 1);
-	pr_info("Device Driver Remove...Done!!!\n");
+
+	device_destroy(cls, devId);
+	class_destroy(cls);
+	unregister_chrdev_region(devId, 1);
+	printk(KERN_ALERT "initmodule release\n");
 }
 
-module_init(etx_driver_init);
-module_exit(etx_driver_exit);
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("EmbeTronicX <embetronicx@gmail.com>");
-MODULE_DESCRIPTION("Simple linux driver (poll)");
-MODULE_VERSION("1.41");
+module_init(initmodule_start);
+module_exit(initmodule_end);
