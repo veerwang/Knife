@@ -19,7 +19,8 @@ MODULE_LICENSE("GPL");
 
 static struct gendisk *simp_blkdev_disk;
 static struct request_queue *simp_blkdev_queue;
-static void simp_blkdev_do_request(struct request_queue *q);
+static blk_qc_t simp_blkdev_do_request(struct request_queue *q, struct bio *bio);
+
 unsigned char *simp_blkdev_data;
 
 static int simp_blkdev_getgeo(struct block_device *bdev,
@@ -65,7 +66,8 @@ static int __init blockmodule_start(void) {
 		goto err_init_queue;
 	}
 
-	simp_blkdev_queue = blk_init_queue(simp_blkdev_do_request, NULL);
+	//simp_blkdev_queue = blk_init_queue(simp_blkdev_do_request, NULL);
+	simp_blkdev_queue = blk_alloc_queue(simp_blkdev_do_request, NUMA_NO_NODE);
 	if (!simp_blkdev_queue) {
 		ret = -ENOMEM;
 		goto err_init_queue;
@@ -108,8 +110,11 @@ static void __exit blockmodule_end(void)
     	printk(KERN_ALERT "blockmodule release\n");
 }
 
-static void simp_blkdev_do_request(struct request_queue *q)
+//static void simp_blkdev_do_request(struct request_queue *q)
+static blk_qc_t simp_blkdev_do_request(struct request_queue *q, struct bio *bio)
 {
+	return BLK_QC_T_NONE;
+	/*
         struct request *req;
 	struct bio *req_bio;// 当前请求的bio
 	struct bio_vec *bvec;// 当前请求的bio的段(segment)链表
@@ -166,6 +171,7 @@ static void simp_blkdev_do_request(struct request_queue *q)
                         break;
                 }
         }
+	*/
 }
 
 module_init(blockmodule_start);
