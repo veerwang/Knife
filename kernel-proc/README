@@ -23,3 +23,24 @@ sudo udevadm trigger
 5.对于声明与使用混合使用的申明
 在Makefile中注意声明
 ccflags-y := -std=gnu99 -Wno-declaration-after-statement
+
+6.线程间同步机制
+原子操作
+
+信号量（semaphore）
+
+读写信号量（rw_semaphore）
+
+Spinlock
+
+Mutex
+
+BKL(Big Kernel Lock，只包含在2.4内核中，不讲)
+
+Rwlock
+
+brlock（只包含在2.4内核中，不讲）
+
+RCU（只包含在2.6内核及以后的版本中）
+
+seqlock（只包含在2.6内核及以后的版本中）
