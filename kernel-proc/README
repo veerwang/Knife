@@ -1,5 +1,8 @@
 1. dmesg -C 清除日志系统
 
+1.1 学习网络的内容 
+https://www.kernel.org/doc/html/latest/admin-guide/index.html
+
 2.linux驱动的学习网站
 https://embetronicx.com/tutorials/linux/device-drivers/workqueue-in-linux-kernel/
 
