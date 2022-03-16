@@ -8,7 +8,7 @@ MODULE_LICENSE("GPL");
 // 网络设备对象
 static struct net_device *sg_dev;
 
-static struct virnet_device {
+struct virnet_device {
 	int            id;
 	int            version;
 };
