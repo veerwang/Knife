@@ -5,7 +5,7 @@
 
 obj-m :=initmodule.o
 KVERSION  = $(shell uname -r)
-KERNELDIR = /usr/src/linux-headers-$(KVERSION)
+KERNELDIR = /usr/src/linux
 all:
 	make -C $(KERNELDIR) M=$(shell pwd) modules
 clean:
