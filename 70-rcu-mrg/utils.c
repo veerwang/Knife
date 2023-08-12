@@ -137,7 +137,7 @@ bool rcu_mrg_register(char* name)
 	\brief			unregister rcu module
 	\param[in]		name: RCU name
 	\param[out]		none
-	\retval			none
+	\retval			true: unregister success, false: fail
 */
 bool rcu_mrg_unregister(char* name)
 {
@@ -145,12 +145,18 @@ bool rcu_mrg_unregister(char* name)
 	for (int i = 0; i < MAX_RCU_TYPES; i++) {
 		/// increase rcu used account
 		if (0 == strcmp(system_rcu_resource[i].name, name)) {
-			system_rcu_resource[i].used_account -= 1;
-			if (system_rcu_resource[i].used_account == 0) {
-				rcu_mrg_register_disable();
-				status = true;
+			if (system_rcu_resource[i].used_account > 0) {
+				system_rcu_resource[i].used_account -= 1;
+				if (0 == system_rcu_resource[i].used_account) {
+					rcu_mrg_register_disable();
+				}
+			}
+			else {
+				status = false;
 				break;
 			}
+			status = true;
+			break;
 		}
 	}
 	return status;

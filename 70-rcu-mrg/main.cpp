@@ -30,16 +30,25 @@ main(int argc, const char *argv[]) {
 	rcu_mrg_init();
 
 	if (!rcu_mrg_register((char *)"GPIOA"))
-		std::cout << "GPIOA register fail" << std::endl;
+		std::cout << "GPIOA register 1 fail" << std::endl;
+
+	if (!rcu_mrg_register((char *)"GPIOA"))
+		std::cout << "GPIOA register 2 fail" << std::endl;
 
 	if (!rcu_mrg_register((char *)"GPIOE"))
-		std::cout << "GPIOE register fail" << std::endl;
+		std::cout << "GPIOE register 1 fail" << std::endl;
 
 	if (!rcu_mrg_unregister((char *)"GPIOA"))
-		std::cout << "GPIOA register fail" << std::endl;
+		std::cout << "GPIOA unregister 1 fail" << std::endl;
+
+	if (!rcu_mrg_unregister((char *)"GPIOA"))
+		std::cout << "GPIOA unregister 2 fail" << std::endl;
+
+	if (!rcu_mrg_unregister((char *)"GPIOE"))
+		std::cout << "GPIOE unregister 1 fail" << std::endl;
 
 	if (!rcu_mrg_check_release())
-		std::cout << "bad" << std::endl;
+		std::cout << "not all module release" << std::endl;
 
 	return EXIT_SUCCESS;
 }
