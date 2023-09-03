@@ -49,4 +49,18 @@ int main(void) {
 	if (substr != NULL) {
 		printf("-->%s<--\n", substr);
 	}
+
+	/// 查找首个出现字符的字符串，如果没有找到则返回空
+	char *charstr = strchr(familyname, 'i');
+	if ( charstr != NULL ) {
+		printf("-->%s<--\n", charstr);
+	}
+
+	char btmac[] = "01:02:03:04:05:06";
+
+	char* submac = strtok(btmac, ":");
+	while(submac) {
+		printf("-->%s<--\n", submac);
+		submac = strtok(NULL, ":");
+	}
 }
