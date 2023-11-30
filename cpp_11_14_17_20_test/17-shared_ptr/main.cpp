@@ -45,6 +45,9 @@ void test1()
 	else
 		std::cout << "it is not unique" << std::endl;
 
+	std::cout << "count = " << tp.use_count() << std::endl;
+	std::cout << "count = " << ptr.use_count() << std::endl;
+
 	// 将tp给清空、复位掉
 	tp.reset();
 
@@ -52,6 +55,9 @@ void test1()
 		std::cout << "it is unique" << std::endl;
 	else
 		std::cout << "it is not unique" << std::endl;
+
+	std::cout << "count = " << tp.use_count() << std::endl;
+	std::cout << "count = " << ptr.use_count() << std::endl;
 }
 
 void test2() {
