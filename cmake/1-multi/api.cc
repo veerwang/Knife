@@ -13,6 +13,6 @@
 #include <cstdlib>
 #include <iostream>
 
-void disp_log(void) {
-	std::cout << "display" << std::endl;
+void disp_log(const char* msg) {
+	std::cout << "Debug: " << msg << std::endl;
 }

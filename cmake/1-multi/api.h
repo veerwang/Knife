@@ -7,4 +7,4 @@
 	\note    无
 */
 
-void disp_log(void);
+void disp_log(const char*);

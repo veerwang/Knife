@@ -18,6 +18,6 @@
 int
 main(int argc, const char *argv[]) {
 	std::cout << "测试程序: " << module_version() << std::endl;	
-	disp_log();
+	disp_log("主程序启动");
 	return EXIT_SUCCESS;
 }
