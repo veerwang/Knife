@@ -10,6 +10,9 @@ configure_file(
 	"${PROJECT_SOURCE_DIR}/config.h"
 )
 
+# 允许test测试脚本
+enable_testing()
+
 # 添加配置文件
 option(USE_DEBUG "是否打开调试开关" ON)
 

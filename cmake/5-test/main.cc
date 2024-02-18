@@ -22,5 +22,10 @@ main(int argc, const char *argv[]) {
 	int intvalue = 512;
 	std::string value = number_to_string(intvalue);
 	disp_log(value.c_str());
+
+	std::string numstr = "16";
+	intvalue = string_to_number(numstr);
+	std::cout << (intvalue >> 1) << std::endl;
+
 	return EXIT_SUCCESS;
 }
