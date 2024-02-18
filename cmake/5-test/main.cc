@@ -1,6 +1,6 @@
 /*!
     \file    main.cc
-    \brief   测试程序
+    \brief   主程序
 
     \version 2024-02-14, V1.0
 	\author	 kevin.wang

@@ -32,6 +32,14 @@ add_executable(play main.cc api.cc)
 # 注意顺序，要先有init0这个目标，才能添加链接
 target_link_libraries(play utils)
 
+# 测试
+add_executable(testapp test.cc)
+
+# 注意顺序，要先有init0这个目标，才能添加链接
+target_link_libraries(testapp utils)
+
+add_test(NAME testapp COMMAND testapp)
+
 # 配置安装内容
 install(TARGETS play DESTINATION bin
 		PUBLIC_HEADER DESTINATION include

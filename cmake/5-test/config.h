@@ -1,1 +1,1 @@
-/* #undef USE_DEBUG */
+#define USE_DEBUG
