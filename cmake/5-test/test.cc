@@ -9,7 +9,22 @@
 
 #include "utils/module.h"
 #include "api.h"
+
 #include <cstdlib>
+
+class Base : public WangV::Singleton<Base> {
+	public:
+		int id;
+
+	public:
+		virtual ~Base() {;}
+
+	private:
+		Base() { id = 10;}
+		Base(const Base &) {;}
+
+		ENABLE_SINGLETON(Base);
+};
 
 int
 main(int argc, const char *argv[]) {
@@ -18,6 +33,11 @@ main(int argc, const char *argv[]) {
 	intvalue = WangV::string_to_number(numstr);
 
 	if (intvalue != 16) {
+		return EXIT_FAILURE;
+	}
+
+	Base *base = Base::Instance();
+	if (base->id != 10) {
 		return EXIT_FAILURE;
 	}
 

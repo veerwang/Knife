@@ -16,6 +16,7 @@
 #include 	<iostream>
 
 #include	"misce.hpp" 
+#include	"singleton.hpp"
 
 namespace WangV {
 
@@ -24,6 +25,7 @@ int module_version(void);
 
 // 转换
 long long string_to_number(std::string &x);
-}
+
+} /* namespace WangV */
 
 #endif /* INCLUDED_MODULE_H */
