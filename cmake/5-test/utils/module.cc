@@ -11,6 +11,8 @@
 
 static int version_prj = 100;
 
+namespace WangV {
+
 /*!
 	\brief			返回模块的版本
 	\param[in]		无
@@ -36,3 +38,4 @@ long long string_to_number(std::string &x) {
     return sum;
 }
 
+} /* namespace WangV */

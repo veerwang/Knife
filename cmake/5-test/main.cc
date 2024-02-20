@@ -17,14 +17,14 @@
 
 int
 main(int argc, const char *argv[]) {
-	std::cout << "测试程序: " << module_version() << std::endl;	
+	std::cout << "测试程序: " << WangV::module_version() << std::endl;	
 	disp_log("主程序启动");
 	int intvalue = 512;
-	std::string value = number_to_string(intvalue);
+	std::string value = WangV::number_to_string(intvalue);
 	disp_log(value.c_str());
 
 	std::string numstr = "16";
-	intvalue = string_to_number(numstr);
+	intvalue = WangV::string_to_number(numstr);
 	std::cout << (intvalue >> 1) << std::endl;
 
 	return EXIT_SUCCESS;

@@ -13,6 +13,7 @@
 #include 	<cstring>
 #include	<algorithm>
 
+namespace WangV {
 /*!
 	\brief			将数字转换成为字符串
 	\param[in]		x 任意类型数值，例如int char long longlong double 	
@@ -29,5 +30,7 @@ std::string number_to_string(T x) {
 	std::reverse(s.begin(), s.end());
 	return s;
 }
+
+} /* namespace WangV */
 
 #endif /* INCLUDED_MISCE_HPP */

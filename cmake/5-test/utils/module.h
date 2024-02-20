@@ -17,10 +17,13 @@
 
 #include	"misce.hpp" 
 
+namespace WangV {
+
 // 模块相关的API函数
 int module_version(void);
 
 // 转换
 long long string_to_number(std::string &x);
+}
 
 #endif /* INCLUDED_MODULE_H */

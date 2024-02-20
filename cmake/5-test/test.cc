@@ -15,7 +15,7 @@ int
 main(int argc, const char *argv[]) {
 	int intvalue = 0;
 	std::string numstr = "16";
-	intvalue = string_to_number(numstr);
+	intvalue = WangV::string_to_number(numstr);
 
 	if (intvalue != 16) {
 		return EXIT_FAILURE;
