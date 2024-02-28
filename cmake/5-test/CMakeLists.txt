@@ -38,8 +38,8 @@ add_executable(testapp test.cc)
 # 注意顺序，要先有init0这个目标，才能添加链接
 target_link_libraries(testapp utils)
 
-add_test(NAME testapp1 COMMAND testapp -a)
-add_test(NAME testapp2 COMMAND testapp -b)
+add_test(NAME StringToNumber COMMAND testapp -a)
+add_test(NAME Singleton COMMAND testapp -b)
 
 # 配置安装内容
 install(TARGETS play DESTINATION bin
