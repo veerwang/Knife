@@ -12,19 +12,15 @@
 
 #include 	<cstdlib>
 #include 	<cstdio>
-
 #include 	<iostream>
 
-#include	"misce.hpp" 
+#include	"misce.hpp"
 #include	"singleton.hpp"
 
 namespace WangV {
 
 // 模块相关的API函数
 int module_version(void);
-
-// 转换
-long long string_to_number(std::string &x);
 
 } /* namespace WangV */
 

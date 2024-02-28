@@ -47,7 +47,7 @@ install(TARGETS play DESTINATION bin
 		)
 
 # 将目标文件进行安装 
-install(FILES utils/module.h DESTINATION include)
+install(FILES utils/module.h utils/misce.hpp utils/singleton.hpp DESTINATION include)
 
 # 将目标进行安装 
 install(TARGETS utils DESTINATION lib)

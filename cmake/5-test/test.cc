@@ -11,7 +11,6 @@
 #include "api.h"
 
 #include <cstdlib>
-
 #include <unistd.h>
 
 class Base : public WangV::Singleton<Base> {
@@ -42,10 +41,18 @@ main(int argc, char **argv) {
 			case 'a': {
 						  int intvalue = 0;
 						  std::string numstr = "16";
-						  intvalue = WangV::string_to_number(numstr);
-						  if (intvalue == 16) {
-							  return EXIT_SUCCESS;
+						  intvalue = WangV::string_to_number<int>(numstr);
+						  if (intvalue != 16) {
+							  return EXIT_FAILURE;
 						  }
+
+						  int inputvalue = 32;
+						  std::string outputvalue = WangV::number_to_string(inputvalue);
+						  if ( outputvalue != "32" ) {
+							  return EXIT_FAILURE;
+						  }
+
+						  return EXIT_SUCCESS;
 					  }
 					  break;
 			case 'b': {
