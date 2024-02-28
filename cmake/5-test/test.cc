@@ -12,6 +12,8 @@
 
 #include <cstdlib>
 
+#include <unistd.h>
+
 class Base : public WangV::Singleton<Base> {
 	public:
 		int id;
@@ -26,20 +28,42 @@ class Base : public WangV::Singleton<Base> {
 		ENABLE_SINGLETON(Base);
 };
 
+/*!
+	\brief			test function entry	
+	\param[in]		输入参数
+	\param[out]		输出参数
+	\retval			返回值
+*/
 int
-main(int argc, const char *argv[]) {
-	int intvalue = 0;
-	std::string numstr = "16";
-	intvalue = WangV::string_to_number(numstr);
-
-	if (intvalue != 16) {
-		return EXIT_FAILURE;
+main(int argc, char **argv) {
+	int opt;
+	while((opt = getopt(argc, argv, "abh:")) != -1) {
+		switch (opt) {
+			case 'a': {
+						  int intvalue = 0;
+						  std::string numstr = "16";
+						  intvalue = WangV::string_to_number(numstr);
+						  if (intvalue == 16) {
+							  return EXIT_SUCCESS;
+						  }
+					  }
+					  break;
+			case 'b': {
+						  Base *base = Base::Instance();
+						  if (base->id == 10) {
+							  return EXIT_SUCCESS;
+						  }
+					  }
+					  break;
+			case 'h': {
+						  std::cout << optarg << std::endl;
+						  return EXIT_SUCCESS;
+					  }
+					  break;
+			default:
+					  break;
+		}
 	}
 
-	Base *base = Base::Instance();
-	if (base->id != 10) {
-		return EXIT_FAILURE;
-	}
-
-	return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }
