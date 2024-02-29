@@ -7,6 +7,7 @@
 	\note    无 
 */
 
+#include "utils/misce.hpp"
 #include "utils/module.h"
 #include "api.h"
 
@@ -49,6 +50,12 @@ main(int argc, char **argv) {
 						  int inputvalue = 32;
 						  std::string outputvalue = WangV::number_to_string(inputvalue);
 						  if ( outputvalue != "32" ) {
+							  return EXIT_FAILURE;
+						  }
+
+						  WangV::Value<int> mID;
+						  mID.set(12);
+						  if (mID.get() != 12) {
 							  return EXIT_FAILURE;
 						  }
 
