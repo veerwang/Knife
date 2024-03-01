@@ -16,6 +16,7 @@
 
 #include	"misce.hpp"
 #include	"singleton.hpp"
+#include	"nanothread.hpp"
 
 namespace WangV {
 
