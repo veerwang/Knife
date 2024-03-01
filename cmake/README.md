@@ -7,3 +7,6 @@
 
 # 命令添加
 cmake-gui ../
+
+# run test cases
+ctest
