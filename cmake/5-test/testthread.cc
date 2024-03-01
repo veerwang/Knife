@@ -22,7 +22,7 @@ template<typename T>
 class MyTestPolicy
 {
 	public:
-		void Run()
+		void run()
 		{
 			gTicks ++;
 		}
@@ -30,17 +30,16 @@ class MyTestPolicy
 
 int
 main(int argc, const char *argv[]) {
-	WangV::ThreadBase<MyTestPolicy>* pthreadbase;
-	pthreadbase = new WangV::ThreadBase<MyTestPolicy>();
-	pthreadbase->Set_Interval_Second(0);
-	pthreadbase->Set_Interval_MilliSecond(100);
-	pthreadbase->Start();
+	WangV::ThreadBase<MyTestPolicy>* pthreadbase = new WangV::ThreadBase<MyTestPolicy>();
+	pthreadbase->set_interval_second(0);
+	pthreadbase->set_interval_millisecond(100);
+	pthreadbase->start();
 
 	sleep(1);
 
 	if ( pthreadbase != NULL )
 	{
-		pthreadbase->Stop();
+		pthreadbase->stop();
 		WangV::deletep(pthreadbase);
 	}
 

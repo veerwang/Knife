@@ -21,7 +21,7 @@ namespace WangV
 		class DefaultNanoThreadPolicy
 		{
 			public:
-				void Run()
+				void run()
 				{
 					//			std::cout<<"... "<<std::endl;
 				}
@@ -62,32 +62,32 @@ namespace WangV
 				}
 			}
 
-			void Start()
+			void start()
 			{
 				mImple->runflag = true;
 			}
 
-			void Stop()
+			void stop()
 			{
 				mImple->stopflag = true;
 			}
 
-			void Pause()
+			void pause()
 			{
 				mImple->pauseflag = true;
 			}
 
-			void Resume()
+			void resume()
 			{
 				mImple->pauseflag = false;
 			}
 
-			void Set_Interval_Second(const int& v)
+			void set_interval_second(const int& v)
 			{
 				mImple->interval_second = v;
 			}
 
-			void Set_Interval_MilliSecond(const int& v)
+			void set_interval_millisecond(const int& v)
 			{
 				mImple->interval_millisecond = v;
 			}
@@ -103,7 +103,7 @@ namespace WangV
 					while ( mImple->pauseflag )
 						std::this_thread::yield();
 					// 注意此地的用法
-					this->Run();
+					this->run();
 
 					std::this_thread::sleep_for(std::chrono::seconds(mImple->interval_second)+std::chrono::milliseconds(mImple->interval_millisecond));
 				}
